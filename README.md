@@ -22,7 +22,8 @@
 
 ## Installation
 
-- `composer create-project --prefer-dist cretueusebiu/laravel-vue-spa`
+<!-- - `composer create-project --prefer-dist cretueusebiu/laravel-vue-spa` -->
+- `composer update`
 - Edit `.env` and set your database connection details
 - `php artisan migrate`
 - `yarn` / `npm install`
