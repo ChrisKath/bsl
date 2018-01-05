@@ -1,61 +1,21 @@
-# Laravel-Vue SPA
+# bsl-tap
 
-<a href="https://travis-ci.org/cretueusebiu/laravel-vue-spa"><img src="https://travis-ci.org/cretueusebiu/laravel-vue-spa.svg?branch=master" alt="Build Status"></a>
-<a href="https://packagist.org/packages/cretueusebiu/laravel-vue-spa"><img src="https://poser.pugx.org/cretueusebiu/laravel-vue-spa/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/cretueusebiu/laravel-vue-spa"><img src="https://poser.pugx.org/cretueusebiu/laravel-vue-spa/v/stable.svg" alt="Latest Stable Version"></a>
+> Brand Short Link y- TAP Technology CompanTAP Technology Company Limited.y Limited.
 
-> A Laravel-Vue SPA starter project template.
+## Build Setup
 
-<p align="center">
-<img src="https://i.imgur.com/NHFTsGt.png">
-</p>
+``` bash
+# install dependencies
+npm install
 
-## Features
+# serve with hot reload at localhost:8080
+npm run dev
 
-- Laravel 5.5
-- Vue + VueRouter + Vuex + VueI18n
-- Pages with custom layouts
-- Login, register and password reset
-- Authentication with JWT
-- Socialite integration
-- Bootstrap 4 + Font Awesome 5
+# build for production with minification
+npm run build
 
-## Installation
-
-<!-- - `composer create-project --prefer-dist cretueusebiu/laravel-vue-spa` -->
-- `composer update`
-- Edit `.env` and set your database connection details
-- `php artisan migrate`
-- `yarn` / `npm install`
-
-## Usage
-
-#### Development
-
-```bash
-# build and watch
-npm run watch
-
-# serve with hot reloading
-npm run hot
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
-#### Production
-
-```bash
-npm run production
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-### Bug JWT Auth Token Signature could not be verified.
-
-http://laravelcode.com/post/restful-api-in-laravel-55-using-jwt-authentication?utm_source=hashnode.com
-
-```bash
- //php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\JWTAuthServiceProvider"
-
-php artisan jwt:secret
-```
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
