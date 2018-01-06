@@ -1,8 +1,7 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png">
+<template lang="html">
+  <main aria-core="Core Program" id="app-wrap">
     <router-view/>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -12,7 +11,7 @@ export default {
 </script>
 
 <style>
-#app {
+#app-wrap {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

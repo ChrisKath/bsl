@@ -2,14 +2,24 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import store from './store'
 import router from './router'
 
-Vue.config.productionTip = false
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
 
-/* eslint-disable no-new */
+// Plugins
+// import VueTippy from 'vue-tippy'
+// Vue.use(VueTippy, {
+//   touchHold: true,
+//   dynamicTitle: true,
+//   animation: 'perspective'
+// })
+
+Vue.config.productionTip = false
 new Vue({
   el: '#app',
+  store,
   router,
-  template: '<App/>',
-  components: { App }
+  render: h => h(App)
 })
