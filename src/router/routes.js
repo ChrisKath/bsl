@@ -1,18 +1,21 @@
-const Welcome = () => import('~/pages/welcome')
+const AuthDashboard = () => import('c~/auth/dashboard')
+const GuestLogin = () => import('c~/guest/login')
 
 export default [
-  {
-    path: '/',
-    name: 'welcome',
-    component: Welcome
-  },
-
-  // Guest routes.
+  {path: '*', redirect: '/'},
+  {path: '/', redirect: {name: 'auth.main'}},
+  ...middleware('auth', [
+    {
+      name: 'auth.main',
+      path: '/dashboard',
+      component: AuthDashboard
+    }
+  ]),
   ...middleware('guest', [
     {
-      path: '/login',
-      name: 'login',
-      component: Welcome
+      name: 'guest.login',
+      path: '/guest/login',
+      component: GuestLogin
     }
   ])
 ]
@@ -21,11 +24,10 @@ export default [
  * @param  {String|Function} middleware
  * @param  {Array} routes
  * @return {Array}
-**/
+ */
 function middleware (middleware, routes) {
   routes.forEach(route =>
     (route.middleware || (route.middleware = [])).unshift(middleware)
   )
-  console.log(routes)
   return routes
 }

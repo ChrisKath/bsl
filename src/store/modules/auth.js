@@ -11,14 +11,14 @@ export const state = {
 export const getters = {
   user: state => state.user,
   token: state => state.token,
-  check: state => state.user !== null
+  check: state => state.user !== null && state.token
 }
 
 // mutations
 export const mutations = {
   SAVE_TOKEN (state, { token, remember }) {
     state.token = token
-    Cookies.set('token', token, { expires: remember ? '1Y' : null })
+    Cookies.set('token', token, { expires: remember ? '1M' : null })
   },
 
   FETCH_USER_SUCCESS (state, { user }) {

@@ -1,0 +1,1 @@
+webpackJsonp([1],{jfss:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var s={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{},[this._v("\n  Dashboard\n")])},staticRenderFns:[]},r=t("VU/8")({name:"dashboard"},s,!1,null,null,null);n.default=r.exports}});
