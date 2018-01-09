@@ -26,6 +26,7 @@ module.exports = {
     'no-new': 0,
     'no-console': 0,
     'no-multi-spaces': 0,
+    'no-trailing-spaces': 0,
     'spaced-comment': 0,
     'key-spacing': 0
   }

@@ -3,6 +3,8 @@ import setLang from '../lang'
 const lang = {
   i: {
     locale: 'en-US',
+    lang: 'English (US)',
+    continent: 'America',
     select: {
       placeholder: 'Select',
       noMatch: 'No matching data',
@@ -96,6 +98,9 @@ const lang = {
     },
     tree: {
       emptyText: 'No Data'
+    },
+    notic: {
+      title: 'Notification title'
     }
   }
 }

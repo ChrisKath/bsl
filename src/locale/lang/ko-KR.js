@@ -3,6 +3,8 @@ import setLang from '../lang'
 const lang = {
   i: {
     locale: 'ko-KR',
+    lang: '한국어',
+    continent: 'Asia Pacific',
     select: {
       placeholder: '선택',
       noMatch: '일치하는 데이터 없음',

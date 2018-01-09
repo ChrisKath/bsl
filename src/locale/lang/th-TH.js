@@ -3,6 +3,8 @@ import setLang from '../lang'
 const lang = {
   i: {
     locale: 'th-TH',
+    lang: 'ภาษาไทย',
+    continent: 'Asia Pacific',
     select: {
       placeholder: 'ตัวเลือก',
       noMatch: 'ข้อมูลไม่ตรงกัน',
@@ -96,6 +98,9 @@ const lang = {
     },
     tree: {
       emptyText: 'ไม่พบข้อมูล'
+    },
+    notic: {
+      title: 'คำชี้แจง'
     }
   }
 }

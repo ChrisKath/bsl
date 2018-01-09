@@ -32,7 +32,7 @@ function touch () {
   // Register before guard.
   router.beforeEach((to, from, next) => {
     router.app.$nextTick(() => {
-      console.log('loading.start...')
+      router.app.$Loading.start()
     })
     next()
   })
@@ -40,7 +40,7 @@ function touch () {
   // Register after hook.
   router.afterEach((to, from) => {
     router.app.$nextTick(() => {
-      console.log('loading.finish...')
+      router.app.$Loading.finish()
     })
   })
 

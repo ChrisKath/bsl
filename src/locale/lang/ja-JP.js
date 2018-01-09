@@ -3,6 +3,8 @@ import setLang from '../lang'
 const lang = {
   i: {
     locale: 'ja-JP',
+    lang: '日本語',
+    continent: 'Asia Pacific',
     select: {
       placeholder: '選んでください',
       noMatch: 'マッチするデータなし',

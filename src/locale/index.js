@@ -6,21 +6,21 @@ import Format from './format'
 const format = Format(Vue)
 let lang = defaultLang
 let merged = false
-let i18nHandler = function() {
+let i18nHandler = () => {
   const vuei18n = Object.getPrototypeOf(this || Vue).$t
   if (typeof vuei18n === 'function' && !!Vue.locale) {
     if (!merged) {
-      merged = true;
+      merged = true
       Vue.locale(
         Vue.config.lang,
         deepmerge(lang, Vue.locale(Vue.config.lang) || {}, { clone: true })
-      );
+      )
     }
     return vuei18n.apply(this, arguments)
   }
 }
 
-export const t = function(path, options) {
+export const t = (path, options) => {
   let value = i18nHandler.apply(this, arguments)
   if (value !== null && value !== undefined) return value
 
@@ -32,16 +32,16 @@ export const t = function(path, options) {
     value = current[property]
     if (i === j - 1) return format(value, options)
     if (!value) return ''
-    current = value;
+    current = value
   }
   return ''
 }
 
-export const use = function(l) {
+export const use = l => {
   lang = l || lang
 }
 
-export const i18n = function(fn) {
+export const i18n = fn => {
   i18nHandler = fn || i18nHandler
 }
 

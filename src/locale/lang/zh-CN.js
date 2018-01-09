@@ -3,6 +3,8 @@ import setLang from '../lang'
 const lang = {
   i: {
     locale: 'zh-CN',
+    lang: '中文 (简体)',
+    continent: 'Asia Pacific',
     select: {
       placeholder: '请选择',
       noMatch: '无匹配数据',
