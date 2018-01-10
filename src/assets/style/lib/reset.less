@@ -1,7 +1,10 @@
 * {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  .box-sizing();
+
+  &:before, &:after {
+    .box-sizing();
+  }
 
   [hidden] {
     display: none !important;
@@ -38,6 +41,14 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: @font-family;
+  color: @text-color;
+  background-color: @body-background;
+}
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -67,9 +78,7 @@ input {
   width: 100%;
   height: 100%;
   border: none;
-  -webkit-box-shadow: 0 0 0 transparent;
-     -moz-box-shadow: 0 0 0 transparent;
-          box-shadow: 0 0 0 transparent;
+  .box-shadow();
 }
 
 button {
@@ -77,9 +86,7 @@ button {
   outline: 0;
   padding: 0;
   border: solid 0 transparent;
-  -webkit-box-shadow: 0 0 0 transparent;
-     -moz-box-shadow: 0 0 0 transparent;
-          box-shadow: 0 0 0 transparent;
+  .box-shadow();
 }
 
 table {
@@ -93,6 +100,20 @@ a {
   outline: 0;
   cursor: pointer;
   display: inline-block;
+
+  &:hover {
+    color: @link-hover-color;
+  }
+
+  &:active {
+    color: @link-active-color;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    color: @btn-disable-color;
+    cursor: @cursor-disabled;
+  }
 }
 
 q,
@@ -108,6 +129,9 @@ blockquote:after {
   content: none;
 }
 
-
-// iView reset style
-.ivu-modal-content { border-radius: 0 }
+code,
+kbd,
+pre,
+samp {
+  font-family: @code-family;
+}

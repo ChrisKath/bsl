@@ -1,13 +1,16 @@
 <template lang="html">
-  <div class="ivu--modal-lang">
-    <div class="ivu--modal-group"
-      v-for="(obj, name) in internationalization"
-    >
+  <Modal v-model="visible"
+    :class-name="`ivu-madal--languages`"
+    :width="600"
+    :scrollable="true"
+    :footerHide="true">
 
-      <h3 size="large" v-text="name"/>
+    <div class="ivu--lang-group" v-for="(obj, name) in internationalization">
+      <h3 class="mg-b10" size="large" v-text="name"/>
 
-      <ul class="ivu--modal-list">
+      <ul class="ivu--lang-list">
         <li v-for="key in $lodash.orderBy(obj, 'lang', 'desc')">
+
           <a v-text="key.lang"
             :class="{
               'ivu--switch': true,
@@ -15,11 +18,12 @@
             }"
             @click="languageSwitch(key.locale)"
           />
+
         </li>
       </ul>
-
     </div>
-  </div>
+
+  </Modal>
 </template>
 
 <script>
@@ -28,26 +32,24 @@ import ILanguage from '~/locale/lang.all'
 export default {
   data () {
     return {
-      lang: ILanguage
-    }
-  },
-
-  props: {
-    closeModal: {
-      type: Function,
-      required: true
+      lang: ILanguage,
+      visible: false
     }
   },
 
   methods: {
-    languageSwitch (lng) {
-      if (lng === this.$i18n.locale) return
-      this.$Loading.start()
-      setTimeout(() => {
-        this.$lang.take(lng)
-        this.closeModal(false)
-        this.$Loading.finish()
-      }, 320)
+    languageSwitch (c) {
+      if (this.$i18n.locale !== c) {
+        this.$Loading.start()
+        setTimeout(() => {
+          this.visible = false
+          this.$lang.take(c)
+          this.$Loading.finish()
+        }, 320)
+      }
+    },
+    modalSwitch () {
+      this.visible = true
     }
   },
 
@@ -72,20 +74,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ivu--modal {
-  &-lang {}
-
+.ivu--lang {
   &-group {
     &:not(:last-child) {
       margin: 0 0 15px;
       padding: 0 0 15px;
-      border-bottom: solid 1px #e9eaec;
+      border-bottom: solid 1px hsl(220, 10%, 94%);
     }
 
-    h3 {
-      margin: 0 0 10px;
-      font-weight: bolder;
-    }
+    h3 { font-weight: bolder }
   }
 
   &-list {
@@ -96,13 +93,16 @@ export default {
     }
 
     .ivu--switch {
-      cursor: pointer;
-      color: #80848f;
+      color: darken(#80848F, 12%);
 
-      &:hover { text-decoration: underline }
+      &:hover {
+        color: lighten(#2D8CF0, 8%);
+        text-decoration: underline;
+      }
+
       &.ivu--focus {
-        color: #5cadff;
         font-weight: 600;
+        color: lighten(#2D8CF0, 12%);
       }
     }
   }

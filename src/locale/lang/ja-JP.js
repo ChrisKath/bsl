@@ -98,6 +98,20 @@ const lang = {
     },
     tree: {
       emptyText: 'データなし'
+    },
+    form: {
+      user: 'アカウント',
+      pass: 'パスワード',
+      logged: '私をログインさせておく',
+      forgot: 'パスワードを忘れた方'
+    },
+    button: {
+      signin: 'ログイン',
+      signout: 'ログアウト',
+      submit: '提出する',
+      cancel: '取消',
+      clear: '明晰',
+      reset: 'セットし直す'
     }
   }
 }

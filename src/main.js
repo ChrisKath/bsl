@@ -9,8 +9,8 @@ import store from './store'
 import router from './router'
 
 // Call Style.
-import 'iview/dist/styles/iview.css'
-import '~/assets/core.less'
+import 'Aset/style/iView/index.less'
+import 'Aset/core.less'
 
 Vue.use(iView)
 Vue.prototype.$lodash = lodash

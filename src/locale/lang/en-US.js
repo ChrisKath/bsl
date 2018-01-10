@@ -99,8 +99,19 @@ const lang = {
     tree: {
       emptyText: 'No Data'
     },
-    notic: {
-      title: 'Notification title'
+    form: {
+      user: 'Username',
+      pass: 'Password',
+      logged: 'Keep me logged in',
+      forgot: 'Forgot your password?'
+    },
+    button: {
+      signin: 'Signin',
+      signout: 'Signout',
+      submit: 'Submit',
+      cancel: 'Cancel',
+      clear: 'Clear',
+      reset: 'Reset'
     }
   }
 }

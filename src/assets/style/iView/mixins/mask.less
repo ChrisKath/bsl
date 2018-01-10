@@ -1,0 +1,14 @@
+.mask() {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: @zindex-modal;
+    background-color: shade(@shadow-color, 40%);
+
+    &-hidden {
+        display: none;
+    }
+}

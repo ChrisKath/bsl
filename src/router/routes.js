@@ -1,5 +1,5 @@
-const AuthDashboard = () => import('c~/auth/dashboard')
-const GuestLogin = () => import('c~/guest/login')
+const AuthDashboard = () => import('Comp/auth/dashboard')
+const GuestLogin = () => import('Comp/guest/login')
 
 export default [
   {path: '*', redirect: '/'},
