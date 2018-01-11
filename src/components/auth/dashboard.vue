@@ -1,11 +1,13 @@
 <template lang="html">
-  <div class>
-    Dashboard
-  </div>
+  <ITuner/>
 </template>
 
 <script>
+import ITuner from 'Comp/guest/reset'
+
 export default {
-  name: 'dashboard'
+  components: {
+    'ITuner': ITuner
+  }
 }
 </script>

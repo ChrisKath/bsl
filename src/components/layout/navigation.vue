@@ -1,20 +1,18 @@
 <template lang="html">
   <Header class="layout-header">
-    <div class="ivu-nav--logo" v-text="$t('i.table.noDataText')"/>
+    <div class="ivu-nav ivu-nav--logo" v-text="$t('i.table.noDataText')"/>
 
-    <div class="ivu-nav--lang" @click="$refs.l.modalSwitch()">
-      <i class="fa fa-language vta-m mg-r8 size-15"/>
-      <span aria-label="languages">
-        {{ $t('i.lang') }}
-      </span>
+    <Navigator v-if="auth"/>
+    <div v-else class="ivu-nav ivu-nav--lang" @click="$refs.l.modalSwitch()">
+      <i class="fa fa-language vta-m mg-r5 size-15"/>
+      <span v-text="$t('i.lang')"/>
       <Languages ref="l"/>
     </div>
-
   </Header>
 </template>
 
 <script>
-import ILanguages from 'Comp/UIComponent/Other/language'
+import INavigator from 'Comp/UIComponent/Other/navigator'
 
 export default {
   props: {
@@ -25,7 +23,7 @@ export default {
   },
 
   components: {
-    'Languages': ILanguages
+    'Navigator': INavigator
   }
 }
 </script>

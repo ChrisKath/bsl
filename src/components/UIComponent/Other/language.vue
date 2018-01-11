@@ -30,6 +30,7 @@
 import ILanguage from '~/locale/lang.all'
 
 export default {
+  name: 'Languages',
   data () {
     return {
       lang: ILanguage,

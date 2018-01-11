@@ -48,10 +48,10 @@ module.exports = {
     api: '//web.bslink.local/api',
 
     // Template for index.html
-    index: path.resolve(__dirname, '../master/index.html'),
+    index: path.resolve(__dirname, '../master/public/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../master'),
+    assetsRoot: path.resolve(__dirname, '../master/public'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 

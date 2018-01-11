@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { sync } from 'vuex-router-sync'
-import store from '~/store'
 import routes from './routes'
 
 Vue.use(Router)
@@ -11,8 +9,6 @@ const routeMiddleware = resolveMiddleware(
 )
 
 const router = touch()
-
-sync(store, router)
 
 export default router
 
@@ -24,24 +20,21 @@ export default router
 function touch () {
   const router = new Router({
     // mode: 'history',
-    base: '/',
+    base: __dirname,
+    fallback: false,
     scrollBehavior,
     routes: routes.map(beforeEnter)
   })
 
   // Register before guard.
   router.beforeEach((to, from, next) => {
-    router.app.$nextTick(() => {
-      router.app.$Loading.start()
-    })
+    router.app.$nextTick(() => router.app.$Loading.start())
     next()
   })
 
   // Register after hook.
-  router.afterEach((to, from) => {
-    router.app.$nextTick(() => {
-      router.app.$Loading.finish()
-    })
+  router.afterEach(() => {
+    router.app.$nextTick(() => router.app.$Loading.finish())
   })
 
   return router

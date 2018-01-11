@@ -5,11 +5,6 @@
     <Content class="layout-content">
       <router-view/>
     </Content>
-
-    <Footer class="layout-footer" v-if="authenticated">
-      <p class="size-11"
-        v-html="`&copy;2018 TAP Technology Company Limited. all rights reserved.`"/>
-    </Footer>
   </Layout>
 </template>
 

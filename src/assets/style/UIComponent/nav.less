@@ -2,22 +2,22 @@
   color: #828a9b;
   font-size: 12px;
   line-height: 2.5;
+  .flex-center-between();
 
   .ivu-nav {
+    position: relative;
+    .flex-center-center();
+
+    &> *:not(:last-child) { margin-right: 20px }
+
     &--logo {
-      position: relative;
-      float: left;
-      top: 17px;
       width: 150px;
       height: 30px;
       background: #5b6270;
-      text-align: center;
+      justify-content: center;
     }
 
     &--lang {
-      position: relative;
-      float: right;
-      top: 17px;
       padding: 0 15px;
       cursor: pointer;
       border-radius: 50px;

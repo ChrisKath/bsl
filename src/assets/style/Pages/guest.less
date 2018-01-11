@@ -1,0 +1,25 @@
+.ivu-form {
+  padding: 40px;
+  background-color: @body-background;
+
+  &--guest {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 10vh;
+    max-width: @screen-xs;
+
+    & > h2 {
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-weight: 800;
+      color: #828a9b;
+      background-color: @body-background;
+      border-bottom: solid 1px lighten(@border-color-base, 5%);
+      & * { letter-spacing: normal }
+    }
+
+    .ivu-btn {
+      text-transform: uppercase;
+    }
+  }
+}

@@ -1,3 +1,10 @@
+.user-select() {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none; // IE10+
+          user-select: none;
+}
+
 .box-sizing() {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -8,4 +15,15 @@
   -webkit-box-shadow: 0 0 0 transparent;
      -moz-box-shadow: 0 0 0 transparent;
           box-shadow: 0 0 0 transparent;
+}
+
+.flex-center-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-center-between() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

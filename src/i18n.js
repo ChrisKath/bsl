@@ -7,7 +7,8 @@ Vue.use(VueI18n)
 // Create VueI18n instance with options
 const i18n = new VueI18n({
   messages,
-  locale: navigator.language || 'en-US',
+  // locale: navigator.language || 'en-US',
+  locale: 'ja-JP',
   fallbackLocale: 'en-US'
 })
 document.querySelector('html')

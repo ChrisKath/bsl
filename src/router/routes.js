@@ -1,21 +1,33 @@
-const AuthDashboard = () => import('Comp/auth/dashboard')
-const GuestLogin = () => import('Comp/guest/login')
+const dashboard = () => import('Comp/auth/dashboard')
+const login = () => import('Comp/guest/login')
+const reset = () => import('Comp/guest/reset')
 
 export default [
   {path: '*', redirect: '/'},
   {path: '/', redirect: {name: 'auth.main'}},
+
   ...middleware('auth', [
     {
       name: 'auth.main',
       path: '/dashboard',
-      component: AuthDashboard
+      component: dashboard
+    },
+    {
+      name: 'auth.logout',
+      path: '/logout'
     }
   ]),
+
   ...middleware('guest', [
     {
       name: 'guest.login',
-      path: '/guest/login',
-      component: GuestLogin
+      path: '/login',
+      component: login
+    },
+    {
+      name: 'guest.reset',
+      path: '/password/reset',
+      component: reset
     }
   ])
 ]

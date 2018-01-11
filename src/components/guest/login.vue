@@ -1,17 +1,23 @@
 <template lang="html">
+<div class="ivu-form--guest">
+  <h2 class="size-26 txt-c pd-t20 pd-b20">
+    {{ $t('i.form.title.auth') }}
+  </h2>
 
   <Form ref="login"
-    class="ivu-form--login"
     :model="form"
     :rules="rule"
-    @keyup.enter.native="visible('login')"
-  >
+    @keyup.enter.native="visible('login')">
+
+    <FormItem class="mg-b10">
+      <Alert show-icon>Brand Short Link - Project (bata)</Alert>
+    </FormItem>
 
     <FormItem prop="username">
       <Input type="text" size="large"
         v-model="form.username"
-        :placeholder="$t('i.form.user')"
-      >
+        :maxlength="64"
+        :placeholder="$t('i.form.user')">
         <Icon type="ios-person-outline" size="23" slot="prepend"/>
       </Input>
     </FormItem>
@@ -19,48 +25,44 @@
     <FormItem prop="password">
       <Input type="password" size="large"
         v-model="form.password"
-        :placeholder="$t('i.form.pass')"
-      >
+        :maxlength="16"
+        :placeholder="$t('i.form.pass')">
         <Icon type="ios-locked-outline" size="20" slot="prepend"/>
       </Input>
     </FormItem>
 
-    <FormItem>
+    <FormItem class="mg-b10">
       <Row type="flex" justify="space-between">
         <Checkbox size="large" class="ivu-checkbox-link"
           v-model="form.logged">&nbsp;
           {{ $t('i.form.logged') }}
         </Checkbox>
 
-        <router-link :to="{name: 'auth.main'}"
-          v-text="$t('i.form.forgot')"
-        />
+        <router-link :to="{name: 'guest.reset'}">
+          {{ $t('i.form.forgot') }}
+        </router-link>
       </Row>
     </FormItem>
 
     <FormItem>
       <Button type="primary" size="large"
-        @click="visible('login')"
-      >
-        {{ $t('i.button.signin') }}
+        class="min-w100"
+        icon="log-in"
+        @click="visible('login')">
+        {{ $t('i.form.button.signin') }}
       </Button>
     </FormItem>
 
   </Form>
 
+  <p class="size-12 txt-c mg-t15">
+    &copy;2018 TAP Technology Company Limited. all rights reserved.
+  </p>
+</div>
 </template>
 
 <script>
-const required = {
-  required: true,
-  message: 'Please fill is required.'
-}
-const pattern = {
-  type: 'string',
-  required: true,
-  pattern: /^[a-z*A-Z*0-9*]+$/,
-  message: 'Please fill is (English or Number) only.'
-}
+import verify from '../validator'
 
 export default {
   data () {
@@ -71,8 +73,8 @@ export default {
         logged: false
       },
       rule: {
-        username: [required, pattern],
-        password: [required, pattern]
+        username: [verify.fill, verify.default],
+        password: [verify.fill, verify.default]
       }
     }
   },
@@ -80,8 +82,8 @@ export default {
     visible (name) {
       this.$refs[name].validate(valid => {
         valid
-          ? this.$Notice.success({title: 'Success!', desc: '...'})
-          : this.$Notice.error({title: 'Fail!', desc: '...'})
+          ? this.$Message.success(this.$t('i.notice.success'))
+          : this.$Message.warning(this.$t('i.notice.warning'))
       })
     }
   }

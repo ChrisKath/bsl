@@ -100,18 +100,37 @@ const lang = {
       emptyText: 'データなし'
     },
     form: {
+      title: {
+        auth: 'ようこそ',
+        resetPass: 'パスワードを忘れた場合',
+        resetInfo: '会員情報入力、パスワード再設定'
+      },
+      note: {
+        one: 'メールアドレス形式でのログインの方は両方の入力欄にメールアドレスを入力してください。',
+        two: 'ご本人様の確認が取れない場合は、パスワード再設定再発行はできません。'
+      },
       user: 'アカウント',
       pass: 'パスワード',
       logged: '私をログインさせておく',
-      forgot: 'パスワードを忘れた方'
+      forgot: 'パスワードを忘れた方はこちらへ',
+      registeredEmail: '登録済みの メールアドレス',
+      button: {
+        signin: 'ログイン',
+        signout: 'ログアウト',
+        submit: '提出する',
+        save: '保存',
+        edit: '編集',
+        confirm: '確認',
+        cancel: 'キャンセル',
+        clear: '明晰',
+        reset: 'セットし直す'
+      }
     },
-    button: {
-      signin: 'ログイン',
-      signout: 'ログアウト',
-      submit: '提出する',
-      cancel: '取消',
-      clear: '明晰',
-      reset: 'セットし直す'
+    notice: {
+      info: 'This is a info tip',
+      success: 'サクセス',
+      warning: '警告!',
+      error: 'エラー!!'
     }
   }
 }

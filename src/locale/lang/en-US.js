@@ -100,18 +100,35 @@ const lang = {
       emptyText: 'No Data'
     },
     form: {
+      title: {
+        auth: 'Authentication',
+        resetPass: 'Reset password',
+        resetInfo: 'Member information for reset password'
+      },
+      note: {
+        one: 'If you are logging in email address, please enter your email address in both input fields.',
+        two: 'If you can not confirm yourself, you can\'t reissue your password.'
+      },
       user: 'Username',
       pass: 'Password',
       logged: 'Keep me logged in',
-      forgot: 'Forgot your password?'
+      forgot: 'Forgot your password?',
+      registeredEmail: 'Registered email address',
+      button: {
+        signin: 'Signin',
+        signout: 'Signout',
+        submit: 'Submit',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        clear: 'Clear',
+        reset: 'Reset'
+      }
     },
-    button: {
-      signin: 'Signin',
-      signout: 'Signout',
-      submit: 'Submit',
-      cancel: 'Cancel',
-      clear: 'Clear',
-      reset: 'Reset'
+    notice: {
+      info: 'This is a info tip',
+      success: 'This is a success tip',
+      warning: 'This is a warning! tip',
+      error: 'This is a Error! tip'
     }
   }
 }

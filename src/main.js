@@ -8,14 +8,20 @@ import i18n from './i18n'
 import store from './store'
 import router from './router'
 
+// Call Component.
+import ILanguages from 'Comp/UIComponent/Other/language'
+
 // Call Style.
 import 'Aset/style/iView/index.less'
 import 'Aset/core.less'
 
 Vue.use(iView)
 Vue.prototype.$lodash = lodash
-Vue.config.productionTip = false
 
+// Init Component.
+Vue.component('Languages', ILanguages)
+
+Vue.config.productionTip = false
 new Vue({
   el: '#app',
   i18n,
