@@ -9,8 +9,8 @@
 @warning-color          : #ff9900;
 @error-color            : #ff4d4d;
 @link-color             : #2D8cF0;
-@link-hover-color       : tint(@link-color, 20%);
-@link-active-color      : shade(@link-color, 5%);
+@link-hover-color       : tint(@warning-color, 20%);
+@link-active-color      : shade(@warning-color, 5%);
 @selected-color         : fade(@primary-color, 90%);
 @tooltip-color          : #fff;
 @subsidiary-color       : #80848f;
@@ -51,7 +51,7 @@
 @date-picker-cell-hover-bg    : #e1f0fe;
 
 // Shadow
-@shadow-color           : hsla(210, 25%, 25%, .1);
+@shadow-color           : hsla(210, 15%, 25%, .12);
 @shadow-base            : @shadow-down;
 @shadow-card            : 0 1px 1px 0 rgba(0,0,0,.1);
 @shadow-up              : 0 -1px 6px @shadow-color;

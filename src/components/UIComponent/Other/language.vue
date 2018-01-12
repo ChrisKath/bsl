@@ -1,6 +1,6 @@
 <template lang="html">
   <Modal v-model="visible"
-    :class-name="`ivu-madal--languages`"
+    class-name="ivu-modal--languages"
     :width="600"
     :scrollable="true"
     :footerHide="true">
@@ -49,7 +49,7 @@ export default {
         }, 320)
       }
     },
-    modalSwitch () {
+    open () {
       this.visible = true
     }
   },
@@ -73,39 +73,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-.ivu--lang {
-  &-group {
-    &:not(:last-child) {
-      margin: 0 0 15px;
-      padding: 0 0 15px;
-      border-bottom: solid 1px hsl(220, 10%, 94%);
-    }
-
-    h3 { font-weight: bolder }
-  }
-
-  &-list {
-    li {
-      display: inline-block;
-      min-width: 110px;
-      min-height: 26px;
-    }
-
-    .ivu--switch {
-      color: darken(#80848F, 12%);
-
-      &:hover {
-        color: lighten(#2D8CF0, 8%);
-        text-decoration: underline;
-      }
-
-      &.ivu--focus {
-        font-weight: 600;
-        color: lighten(#2D8CF0, 12%);
-      }
-    }
-  }
-}
-</style>

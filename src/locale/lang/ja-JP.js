@@ -99,6 +99,12 @@ const lang = {
     tree: {
       emptyText: 'データなし'
     },
+    menu: {
+      create: 'を作成',
+      createlink: 'リンクを作成',
+      dashboard: 'ダッシュボード',
+      account: 'マイアカウント'
+    },
     form: {
       title: {
         auth: 'ようこそ',
@@ -111,6 +117,9 @@ const lang = {
       },
       user: 'アカウント',
       pass: 'パスワード',
+      // search: '検索',
+      search: 'サーチ',
+      longurl: '長いURL ペースト',
       logged: '私をログインさせておく',
       forgot: 'パスワードを忘れた方はこちらへ',
       registeredEmail: '登録済みの メールアドレス',

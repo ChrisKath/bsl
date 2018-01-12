@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="ivu-form--guest">
-  <h2 class="size-26 txt-c pd-t20 pd-b20">
+  <h2 class="size-26 size-w800 txt-c pd-t20 pd-b20">
     {{ $t('i.form.title.auth') }}
   </h2>
 
@@ -45,11 +45,13 @@
     </FormItem>
 
     <FormItem>
-      <Button type="primary" size="large"
+      <Button type="warning" size="large"
         class="min-w100"
         icon="log-in"
+        :loading="i.loading"
         @click="visible('login')">
-        {{ $t('i.form.button.signin') }}
+        <span v-if="!i.loading">{{ $t('i.form.button.signin') }}</span>
+        <span v-else>{{ $t('i.select.loading') }}...</span>
       </Button>
     </FormItem>
 
@@ -62,11 +64,12 @@
 </template>
 
 <script>
-import verify from '../validator'
+import verify from '~/components/validator'
 
 export default {
   data () {
     return {
+      i: {loading: false},
       form: {
         username: '',
         password: '',
@@ -81,10 +84,14 @@ export default {
   methods: {
     visible (name) {
       this.$refs[name].validate(valid => {
-        valid
-          ? this.$Message.success(this.$t('i.notice.success'))
-          : this.$Message.warning(this.$t('i.notice.warning'))
+        if (valid) {
+          this.$Message.success(this.$t('i.notice.success'))
+          this.i.loading = true
+        } else {
+          this.$Message.warning(this.$t('i.notice.warning'))
+        }
       })
+      setTimeout(() => { this.i.loading = false }, 2000)
     }
   }
 }

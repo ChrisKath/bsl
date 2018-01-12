@@ -12,5 +12,9 @@ export default {
   email: {
     type: 'email',
     message: 'Please verify your Email Address'
+  },
+  url: {
+    type: 'url',
+    message: 'Please enter a valid URL'
   }
 }

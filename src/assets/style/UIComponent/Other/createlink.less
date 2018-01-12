@@ -1,0 +1,56 @@
+.ivu-modal-create {
+  text-align: left;
+  .ivu-modal {
+    &-close {
+      top: 12px;
+      & *:hover {color:#999}
+    }
+
+    &-header {
+      line-height: normal;
+      padding: 15px 20px;
+      font-size: 22px;
+      color: white;
+      background-color: @layout-header-background;
+    }
+
+    &-body {
+      .ivu-form {
+        &-url {
+          padding: 0;
+          margin: auto;
+          max-width: 400px;
+          background-color: transparent;
+        }
+        &-item-url {
+          label {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            pointer-events: none;
+            line-height: normal;
+            text-transform: uppercase;
+          }
+          textarea.ivu-input {
+            overflow: hidden;
+            display: block;
+            resize: none;
+            padding: 15px;
+            padding-top: 40px;
+          }
+        }
+
+        .ivu-input-disabled {border-right: none}
+        .ivu-input-group-append {
+          color: #ccc;
+          background-color: @input-disabled-bg
+        }
+      }
+      .ivu-alert { margin: 0 }
+    }
+
+    &-footer {
+      padding: 15px 20px;
+    }
+  }
+}

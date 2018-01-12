@@ -251,11 +251,11 @@
     &:hover
         //&:focus
     {
-        .button-color(tint(@primary-color, 20%); @btn-ghost-bg; transparent);
+        .button-color(@link-hover-color; @btn-ghost-bg; transparent);
     }
     &:active,
     &.active {
-        .button-color(shade(@primary-color, 5%); @btn-ghost-bg; transparent);
+        .button-color(@link-active-color; @btn-ghost-bg; transparent);
     }
 }
 

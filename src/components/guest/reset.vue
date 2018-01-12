@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="ivu-form--guest">
-  <h2 class="size-26 txt-c pd-t20 pd-b20">
+  <h2 class="size-26 size-w800 txt-c pd-t20 pd-b20">
     {{ $t('i.form.title.resetPass') }}
     <h5 class="size-16 pd-t5">
       {{ $t('i.form.title.resetInfo') }}
@@ -36,14 +36,16 @@
     </FormItem>
 
     <FormItem class="pd-t10">
-      <Button type="primary" size="large" class="min-w100"
-        icon="ios-checkmark-outline"
+      <Button type="warning" size="large"
+        class="min-w100"
+        :loading="i.loading"
         @click="visible('reset')">
-        {{ $t('i.form.button.confirm') }}
+        <span v-if="!i.loading">{{ $t('i.form.button.confirm') }}</span>
+        <span v-else>{{ $t('i.select.loading') }}...</span>
       </Button>
 
       <router-link :to="{name: 'guest.login'}">
-        <Button size="large">{{ $t('i.form.button.cancel') }}</Button>
+        <Button type="text" size="large">{{ $t('i.form.button.cancel') }}</Button>
       </router-link>
     </FormItem>
 
@@ -56,11 +58,12 @@
 </template>
 
 <script>
-import verify from '../validator'
+import verify from '~/components/validator'
 
 export default {
   data () {
     return {
+      i: {loading: false},
       form: {
         username: '',
         email: ''
@@ -74,10 +77,14 @@ export default {
   methods: {
     visible (name) {
       this.$refs[name].validate(valid => {
-        valid
-          ? this.$Message.success(this.$t('i.notice.success'))
-          : this.$Message.warning(this.$t('i.notice.warning'))
+        if (valid) {
+          this.$Message.success(this.$t('i.notice.success'))
+          this.i.loading = true
+        } else {
+          this.$Message.warning(this.$t('i.notice.warning'))
+        }
       })
+      setTimeout(() => { this.i.loading = false }, 2000)
     }
   }
 }

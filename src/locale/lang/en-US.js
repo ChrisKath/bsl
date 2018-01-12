@@ -99,6 +99,12 @@ const lang = {
     tree: {
       emptyText: 'No Data'
     },
+    menu: {
+      create: 'CREATE',
+      createlink: 'CREATE LINK',
+      dashboard: 'Dashboard',
+      account: 'My Account'
+    },
     form: {
       title: {
         auth: 'Authentication',
@@ -111,6 +117,8 @@ const lang = {
       },
       user: 'Username',
       pass: 'Password',
+      search: 'Search',
+      longurl: 'Paste long url',
       logged: 'Keep me logged in',
       forgot: 'Forgot your password?',
       registeredEmail: 'Registered email address',

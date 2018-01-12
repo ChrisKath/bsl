@@ -8,7 +8,7 @@ const lang = {
     select: {
       placeholder: 'ตัวเลือก',
       noMatch: 'ข้อมูลไม่ตรงกัน',
-      loading: 'กำลังโหลด...'
+      loading: 'กำลังโหลด'
     },
     table: {
       noDataText: 'ไม่พบข้อมูล',
@@ -99,6 +99,12 @@ const lang = {
     tree: {
       emptyText: 'ไม่พบข้อมูล'
     },
+    menu: {
+      create: 'สร้าง',
+      createlink: 'สร้างลิงก์',
+      dashboard: 'แผงควบคุม',
+      account: 'จัดการบัญชี'
+    },
     form: {
       title: {
         auth: 'การยืนยันตัวตน',
@@ -111,6 +117,8 @@ const lang = {
       },
       user: 'ชื่อผู้ใช้',
       pass: 'รหัสผ่าน',
+      search: 'ค้นหาลิงก์',
+      longurl: 'วางลิงก์ยาวที่นี่',
       logged: 'ให้ฉันคงอยู่ในระบบ',
       forgot: 'ลืมรหัสผ่าน?',
       registeredEmail: 'อีเมลที่ใช้ลงทะเบียน',

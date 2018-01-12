@@ -8,13 +8,13 @@
     position: relative;
     .flex-center-center();
 
-    &> *:not(:last-child) { margin-right: 20px }
+    &> *:not(i):not(:last-child) { margin-right: 25px }
 
     &--logo {
       width: 150px;
       height: 30px;
-      background: #5b6270;
       justify-content: center;
+      background-color: #5b6270;
     }
 
     &--lang {
@@ -22,6 +22,48 @@
       cursor: pointer;
       border-radius: 50px;
       border: solid 1px @border-color-low;
+    }
+  }
+
+  .ivu-dropdown {
+    &-item {
+      & > * {
+        min-width: 189px;
+        padding: 10px 20px;
+      }
+    }
+
+    &-info {
+      cursor: auto;
+      &:hover {background: inherit}
+    }
+  }
+
+  .ivu-form {
+    &-search {
+      width: 360px;
+      padding: 0;
+      background-color: transparent;
+
+      .ivu-input {
+        height: auto;
+        &-group {
+          overflow: hidden;
+          top: 0;
+          height: 36px;
+          border-radius: 50px;
+          background-color: @menu-dark-active-bg;
+          & * {
+            color: @btn-disable-color;
+            border: none;
+            background-color: transparent;
+          }
+          &-append {
+            padding: 0;
+            .ivu-btn {padding: 0 15px}
+          }
+        }
+      }
     }
   }
 }

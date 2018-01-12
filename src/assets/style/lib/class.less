@@ -1,7 +1,15 @@
-#app-wrap { height: 100vh }
+#app-wrap {
+  height: 100vh;
+  overflow-y: hidden;
+  .layout-content { overflow-y: scroll }
+}
 
 // min horizontal
 .min-w100 { min-width: 100px }
+.min-w150 { min-width: 150px }
+.min-w200 { min-width: 200px }
+.min-w250 { min-width: 250px }
+.min-w300 { min-width: 300px }
 
 // text-align
 .txt-l { text-align: left }
@@ -9,6 +17,9 @@
 .txt-r { text-align: right }
 
 .vta-m { vertical-align: middle }
+.fx-c-c {
+  .flex-center-center();
+}
 
 // margin
 .mg-t5  { margin-top: 5px }
@@ -100,3 +111,7 @@
 .size-w700 { font-weight: 700 }
 .size-w800 { font-weight: 800 }
 .size-w900 { font-weight: 900 }
+
+
+// Colors
+.grey { color: hsl(210, 15%, 64%) }
