@@ -19,7 +19,7 @@ export default router
  */
 function touch () {
   const router = new Router({
-    // mode: 'history',
+    mode: process.env.NODE_ENV === 'production' ? 'history' : 'hash',
     base: __dirname,
     fallback: false,
     scrollBehavior,
