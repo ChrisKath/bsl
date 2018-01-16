@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import iView from 'iview'
 import lodash from 'lodash'
+import cookie from 'vue-cookie'
 import App from './App'
 import i18n from './i18n'
 import store from './store'
@@ -17,6 +18,7 @@ import 'Aset/core.less'
 
 Vue.use(iView)
 Vue.prototype.$lodash = lodash
+Vue.prototype.$csrf = cookie.get('XSRF-TOKEN')
 
 // Init Component.
 Vue.component('Languages', ILanguages)

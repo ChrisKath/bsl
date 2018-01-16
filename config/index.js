@@ -6,7 +6,7 @@ const path = require('path')
 
 module.exports = {
   dev: {
-    api: '//api.bslink.local',
+    api: '//localhost:8000',
 
     // Paths
     assetsSubDirectory: 'static',

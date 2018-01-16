@@ -12,32 +12,31 @@ class MainController extends Controller {
   /**
   * Display a listing of the resource.
   *
-  * @return \Illuminate\Http\Response
+  * @param String $key
+  * @return ViewPoint, Redirect
   **/
   public function index ($key) {
     if (in_array($this->cute($key), $this->ignoreVueRoute)) return view('root');
 
-    // verify [shortUrl]
     if ($this->state($key, true)) {
-      $redirect_url = '//tuner.hol.es';
-      return redirect()->away($redirect_url);
+      return redirect()->away($this->data[$key]);
     }
   }
 
   /**
   * Getters the specified resource in storage.
   *
-  * @param string $key
-  * @return \Illuminate\Http\Response
+  * @param String $key
+  * @return Boolean
   **/
   public function state ($key, $return = false) {
     // $query = DB::table('urls')->where('key', $key)->first();
     // $this->data = $query;
     $this->data = (array)[
-      '1mqoNSf',
-      '2vaafX4',
+      '1mqoNSf' => '//tuner.hol.es',
+      '2vaafX4' => '//google.com',
     ];
 
-    if ($return) return in_array($key, $this->data);
+    if ($return) return array_key_exists($key, $this->data);
   }
 }

@@ -7,7 +7,7 @@
   <Form ref="login"
     :model="form"
     :rules="rule"
-    @keyup.enter.native="visible('login')">
+    @keyup.enter.native="touch('login')">
 
     <FormItem class="mg-b10">
       <Alert show-icon>Brand Short Link - Project (bata)</Alert>
@@ -34,7 +34,7 @@
     <FormItem class="mg-b10">
       <Row type="flex" justify="space-between">
         <Checkbox size="large" class="ivu-checkbox-link"
-          v-model="form.logged">&nbsp;
+          v-model="form.remember">&nbsp;
           {{ $t('i.form.logged') }}
         </Checkbox>
 
@@ -48,11 +48,10 @@
       <Button type="warning" size="large"
         class="min-w100"
         icon="log-in"
-        :loading="i.loading"
-        @click="visible('login')">
-        <span v-if="!i.loading">{{ $t('i.form.button.signin') }}</span>
-        <span v-else>{{ $t('i.select.loading') }}...</span>
+        @click="touch('login')">
+        <span>{{ $t('i.form.button.signin') }}</span>
       </Button>
+      <input type="hidden" v-model="form._token">
     </FormItem>
 
   </Form>
@@ -64,16 +63,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import verify from '~/components/validator'
 
 export default {
   data () {
     return {
-      i: {loading: false},
       form: {
         username: '',
         password: '',
-        logged: false
+        remember: false,
+        _token: this.$csrf
       },
       rule: {
         username: [verify.fill, verify.default],
@@ -81,17 +81,22 @@ export default {
       }
     }
   },
+
   methods: {
-    visible (name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.$Message.success(this.$t('i.notice.success'))
-          this.i.loading = true
-        } else {
-          this.$Message.warning(this.$t('i.notice.warning'))
+    ...mapActions({
+      login: 'auth/login'
+    }),
+
+    touch (name) {
+      const _al = this.$Message
+      this.$refs[name].validate((verify) => {
+        if (!verify) _al.warning(this.$t('i.notice.warning'))
+        else {
+          _al.success(this.$t('i.notice.success'))
+          this.$Loading.start()
+          this.login({vm: this, form: this.form})
         }
       })
-      setTimeout(() => { this.i.loading = false }, 2000)
     }
   }
 }

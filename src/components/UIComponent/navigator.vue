@@ -51,10 +51,10 @@
         </DropdownItem>
 
         <DropdownItem divided>
-          <router-link :to="{name: 'auth.logout'}">
+          <a @click="logout" target="_self">
             <Icon type="log-out" :size="20" class="vta-m mg-r5"/>
             {{ $t('i.form.button.signout') }}
-          </router-link>
+          </a>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -62,10 +62,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ICreatelink from 'Comp/UIComponent/Other/createlink'
 
 export default {
+  methods: {
+    ...mapActions({
+      clear: 'auth/logout'
+    }),
+
+    logout () {
+      this.$Loading.start()
+      this.clear()
+    }
+  },
+
   computed: mapGetters({
     authen: 'auth/check'
   }),
