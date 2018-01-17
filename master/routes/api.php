@@ -21,10 +21,6 @@ Route::prefix('v1')->group(function () {
     $params = $request->all();
 
     sleep(1);
-    if ($params['username'] !== 'root' && $params['username'] !== '1010') {
-      return 0;
-    }
-
     return $params;
   });
 

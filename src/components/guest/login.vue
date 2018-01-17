@@ -45,7 +45,7 @@
     </FormItem>
 
     <FormItem>
-      <Button type="warning" size="large"
+      <Button type="primary" size="large"
         class="min-w100"
         icon="log-in"
         @click="touch('login')">
@@ -94,7 +94,7 @@ export default {
         else {
           _al.success(this.$t('i.notice.success'))
           this.$Loading.start()
-          this.login({vm: this, form: this.form})
+          this.login(this.form)
         }
       })
     }

@@ -4,9 +4,7 @@ import cookie from 'vue-cookie'
 
 // state
 export const state = {
-  user: (cookie.get('uid') !== 'undefined')
-    ? cookie.get('uid')
-    : null
+  user: cookie.get('uid')
 }
 
 // getters
@@ -17,17 +15,22 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  SAVE_TOKEN (state) {
-    const obj = Object.assign({}, state.user)
-    cookie.set('uid', obj._token, {
-      expires: obj.remember
-        ? '15D'
-        : '5m'
-    })
-  },
-
   FETCH_USER_SUCCESS (state, { user }) {
-    state.user = user
+    if (user) {
+      state.user = user
+      cookie.set('uid', user._token, {
+        expires: user.remember
+          ? '15D'
+          : '30m'
+      })
+      router.push({name: 'auth.main'})
+    } else {
+      router.app.$Loading.finish()
+      router.app.$Notice.error({
+        title: 'Authentication Failed.',
+        desc: 'Username or Password is incorrect'
+      })
+    }
   },
 
   USER_LOGOUT (state) {
@@ -38,19 +41,10 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async login ({ commit }, {form, vm}) {
+  async login ({ commit }, form) {
     try {
       const { data } = await HTTP.post('/api/v1/check', form)
-      await commit('FETCH_USER_SUCCESS', { user: data })
-      await commit('SAVE_TOKEN')
-      if (data) router.push({name: 'auth.main'})
-      else {
-        vm.$Loading.finish()
-        vm.$Notice.error({
-          title: 'Authentication Failed.',
-          desc: 'Username or Password is incorrect'
-        })
-      }
+      commit('FETCH_USER_SUCCESS', {user: data})
     } catch (e) {
       commit('USER_LOGOUT') // IF: FETCH_USER_FAILURE
     }

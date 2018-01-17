@@ -36,7 +36,7 @@
     </FormItem>
 
     <FormItem class="pd-t10">
-      <Button type="warning" size="large"
+      <Button type="primary" size="large"
         class="min-w100"
         :loading="i.loading"
         @click="visible('reset')">

@@ -13,9 +13,11 @@ export default [
       component: dashboard
     },
     {
-      name: 'auth.logout',
-      path: '/logout'
-    }
+      name: 'auth.bslink',
+      path: '/details/_link/:key',
+      component: dashboard
+    },
+    {name: 'auth.logout', path: '/logout'}
   ]),
 
   ...middleware('guest', [

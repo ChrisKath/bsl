@@ -6,10 +6,10 @@
       </Input>
     </Form>
 
-    <Button type="warning" size="large" class="size-w700 min-w200"
+    <Button type="primary" size="large" class="size-w700 min-w200"
       @click="$refs.c.open()">
       {{ $t('i.menu.createlink') }}
-      <Createlink ref="c"/>
+      <Creation ref="c"/>
     </Button>
 
     <Dropdown trigger="click" placement="bottom-end">
@@ -63,7 +63,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ICreatelink from 'Comp/UIComponent/Other/createlink'
+import ICreation from 'Comp/UIComponent/Other/creation'
 
 export default {
   methods: {
@@ -82,7 +82,7 @@ export default {
   }),
 
   components: {
-    'Createlink': ICreatelink
+    'Creation': ICreation
   }
 }
 </script>

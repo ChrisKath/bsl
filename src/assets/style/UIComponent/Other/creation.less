@@ -1,0 +1,136 @@
+@mx-width: 400px;
+
+.@{css-prefix}modal-create {
+  text-align: left;
+  .@{css-prefix}modal {
+    top: 0px;
+    height: 100vh;
+    box-shadow: 0 20px 40px fade(@menu-dark-active-bg, 20%);
+
+    &-close {
+      top: 18px;
+      & *:hover {color:#999}
+    }
+
+    &-header {
+      line-height: normal;
+      padding: 15px 20px;
+      border: none;
+      color: @head-bg;
+      background-color: @menu-dark-title;
+    }
+
+    &-header, &-footer {
+      flex: 0 0 auto;
+      height: @layout-header-height;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      flex: auto;
+      height: 100%;
+    }
+
+    &-body {
+      flex: auto;
+      padding: 25px 0;
+      overflow-y: overlay;
+
+      .@{css-prefix}alert {
+        margin: 0;
+      }
+    }
+
+    &-footer {
+      padding: 12px 20px;
+
+      button {
+        width: 100%;
+        height: 47px;
+        display: block;
+        margin: 0 auto;
+        max-width: @mx-width;
+      }
+    }
+
+    .@{css-prefix}form {
+      padding: 0;
+      margin: 0 auto;
+      max-width: @mx-width;
+      background-color: transparent;
+
+      .@{css-prefix}select {
+        &-selection {
+          cursor: text;
+          min-height: auto;
+          padding: 35px 10px 5px 10px;
+
+          .@{css-prefix}tag {
+            margin: 0 5px 0 0;
+          }
+        }
+
+        &-input {
+          cursor: text;
+          padding: 0;
+          .placeholder({color: transparent});
+        }
+
+        &-placeholder {
+          position: absolute;
+          top: 0;
+          height: auto;
+          padding: 10px 0 0 0;
+          text-transform: uppercase;
+          line-height: normal;
+          font-weight: 700;
+          color: @text-color;
+          display: block !important;
+        }
+
+        &-dropdown {
+          margin: 0
+        }
+
+        &-item {
+          display: block;
+          padding: 5px 10px;
+
+          &:after {
+            line-height: .7;
+          }
+        }
+      }
+
+      &-item-url {
+        label {
+          position: absolute;
+          z-index: 1;
+          width: 100%;
+          pointer-events: none;
+          line-height: normal;
+          text-transform: uppercase;
+        }
+        textarea.ivu-input {
+          overflow: hidden;
+          display: block;
+          resize: none;
+          padding: 15px;
+          padding-top: 40px;
+        }
+      }
+
+      .@{css-prefix}input {
+        &-disabled {
+          border-right: none
+        }
+
+        &-group-append {
+          color: #ccc;
+          background-color: @input-disabled-bg
+        }
+      }
+    }
+  }
+}

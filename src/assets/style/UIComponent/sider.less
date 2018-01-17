@@ -1,0 +1,48 @@
+@pd-sider: 15px 25px;
+
+.@{css-prefix}dashboard {
+.@{css-prefix} {
+  &sider {
+    &-ul {}
+    &-li {
+      border-bottom: solid 1px @border-color-split;
+
+      & > a {
+        display: block;
+        padding: @pd-sider;
+
+        &:hover, &:active {
+          color: inherit;
+        }
+
+        &.router-link-active {
+          background-color: @body-background;
+        }
+      }
+
+      .li-date {
+        text-transform: uppercase;
+        color: lighten(@text-color, 32%);
+      }
+
+      .li-long {
+        display: block;
+        padding: 10px 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .li-short {
+        color: @primary-color;
+      }
+
+      &.li-head {
+        padding: @pd-sider;
+        color: @head-bg;
+        background-color: @menu-dark-title;
+      }
+    }
+  }
+}
+}
