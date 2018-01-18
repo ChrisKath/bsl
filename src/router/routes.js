@@ -14,7 +14,7 @@ export default [
     },
     {
       name: 'auth.bslink',
-      path: '/details/_link/:key',
+      path: '/watch/:key',
       component: dashboard
     },
     {name: 'auth.logout', path: '/logout'}

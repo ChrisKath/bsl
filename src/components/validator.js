@@ -16,5 +16,9 @@ export default {
   url: {
     type: 'url',
     message: 'Please enter a valid URL'
+  },
+  date: {
+    type: 'date',
+    message: 'Please enter a valid URL'
   }
 }

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import iView from 'iview'
 import lodash from 'lodash'
 import cookie from 'vue-cookie'
+import clipboard from 'vue-clipboard2'
 import App from './App'
 import i18n from './i18n'
 import store from './store'
@@ -17,6 +18,8 @@ import 'Aset/style/iView/index.less'
 import 'Aset/core.less'
 
 Vue.use(iView)
+Vue.use(clipboard)
+Vue.prototype.$uri = 'tap.co/'
 Vue.prototype.$lodash = lodash
 Vue.prototype.$csrf = cookie.get('XSRF-TOKEN')
 

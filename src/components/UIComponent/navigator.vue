@@ -6,10 +6,10 @@
       </Input>
     </Form>
 
+    <Creation ref="c"/>
     <Button type="primary" size="large" class="size-w700 min-w200"
       @click="$refs.c.open()">
       {{ $t('i.menu.createlink') }}
-      <Creation ref="c"/>
     </Button>
 
     <Dropdown trigger="click" placement="bottom-end">
@@ -17,7 +17,6 @@
         <Badge dot :class="{'ivu-badge-online': authen}">
           <Avatar size="large" icon="person"/>
         </Badge>
-        <!-- <Icon type="ios-arrow-down" class="size-20 mg-l10"/> -->
       </div>
 
       <DropdownMenu slot="list">
@@ -36,9 +35,16 @@
         </DropdownItem>
 
         <DropdownItem disabled>
-          <router-link :to="{name: 'auth.logout'}">
+          <router-link :to="{name: 'auth.main'}">
             <Icon type="ios-settings" :size="20" class="vta-m mg-r5"/>
             <span v-text="$t('i.menu.account')"/>
+          </router-link>
+        </DropdownItem>
+
+        <DropdownItem disabled>
+          <router-link :to="{name: 'auth.main'}">
+            <Icon type="ios-pricetags-outline" :size="20" class="vta-m mg-r5"/>
+            <span v-text="$t('i.menu.tagManagement')"/>
           </router-link>
         </DropdownItem>
 

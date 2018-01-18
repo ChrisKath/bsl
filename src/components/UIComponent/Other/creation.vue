@@ -8,22 +8,32 @@
 
     <Form :ref="form.ref" :model="form" :rules="rule">
       <FormItem class>
-        <Alert show-icon>e.g. <code>tap.co/2vifX4</code></Alert>
+        <Alert show-icon>e.g. <code>{{ $uri }}VMLxoY0</code></Alert>
       </FormItem>
 
       <FormItem class="mg-b20">
-        <Input disabled placeholder="tap.co/">
+        <Input disabled :placeholder="$uri">
           <Icon disabled slot="append" type="chevron-right"/>
         </Input>
       </FormItem>
 
-      <FormItem prop="url" class="mg-b20 ivu-form-item-url">
+      <FormItem prop="url" class="mg-b20">
         <label for="long-url" class="size-12 size-w700 pd-t15 pd-r15 pd-l15">
           {{ $t('i.form.longurl') }}
         </label>
         <Input type="textarea" element-id="long-url" size="large"
           v-model="form.url"
           :autosize="{minRows: 2}"
+        />
+      </FormItem>
+
+      <FormItem prop="exp" class="mg-b20">
+        <label for="long-url" class="size-12 size-w700 pd-t15 pd-r15 pd-l15">
+          {{ $t('i.datepicker.selectDate') }}
+        </label>
+        <DatePicker type="date"
+          v-model="form.exp"
+          format="yyyy MM dd"
         />
       </FormItem>
 
@@ -72,10 +82,12 @@ export default {
       form: {
         ref: 'create',
         url: '',
+        exp: '',
         tags: []
       },
       rule: {
-        url: [verify.fill, verify.url]
+        url: [verify.fill, verify.url],
+        exp: [verify.fill]
       },
       tagList: [
         {value: 'New York'},

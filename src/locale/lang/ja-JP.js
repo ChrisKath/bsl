@@ -103,7 +103,8 @@ const lang = {
       create: 'を作成',
       createlink: 'リンクを作成',
       dashboard: 'ダッシュボード',
-      account: 'マイアカウント'
+      account: 'マイアカウント',
+      tagManagement: 'タグ管理'
     },
     form: {
       title: {

@@ -1,6 +1,10 @@
 <template lang="html">
   <Header class="layout-header">
-    <div class="ivu-nav ivu-nav--logo" v-text="$t('i.table.noDataText')"/>
+    <div class="ivu-nav ivu-nav--logo">
+      <router-link :to="{name: 'auth.main'}">
+        <img :src="require('~/assets/img/c.png')">
+      </router-link>
+    </div>
 
     <Navigator v-if="auth"/>
     <div v-else class="ivu-nav ivu-nav--lang" @click="$refs.l.open()">

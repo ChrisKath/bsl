@@ -103,7 +103,8 @@ const lang = {
       create: 'สร้าง',
       createlink: 'สร้างลิงก์',
       dashboard: 'แผงควบคุม',
-      account: 'จัดการบัญชี'
+      account: 'จัดการบัญชี',
+      tagManagement: 'จัดการแท็ก'
     },
     form: {
       title: {

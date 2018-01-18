@@ -9,15 +9,13 @@
     position: relative;
     .flex-center-center();
 
-    &> *:not(i):not(:last-child) { margin-right: 25px }
-
-    &--logo {
-      width: 150px;
-      height: 30px;
-      justify-content: center;
-      background-color: @menu-dark-title;
+    &> *:not(i):not(:last-child) {
+      margin-right: 25px
     }
 
+    &--logo {
+      img { display: block }
+    }
     &--lang {
       padding: 0 15px;
       cursor: pointer;

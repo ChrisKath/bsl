@@ -6,17 +6,24 @@
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
     position: relative;
-    overflow-y: auto;
+    background-color: #ffffff;
   }
 
   .@{css-prefix}layout-sider {
     flex: 2;
-    background-color: #f9f9f9;
+    max-width: 35vw;
+    overflow-y: scroll;
   }
 
   .@{css-prefix}layout-link {
     flex: 4;
     padding: 40px;
-    background-color: #ffffff;
+    overflow-y: auto;
+
+    .@{css-prefix}row-scale {
+      margin: 40px 0;
+      padding: 20px 0 0;
+      border-top: solid 1px @border-color-base;
+    }
   }
 }

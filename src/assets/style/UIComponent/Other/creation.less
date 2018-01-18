@@ -103,7 +103,7 @@
         }
       }
 
-      &-item-url {
+      &-item {
         label {
           position: absolute;
           z-index: 1;
@@ -112,12 +112,25 @@
           line-height: normal;
           text-transform: uppercase;
         }
-        textarea.ivu-input {
+
+        textarea.@{css-prefix}input {
           overflow: hidden;
           display: block;
           resize: none;
           padding: 15px;
           padding-top: 40px;
+        }
+
+        .@{css-prefix}date-picker {
+          display: block;
+
+          .@{css-prefix}input {
+            height: auto;
+            padding: 15px;
+            padding-top: 40px;
+
+            &-icon { display: none }
+          }
         }
       }
 
@@ -127,6 +140,7 @@
         }
 
         &-group-append {
+          min-width: auto;
           color: #ccc;
           background-color: @input-disabled-bg
         }
