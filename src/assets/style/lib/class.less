@@ -1,6 +1,10 @@
 #app-wrap {
   height: 100vh;
   overflow-y: hidden;
+
+  .@{css-prefix}layout-content {
+    overflow-y: auto;
+  }
 }
 
 // min horizontal
@@ -18,7 +22,7 @@
 .txt-up { text-transform: uppercase }
 
 .vta-m { vertical-align: middle }
-.fx-c-c {
+.flexed {
   .flex-center-center();
 }
 
@@ -115,5 +119,8 @@
 
 
 // Colors
-.grey { color: hsl(210, 15%, 64%) }
+.disable { color: @btn-disable-color }
 .primary { color: @primary-color  }
+.success { color: @success-color }
+.warning { color: @warning-color }
+.error { color: @error-color }

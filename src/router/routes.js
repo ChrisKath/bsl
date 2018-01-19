@@ -1,6 +1,8 @@
-const dashboard = () => import('Comp/auth/dashboard')
-const login = () => import('Comp/guest/login')
-const reset = () => import('Comp/guest/reset')
+const login = () => import('~/components/guest/login')
+const reset = () => import('~/components/guest/reset')
+
+const watch     = () => import('~/components/auth/watch')
+const dashboard = () => import('~/components/auth/dashboard')
 
 export default [
   {path: '*', redirect: '/'},
@@ -15,7 +17,7 @@ export default [
     {
       name: 'auth.bslink',
       path: '/watch/:key',
-      component: dashboard
+      component: watch
     },
     {name: 'auth.logout', path: '/logout'}
   ]),

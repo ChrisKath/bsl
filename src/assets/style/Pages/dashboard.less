@@ -1,29 +1,80 @@
 .@{css-prefix}dashboard {
-  flex-direction: row;
-  height: ~'calc(100vh - 72px)';
+  .display-wrapper();
 
-  .@{css-prefix}layout-sider, .@{css-prefix}layout-link {
+  .@{css-prefix}list {
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
     position: relative;
-    background-color: #ffffff;
-  }
+    overflow: hidden;
+    background-color: @body-background;
+    border: solid 1px lighten(@border-color-base, 8%);
+    border-radius: @btn-border-radius-large;
 
-  .@{css-prefix}layout-sider {
-    flex: 2;
-    max-width: 35vw;
-    overflow-y: scroll;
-  }
+    &-li {
+      &:not(:last-child) {
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: lighten(@border-color-base, 8%);
+      }
 
-  .@{css-prefix}layout-link {
-    flex: 4;
-    padding: 40px;
-    overflow-y: auto;
+      & > a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        transition: padding 400ms, background 320ms;
 
-    .@{css-prefix}row-scale {
-      margin: 40px 0;
-      padding: 20px 0 0;
-      border-top: solid 1px @border-color-base;
+        &> .@{css-prefix}icon {
+          position: absolute;
+          top: 50%;
+          color: white;
+          transition: color 200ms;
+          transform: translate(-35px, -50%);
+        }
+
+        &:hover {
+          color: inherit;
+          padding-left: 50px;
+          background: lighten(@background-color-base, 2.4%);
+
+          &> .@{css-prefix}icon {
+            color: @primary-color;
+          }
+        }
+      }
+
+      .col {
+        &-date {}
+        &-title {}
+        &-origin {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        &-short {}
+        }
     }
+  }
+
+  .@{css-prefix}none {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: @zindex-spin;
+    user-select: none;
+    text-align: center;
+    transform: translateY(-50%);
+    color: fadeout(@shadow-color, 7.222%);
+
+    .@{css-prefix}icon {
+      line-height: .1;
+      font-size: 20rem;
+    }
+
+    .@{css-prefix}noData {
+      font-size: 6.4rem;
+      text-transform: uppercase;
+    }
+
   }
 }

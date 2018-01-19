@@ -25,7 +25,7 @@ export const mutations = {
       })
       router.push({name: 'auth.main'})
     } else {
-      router.app.$Loading.finish()
+      router.app.$Loading.error()
       router.app.$Notice.error({
         title: 'Authentication Failed.',
         desc: 'Username or Password is incorrect'

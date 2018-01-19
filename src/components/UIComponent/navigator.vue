@@ -7,10 +7,11 @@
     </Form>
 
     <Creation ref="c"/>
-    <Button type="primary" size="large" class="size-w700 min-w200"
-      @click="$refs.c.open()">
-      {{ $t('i.menu.createlink') }}
-    </Button>
+    <Button type="primary" shape="circle" size="large"
+      class="size-w700 min-w200"
+      v-text="$t('i.menu.createlink')"
+      @click="$refs.c.open()"
+    />
 
     <Dropdown trigger="click" placement="bottom-end">
       <div class="fx-c-c">
@@ -69,7 +70,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ICreation from 'Comp/UIComponent/Other/creation'
+import ICreation from '~/components/UIComponent/Other/creation'
 
 export default {
   methods: {

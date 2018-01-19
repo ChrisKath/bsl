@@ -1,22 +1,32 @@
 <template lang="html">
   <Header class="layout-header">
-    <div class="ivu-nav ivu-nav--logo">
-      <router-link :to="{name: 'auth.main'}">
-        <img :src="require('~/assets/img/c.png')">
-      </router-link>
-    </div>
 
-    <Navigator v-if="auth"/>
-    <div v-else class="ivu-nav ivu-nav--lang" @click="$refs.l.open()">
+    <router-link class="size-20 size-w800 ivu-nav ivu-nav-logo"
+      v-text="`Brand Short Link`"
+      :to="{name: 'auth.main'}"
+    />
+
+    <Languages ref="l"/>
+    <Button class="ivu-nav ivu-nav-lang"
+      v-if="!auth"
+      type="ghost"
+      shape="circle"
+      @click="$refs.l.open()">
+
       <i class="fa fa-language vta-m mg-r5 size-15"/>
-      <span v-text="$t('i.lang')"/>
-      <Languages ref="l"/>
-    </div>
+      <span class="size-13"
+        v-text="$t('i.lang')"
+      />
+
+    </Button>
+
+    <Navigator v-else/>
+
   </Header>
 </template>
 
 <script>
-import INavigator from 'Comp/UIComponent/navigator'
+import INavigator from '~/components/UIComponent/navigator'
 
 export default {
   props: {

@@ -17,6 +17,12 @@
           box-shadow: 0 0 0 transparent;
 }
 
+.display-wrapper () {
+  flex-direction: row;
+  margin: 40px auto;
+  max-width: (@screen-lg + 240);
+}
+
 .placeholder(@rules) {
   &::-webkit-input-placeholder {
     @rules();

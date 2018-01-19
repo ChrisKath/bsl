@@ -1,26 +1,20 @@
 .layout-header {
-  color: #828a9b;
-  font-size: 12px;
-  line-height: 2.5;
-  background-color: @menu-dark-active-bg;
   .flex-center-between();
+  z-index: @zindex-affix;
+  line-height: normal;
+  background-color: @body-background;
+  box-shadow: 0 10px 40px fadeout(@shadow-color, 6.4%);
 
   .@{css-prefix}nav {
     position: relative;
     .flex-center-center();
 
     &> *:not(i):not(:last-child) {
-      margin-right: 25px
+      margin-right: 20px
     }
 
-    &--logo {
-      img { display: block }
-    }
-    &--lang {
-      padding: 0 15px;
-      cursor: pointer;
-      border-radius: 50px;
-      border: solid 1px @border-color-low;
+    &-lang {
+      padding: 5px 20px;
     }
   }
 
@@ -51,7 +45,7 @@
           top: 0;
           height: 36px;
           border-radius: 50px;
-          background-color: @menu-dark-title;
+          border: solid 1px @border-color-base;
           & * {
             color: @btn-disable-color;
             border: none;

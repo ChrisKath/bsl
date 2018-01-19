@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import INavigation from 'Comp/layout/navigation'
+import INavigation from '~/components/layout/navigation'
 
 export default {
   computed: mapGetters({

@@ -1,95 +1,64 @@
 <template lang="html">
-  <Layout class="ivu-dashboard">
+  <Row class-name="ivu-dashboard">
 
-    <div class="ivu-layout-sider">
-      <div class="ivu-sider-li li-head">
-        <Row type="flex" justify="space-between">
-          <Col class="size-14">12 BSLink</Col>
-          <Col class="size-14">Clicks all time</Col>
-        </Row>
+    <div class="ivu-none" v-if="!items">
+      <Icon type="social-buffer" />
+      <div class="ivu-noData size-w900">
+        {{ $t('i.table.noDataText') }}
       </div>
-
-      <ul class="ivu-sider-ul">
-        <li class="ivu-sider-li" v-for="(i, key) in items">
-          <router-link :to="{ name: 'auth.bslink', params: { key: i.key } }">
-            <h5 class="li-date size-w600">
-              {{ $t('i.datepicker.months.m11') }} 32, 2018
-            </h5>
-
-            <h4 class="li-long size-14 size-w600">{{ i.origin }}</h4>
-            <Row type="flex" justify="space-between">
-              <Col class="li-short size-14 size-w600">
-                {{ $uri }}<b v-text="i.key"/>
-              </Col>
-              <Col class="li-click">
-                <code class="size-14">
-                  {{ (key +1) }}&nbsp;<Icon type="stats-bars"/>
-                </code>
-              </Col>
-            </Row>
-          </router-link>
-        </li>
-      </ul>
     </div>
 
-    <IDetail :item="set()"/>
-  </Layout>
+    <div class="ivu-list" v-else>
+      <div class="ivu-list-li" v-for="(i, key) in 12">
+        <router-link :to="{name: 'auth.bslink', params: {key: items.key}}">
+
+          <Icon type="ios-play-outline" :size="40"/>
+
+          <Row type="flex" align="middle" justify="space-between">
+            <Col class="col-title size-16 size-w800">
+              {{ items.title }}
+            </Col>
+            <Col class="col-date txt-up size-12 size-w600 flexed">
+              {{ new Date() | moment('ll') }}
+            </Col>
+          </Row>
+
+          <div class="li size-14 size-w400 pd-t5 pd-b5">{{ items.origin }}</div>
+
+          <Row type="flex" align="middle" justify="space-between"
+            class-name="size-14 size-w600">
+            <Col class="col-short primary">
+              {{ $uri }}<b v-text="items.key"/>
+            </Col>
+
+            <Col class="col-click size-14">
+              <code :class="[items.fly?'success':'disable']"><Icon type="ios-checkmark"/></code>
+              <code>0 <Icon type="stats-bars"/></code>
+            </Col>
+          </Row>
+
+        </router-link>
+      </div>
+    </div>
+
+    <!-- <Details /> -->
+  </Row>
 </template>
 
 <script>
-import IDetails from 'Comp/UIComponent/details'
-const __OBJ__ = [
-  {
-    key: 'VMLxoY1',
-    title: 'TITLE NAME 1',
-    tag: ['one', 'two', 'three'],
-    origin: 'https://www.youtube.com/watch?v=WNQ2kzT_ASo&index=47&list=PLgcpjS-w00LUaRWSk1JnH5KvJXINZgGLp',
-    exp: 'NOV, 32 2018',
-    redir: null,
-    run: false,
-    createBy: 'CreateBy',
-    updateBy: 'CreateBy',
-    createAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    key: 'VMLxoY2',
-    title: 'TITLE NAME 2',
-    tag: ['three', 'two', 'one'],
-    origin: 'https://www.youtube.com/watch?v=IYaeEkYnq_o&list=PLgcpjS-w00LUaRWSk1JnH5KvJXINZgGLp&index=50',
-    exp: 'NOV, 32 2018',
-    redir: null,
-    run: false,
-    createBy: 'CreateBy',
-    updateBy: 'CreateBy',
-    createAt: new Date(),
-    updatedAt: new Date()
-  }
-]
+import { mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {
-      items: __OBJ__
-    }
-  },
-
   methods: {
-    __found__ (array, key, value) {
-      for (var i = 0; i < array.length; i++) {
-        if (array[i][key] === value) return array[i]
-      }
-      return null
-    },
-    set () {
-      return this.__found__(this.items, 'key', !this.$route.params.key
-        ? this.items[0].key
-        : this.$route.params.key)
+    fly (status) {
+      this.$Message.info(
+        `${this.$t('i.notice.success')}: ${status}`
+      )
     }
   },
 
-  components: {
-    'IDetail': IDetails
-  }
+  computed: mapGetters({
+    items: 'items/item'
+  })
 }
 </script>

@@ -8,7 +8,7 @@
           </Col>
           <Col>
             <span class="mg-r10 size-14 size-w700 txt-up">On the fly:</span>
-            <Switch size="large" v-model="item.run">
+            <Switch size="large" v-model="item.fly" @on-change="fly">
               <span slot="open" v-text="`ON`"/>
               <span slot="close" v-text="`OFF`"/>
             </Switch>
@@ -41,7 +41,7 @@
           class="size-12 size-w600 txt-up"
           v-text="`copy`"
           v-clipboard:copy="copy"
-          v-clipboard:success="copySuccess"
+          v-clipboard:success="clipboard"
         />
 
         <Button type="ghost" size="small"
@@ -78,23 +78,27 @@
 </template>
 
 <script>
-export default {
-  props: {
-    item: {
-      type: [Object, Array],
-      dafeult: []
-    }
-  },
+import { mapGetters } from 'vuex'
 
+export default {
   methods: {
-    copySuccess () {
+    clipboard () {
       this.$Message.success(
         `${this.$t('i.notice.success')}`
+      )
+    },
+    fly (status) {
+      this.$Message.info(
+        `${this.$t('i.notice.success')}: ${status}`
       )
     }
   },
 
   computed: {
+    ...mapGetters({
+      item: 'items/item'
+    }),
+
     copy () {
       return `${this.$uri}${this.item.key}`
     }
