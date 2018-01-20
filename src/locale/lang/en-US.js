@@ -104,7 +104,8 @@ const lang = {
       createlink: 'CREATE LINK',
       dashboard: 'Dashboard',
       account: 'My Account',
-      tagManagement: '@Tag'
+      manageTag: 'Manage Tag',
+      manageAccounts: 'Manage Accounts'
     },
     form: {
       title: {
@@ -130,8 +131,21 @@ const lang = {
         confirm: 'Confirm',
         cancel: 'Cancel',
         clear: 'Clear',
-        reset: 'Reset'
+        back: 'Back',
+        reset: 'Reset',
+        enable: 'Enable',
+        on: 'ON',
+        off: 'OFF',
+        edit: 'Edit',
+        remove: 'Remove',
+        copy: 'Copy'
       }
+    },
+    title: {
+      click: 'Click',
+      clickTimeline: 'Clicked timeline logger',
+      created: 'Created',
+      updated: 'Updated'
     },
     notice: {
       info: 'This is a info tip',

@@ -104,7 +104,8 @@ const lang = {
       createlink: 'リンクを作成',
       dashboard: 'ダッシュボード',
       account: 'マイアカウント',
-      tagManagement: 'タグ管理'
+      manageTag: 'タグ管理',
+      manageAccounts: 'アカウント管理'
     },
     form: {
       title: {
@@ -118,8 +119,7 @@ const lang = {
       },
       user: 'アカウント',
       pass: 'パスワード',
-      // search: '検索',
-      search: 'サーチ',
+      search: '検索',
       longurl: '長いURL ペースト',
       logged: '私をログインさせておく',
       forgot: 'パスワードを忘れた方はこちらへ',
@@ -128,13 +128,25 @@ const lang = {
         signin: 'ログイン',
         signout: 'ログアウト',
         submit: '提出する',
-        save: '保存',
-        edit: '編集',
+        save: '変更を保存',
         confirm: '確認',
         cancel: 'キャンセル',
         clear: '明晰',
-        reset: 'セットし直す'
+        back: 'バック',
+        reset: 'セットし直す',
+        enable: '有効にする',
+        on: 'オン',
+        off: 'オフ',
+        edit: '編集する',
+        remove: '除去する',
+        copy: 'コピーする'
       }
+    },
+    title: {
+      click: 'クリック',
+      clickTimeline: 'クリック タイムライン ログ',
+      created: '作成する',
+      updated: '変更'
     },
     notice: {
       info: 'This is a info tip',

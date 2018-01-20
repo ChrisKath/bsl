@@ -1,16 +1,6 @@
 @new-border-color: lighten(@border-color-base, 8%);
 
 .@{css-prefix}watch {
-  .display-wrapper();
-
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  position: relative;
-  overflow: hidden;
-  background-color: @body-background;
-  border: solid 1px @new-border-color;
-  border-radius: @btn-border-radius-large;
-
   .@{css-prefix}row-head {
     padding: 10px 0;
     padding-right: 15px;
@@ -40,7 +30,16 @@
         display: block;
       }
 
+      .@{css-prefix}btn {
+        &:hover {
+          color: white;
+          border-color: @primary-color;
+          background-color: @primary-color;
+        }
+      }
+
       .@{css-prefix}tag {
+        opacity: .6;
         text-transform: capitalize;
         background-color: transparent;
         border-radius: @border-radius-base;
@@ -49,39 +48,6 @@
 
       .@{css-prefix}chart {
         border-top: solid 1px @new-border-color;
-
-        .demo-Circle-custom{
-          & h1{
-            color: #3f414d;
-            font-size: 28px;
-            font-weight: normal;
-          }
-          & p{
-            color: #657180;
-            font-size: 14px;
-            margin: 10px 0 15px;
-          }
-          & span{
-            display: block;
-            padding-top: 15px;
-            color: #657180;
-            font-size: 14px;
-            &:before{
-              content: '';
-              display: block;
-              width: 50px;
-              height: 1px;
-              margin: 0 auto;
-              background: #e0e3e6;
-              position: relative;
-              top: -15px;
-            };
-          }
-          & span i{
-            font-style: normal;
-            color: #3f414d;
-          }
-        }
       }
     }
 

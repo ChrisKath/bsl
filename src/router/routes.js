@@ -1,8 +1,10 @@
 const login = () => import('~/components/guest/login')
 const reset = () => import('~/components/guest/reset')
 
-const watch     = () => import('~/components/auth/watch')
 const dashboard = () => import('~/components/auth/dashboard')
+const watch     = () => import('~/components/auth/watch')
+const tag       = () => import('~/components/auth/tag')
+const panel     = () => import('~/components/auth/panel')
 
 export default [
   {path: '*', redirect: '/'},
@@ -18,6 +20,21 @@ export default [
       name: 'auth.bslink',
       path: '/watch/:key',
       component: watch
+    },
+    {
+      name: 'auth.tag',
+      path: '/manage/tags',
+      component: tag
+    },
+    {
+      name: 'auth.admin',
+      path: '/manage/accounts',
+      component: panel
+    },
+    {
+      name: 'auth.admin.id',
+      path: '/manage/account/:id',
+      component: panel
     },
     {name: 'auth.logout', path: '/logout'}
   ]),

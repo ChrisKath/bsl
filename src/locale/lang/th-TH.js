@@ -104,7 +104,8 @@ const lang = {
       createlink: 'สร้างลิงก์',
       dashboard: 'แผงควบคุม',
       account: 'จัดการบัญชี',
-      tagManagement: 'จัดการแท็ก'
+      manageTag: 'จัดการแท็ก',
+      manageAccounts: 'จัดการบัญชีสมาชิก'
     },
     form: {
       title: {
@@ -130,8 +131,27 @@ const lang = {
         confirm: 'ยืนยัน',
         cancel: 'ยกเลิก',
         clear: 'ล้างข้อมูล',
-        reset: 'รีเซ็ต'
+        back: 'ย้อนกลับ',
+        reset: 'รีเซ็ต',
+        enable: 'เปิดการใช้งาน',
+        on: 'เปิด',
+        off: 'ปิด',
+        edit: 'แก้ไข',
+        remove: 'ลบทิ้ง',
+        copy: 'คักลอก'
       }
+    },
+    title: {
+      click: 'กดฉันสิๆ',
+      clickTimeline: 'ประวัติการคลิกส์',
+      created: 'วันที่ถูกสร้าง',
+      updated: 'วันที่ถูกแก้ไขล่าสุด'
+    },
+    notice: {
+      info: 'มีบางอบ่างเกิดขึ้น',
+      success: 'สำเร็จ',
+      warning: 'มีปัญหาแล้ว!',
+      error: 'ผิดพลาดโหดร้าย!!'
     }
   }
 }

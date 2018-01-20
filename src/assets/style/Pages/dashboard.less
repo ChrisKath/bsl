@@ -1,15 +1,7 @@
+@new-border-color: lighten(@border-color-base, 8%);
+
 .@{css-prefix}dashboard {
-  .display-wrapper();
-
   .@{css-prefix}list {
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: none;
-    position: relative;
-    overflow: hidden;
-    background-color: @body-background;
-    border: solid 1px lighten(@border-color-base, 8%);
-    border-radius: @btn-border-radius-large;
-
     &-li {
       &:not(:last-child) {
         border-bottom-width: 1px;

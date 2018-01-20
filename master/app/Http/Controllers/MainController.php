@@ -16,7 +16,10 @@ class MainController extends Controller {
   * @return ViewPoint, Redirect
   **/
   public function index ($key) {
-    if (in_array($this->cute($key), $this->ignoreVueRoute)) return view('root');
+    if (in_array(
+      $this->cute($key),
+      $this->ignoreVueRoute)
+    ) return view('root');
 
     if ($this->state($key, true)) {
       return redirect()->away($this->data[$key]);

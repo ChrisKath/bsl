@@ -15,7 +15,8 @@ class Controller extends BaseController
     'login',
     'password',
     'dashdoard',
-    'details',
+    'watch',
+    'manage',
   ];
 
   public function cute ($value) {

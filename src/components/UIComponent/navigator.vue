@@ -42,10 +42,17 @@
           </router-link>
         </DropdownItem>
 
-        <DropdownItem disabled>
-          <router-link :to="{name: 'auth.main'}">
+        <DropdownItem>
+          <router-link :to="{name: 'auth.tag'}">
             <Icon type="ios-pricetags-outline" :size="20" class="vta-m mg-r5"/>
-            <span v-text="$t('i.menu.tagManagement')"/>
+            <span v-text="$t('i.menu.manageTag')"/>
+          </router-link>
+        </DropdownItem>
+
+        <DropdownItem>
+          <router-link :to="{name: 'auth.admin'}">
+            <Icon type="ios-personadd-outline" :size="23" class="vta-m mg-r5"/>
+            <span v-text="$t('i.menu.manageAccounts')"/>
           </router-link>
         </DropdownItem>
 

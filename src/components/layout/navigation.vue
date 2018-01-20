@@ -6,7 +6,6 @@
       :to="{name: 'auth.main'}"
     />
 
-    <Languages ref="l"/>
     <Button class="ivu-nav ivu-nav-lang"
       v-if="!auth"
       type="ghost"
@@ -18,6 +17,7 @@
         v-text="$t('i.lang')"
       />
 
+      <Languages ref="l"/>
     </Button>
 
     <Navigator v-else/>

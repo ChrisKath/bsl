@@ -1,6 +1,6 @@
 <template lang="html">
   <Modal v-model="visible"
-    class-name="ivu-modal--languages"
+    class-name="ivu-modal-locale"
     :width="600"
     :scrollable="true"
     :footerHide="true">

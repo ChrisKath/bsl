@@ -4,6 +4,7 @@ import Vue from 'vue'
 import iView from 'iview'
 import lodash from 'lodash'
 import cookie from 'vue-cookie'
+import moment from 'vue-moment'
 import clipboard from 'vue-clipboard2'
 
 import App from './App'
@@ -19,11 +20,11 @@ import '~/assets/style/iView/index.less'
 import '~/assets/core.less'
 
 Vue.use(iView)
+Vue.use(moment)
 Vue.use(clipboard)
-Vue.prototype.$uri = 'tap.co/'
 Vue.prototype.$lodash = lodash
-Vue.prototype.$csrf = cookie.get('XSRF-TOKEN')
-
+Vue.prototype.$uri    = `${location.host}/`
+Vue.prototype.$csrf   = cookie.get('XSRF-TOKEN')
 Vue.component('Languages', ILanguages)
 
 Vue.config.productionTip = false

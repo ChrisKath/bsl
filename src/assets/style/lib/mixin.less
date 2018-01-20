@@ -38,13 +38,69 @@
   }
 }
 
-.flex-center-center() {
+.flex-middle-center() {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.flex-center-between() {
+.flex-middle-between() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+// Generate font-size
+.generate-font-size(@n, @i: 1) when (@i =< @n) {
+  .size-@{i} {
+    font-size: (0px + @i);
+  }
+  .generate-font-size(@n, (@i + 1));
+}
+
+
+// Generate Padding
+.generate-padding(@n, @i: 5) when (@i =< @n) {
+  @count: (0px + @i);
+  .pd- {
+    &@{i} {
+      padding: @count;
+    }
+    &t@{i} {
+      padding-top: @count;
+    }
+    &r@{i} {
+      padding-right: @count;
+    }
+    &b@{i} {
+      padding-bottom: @count;
+    }
+    &l@{i} {
+      padding-left: @count;
+    }
+  }
+  .generate-padding(@n, (@i + 5));
+}
+
+
+// Generate Margin
+.generate-margin(@n, @i: 5) when (@i =< @n) {
+  @count: (0px + @i);
+  .mg- {
+    &@{i} {
+      margin: @count;
+    }
+    &t@{i} {
+      margin-top: @count;
+    }
+    &r@{i} {
+      margin-right: @count;
+    }
+    &b@{i} {
+      margin-bottom: @count;
+    }
+    &l@{i} {
+      margin-left: @count;
+    }
+  }
+  .generate-margin(@n, (@i + 5));
 }
