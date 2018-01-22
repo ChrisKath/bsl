@@ -1,24 +1,10 @@
-@new-border-color: lighten(@border-color-base, 8%);
-
 .@{css-prefix}watch {
-  .@{css-prefix}row-head {
-    padding: 10px 0;
-    padding-right: 15px;
-    border-bottom: solid 1px @new-border-color;
-
-    .@{css-prefix}btn {
-      border: none;
-      padding: 10px 15px;
-      border-right: solid 1px @border-color-base;
-    }
-  }
-
   .@{css-prefix}row-body {
     &> .@{css-prefix}col {
       padding: 15px;
 
       &:not(:last-child) {
-        border-right: solid 1px @new-border-color;
+        border-right: solid 1px lighten(@border-color-base, 8%);
       }
     }
 
@@ -47,7 +33,7 @@
       }
 
       .@{css-prefix}chart {
-        border-top: solid 1px @new-border-color;
+        border-top: solid 1px lighten(@border-color-base, 8%);
       }
     }
 

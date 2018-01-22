@@ -1,0 +1,25 @@
+.@{css-prefix}inputGroup {
+  position: relative;
+
+  label {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    pointer-events: none;
+    z-index: @zindex-affix;
+
+    .@{css-prefix}icon {
+      font-size: 18px;
+      width: 24px;
+      margin-right: 4px;
+      vertical-align: text-bottom;
+      border-right: solid 1px silver;
+    }
+  }
+
+  .@{css-prefix}input {
+    height: auto;
+    font-size: 13px;
+    padding: 40px 15px 10px;
+  }
+}

@@ -30,35 +30,35 @@
 
         <DropdownItem divided>
           <router-link :to="{name: 'auth.main'}">
-            <Icon type="ios-speedometer-outline" :size="20" class="vta-m mg-r5"/>
+            <Icon type="ios-speedometer-outline" :size="20" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.dashboard')"/>
           </router-link>
         </DropdownItem>
 
         <DropdownItem disabled>
           <router-link :to="{name: 'auth.main'}">
-            <Icon type="ios-settings" :size="20" class="vta-m mg-r5"/>
+            <Icon type="ios-settings" :size="20" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.account')"/>
           </router-link>
         </DropdownItem>
 
         <DropdownItem>
           <router-link :to="{name: 'auth.tag'}">
-            <Icon type="ios-pricetags-outline" :size="20" class="vta-m mg-r5"/>
+            <Icon type="ios-pricetags-outline" :size="20" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.manageTag')"/>
           </router-link>
         </DropdownItem>
 
         <DropdownItem>
-          <router-link :to="{name: 'auth.admin'}">
-            <Icon type="ios-personadd-outline" :size="23" class="vta-m mg-r5"/>
+          <router-link :to="{name: 'auth.panel'}">
+            <Icon type="ios-personadd-outline" :size="23" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.manageAccounts')"/>
           </router-link>
         </DropdownItem>
 
         <DropdownItem>
           <a @click="$refs.l.open()">
-            <i class="fa fa-language vta-m mg-r5 size-20"/>
+            <i class="fa fa-language align-m mg-r5 size-20"/>
             <span v-text="$t('i.lang')"/>
             <Languages ref="l"/>
           </a>
@@ -66,7 +66,7 @@
 
         <DropdownItem divided>
           <a @click="logout" target="_self">
-            <Icon type="log-out" :size="20" class="vta-m mg-r5"/>
+            <Icon type="log-out" :size="20" class="align-m mg-r5"/>
             {{ $t('i.form.button.signout') }}
           </a>
         </DropdownItem>

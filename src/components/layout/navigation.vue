@@ -12,7 +12,7 @@
       shape="circle"
       @click="$refs.l.open()">
 
-      <i class="fa fa-language vta-m mg-r5 size-15"/>
+      <i class="fa fa-language align-m mg-r5 size-15"/>
       <span class="size-13"
         v-text="$t('i.lang')"
       />

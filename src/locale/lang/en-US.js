@@ -117,6 +117,8 @@ const lang = {
         one: 'If you are logging in email address, please enter your email address in both input fields.',
         two: 'If you can not confirm yourself, you can\'t reissue your password.'
       },
+      display: 'display name',
+      email: 'email address',
       user: 'Username',
       pass: 'Password',
       search: 'Search',
@@ -124,10 +126,14 @@ const lang = {
       logged: 'Keep me logged in',
       forgot: 'Forgot your password?',
       registeredEmail: 'Registered email address',
+      root: 'root',
+      admin: 'admin',
+      member: 'member',
       button: {
         signin: 'Signin',
         signout: 'Signout',
         submit: 'Submit',
+        save: 'Save Change',
         confirm: 'Confirm',
         cancel: 'Cancel',
         clear: 'Clear',
@@ -145,7 +151,8 @@ const lang = {
       click: 'Click',
       clickTimeline: 'Clicked timeline logger',
       created: 'Created',
-      updated: 'Updated'
+      updated: 'Updated',
+      createAccount: 'Create an account'
     },
     notice: {
       info: 'This is a info tip',

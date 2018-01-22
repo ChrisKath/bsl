@@ -1,29 +1,15 @@
 <template lang="html">
   <Row class-name="ivu-watch">
 
-    <Row type="flex" align="middle" justify="space-between"
-      class-name="ivu-row-head">
-      <Col>
-        <router-link :to="{name: 'auth.main'}">
-          <Button type="text"
-            class="size-w800"
-            size="large"
-            icon="chevron-left">{{ $t('i.form.button.back') }}</Button>
-        </router-link>
-
-        <span class="vta-m mg-l15 size-16 size-w700">
-          {{ items.title }}
-        </span>
-      </Col>
-
-      <Col>
+    <RowHead router-back="auth.main" :title-name="items.title">
+      <Col slot="col-2">
         <span class="size-14 size-w700 txt-up mg-r5">{{ $t('i.form.button.enable') }}:</span>
         <Switch size="large" v-model="items.fly" @on-change="fly">
           <span slot="open">{{ $t('i.form.button.on') }}</span>
           <span slot="close">{{ $t('i.form.button.off') }}</span>
         </Switch>
       </Col>
-    </Row>
+    </RowHead>
 
     <Row type="flex" class-name="ivu-row-body">
       <Col :span="16">

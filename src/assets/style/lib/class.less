@@ -1,22 +1,40 @@
+// main setup.
 #app-wrap {
   height: 100vh;
   overflow-y: hidden;
-}
-.layout-content {
-  overflow-y: auto;
 
-  & > .@{css-prefix}row {
-    .display-wrapper();
+  .layout-content {
+    overflow-y: auto;
 
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: none;
-    position: relative;
-    overflow: hidden;
-    background-color: @body-background;
-    border-radius: @btn-border-radius-large;
-    border: solid 1px lighten(@border-color-base, 8%);
+    & > .@{css-prefix}row {
+      .display-wrapper();
+
+      .@{css-prefix}row-head {
+        padding: 10px 15px 10px 0;
+        border-bottom: solid 1px lighten(@border-color-base, 8%);
+
+        .@{css-prefix}btn {
+          padding: 10px 15px;
+          border: none;
+          border-right: solid 1px @border-color-base;
+        }
+      }
+    }
   }
 }
+
+.@{css-prefix}loading-bar {
+  &:after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    pointer-events: none;
+  }
+}
+
 
 // min horizontal
 .min-w100 { min-width: 100px }
@@ -30,14 +48,24 @@
 .txt-c { text-align: center }
 .txt-r { text-align: right }
 
-.txt-up { text-transform: uppercase }
+.txt-up  { text-transform: uppercase }
+.txt-cap { text-transform: capitalize }
+.txt-lw  { text-transform: lowercase }
 
-.vta-m { vertical-align: middle }
+.align-m { vertical-align: middle }
+.align-b { vertical-align: baseline }
+
 .flexed {
   .flex-middle-center();
 }
 
-// font-size
+// Generate Padding | start: 5, step: 5, max: 40 | (px)
+.generate-padding(40);
+
+// Generate Margin | start: 5, step: 5, max: 40 | (px)
+.generate-margin(40);
+
+// Generate font-size | start: 8, step: 1, max: 40 | (px)
 .generate-font-size(40);
 
 .size-w100 { font-weight: 100 }
@@ -52,15 +80,23 @@
 
 
 // Colors
+.deep-black { color: shade(@text-color, 5%) }
 .disable { color: @btn-disable-color }
 .primary { color: @primary-color  }
 .success { color: @success-color }
 .warning { color: @warning-color }
-.error { color: @error-color }
+.error   { color: @error-color }
 
-
-// Generate Padding
-.generate-padding(40);
-
-// Generate Margin
-.generate-margin(40);
+// mixin function
+.display-wrapper() {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  flex-direction: row;
+  border-radius: @btn-border-radius-large;
+  border: solid 1px lighten(@border-color-base, 8%);
+  background-color: @body-background;
+  position: relative;
+  overflow: hidden;
+  margin: 40px auto;
+  max-width: (@screen-lg + 240);
+}

@@ -4,7 +4,10 @@ const reset = () => import('~/components/guest/reset')
 const dashboard = () => import('~/components/auth/dashboard')
 const watch     = () => import('~/components/auth/watch')
 const tag       = () => import('~/components/auth/tag')
-const panel     = () => import('~/components/auth/panel')
+
+const panel     = () => import('~/components/auth/panel/index')
+const store     = () => import('~/components/auth/panel/store')
+const update    = () => import('~/components/auth/panel/update')
 
 export default [
   {path: '*', redirect: '/'},
@@ -27,14 +30,19 @@ export default [
       component: tag
     },
     {
-      name: 'auth.admin',
+      name: 'auth.panel',
       path: '/manage/accounts',
       component: panel
     },
     {
-      name: 'auth.admin.id',
-      path: '/manage/account/:id',
-      component: panel
+      name: 'auth.panel.id',
+      path: '/manage/account/:id/edit',
+      component: update
+    },
+    {
+      name: 'auth.panel.add',
+      path: '/manage/account/add',
+      component: store
     },
     {name: 'auth.logout', path: '/logout'}
   ]),

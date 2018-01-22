@@ -13,7 +13,9 @@ import store from './store'
 import router from './router'
 
 // Call Component.
+import IRowHead from '~/components/UIComponent/rowHead'
 import ILanguages from '~/components/UIComponent/Other/language'
+import IInputGroup from '~/components/UIComponent/Other/inputgroup'
 
 // Call Style.
 import '~/assets/style/iView/index.less'
@@ -25,7 +27,9 @@ Vue.use(clipboard)
 Vue.prototype.$lodash = lodash
 Vue.prototype.$uri    = `${location.host}/`
 Vue.prototype.$csrf   = cookie.get('XSRF-TOKEN')
+Vue.component('RowHead', IRowHead)
 Vue.component('Languages', ILanguages)
+Vue.component('InputGroup', IInputGroup)
 
 Vue.config.productionTip = false
 new Vue({

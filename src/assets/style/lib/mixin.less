@@ -17,12 +17,6 @@
           box-shadow: 0 0 0 transparent;
 }
 
-.display-wrapper () {
-  flex-direction: row;
-  margin: 40px auto;
-  max-width: (@screen-lg + 240);
-}
-
 .placeholder(@rules) {
   &::-webkit-input-placeholder {
     @rules();
@@ -50,7 +44,7 @@
 }
 
 // Generate font-size
-.generate-font-size(@n, @i: 1) when (@i =< @n) {
+.generate-font-size(@n, @i: 8) when (@i =< @n) {
   .size-@{i} {
     font-size: (0px + @i);
   }

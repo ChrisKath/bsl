@@ -117,6 +117,8 @@ const lang = {
         one: 'メールアドレス形式でのログインの方は両方の入力欄にメールアドレスを入力してください。',
         two: 'ご本人様の確認が取れない場合は、パスワード再設定再発行はできません。'
       },
+      display: 'ニックネーム',
+      email: 'メールアドレス',
       user: 'アカウント',
       pass: 'パスワード',
       search: '検索',
@@ -124,6 +126,9 @@ const lang = {
       logged: '私をログインさせておく',
       forgot: 'パスワードを忘れた方はこちらへ',
       registeredEmail: '登録済みの メールアドレス',
+      root: 'ルート',
+      admin: 'システム管理者',
+      member: 'メンバー',
       button: {
         signin: 'ログイン',
         signout: 'ログアウト',
@@ -146,7 +151,8 @@ const lang = {
       click: 'クリック',
       clickTimeline: 'クリック タイムライン ログ',
       created: '作成する',
-      updated: '変更'
+      updated: '変更',
+      createAccount: 'アカウント登録'
     },
     notice: {
       info: 'This is a info tip',
