@@ -7,7 +7,6 @@ const tag       = () => import('~/components/auth/tag')
 
 const panel     = () => import('~/components/auth/panel/index')
 const store     = () => import('~/components/auth/panel/store')
-const update    = () => import('~/components/auth/panel/update')
 
 export default [
   {path: '*', redirect: '/'},
@@ -35,13 +34,13 @@ export default [
       component: panel
     },
     {
-      name: 'auth.panel.id',
-      path: '/manage/account/:id/edit',
-      component: update
+      name: 'auth.panel.add',
+      path: '/manage/account/:type',
+      component: store
     },
     {
-      name: 'auth.panel.add',
-      path: '/manage/account/add',
+      name: 'auth.panel.edit',
+      path: '/manage/account/:key/:type',
       component: store
     },
     {name: 'auth.logout', path: '/logout'}

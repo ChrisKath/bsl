@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import iView from 'iview'
 import lodash from 'lodash'
-import cookie from 'vue-cookie'
 import moment from 'vue-moment'
 import clipboard from 'vue-clipboard2'
 
@@ -26,12 +25,14 @@ Vue.use(moment)
 Vue.use(clipboard)
 Vue.prototype.$lodash = lodash
 Vue.prototype.$uri    = `${location.host}/`
-Vue.prototype.$csrf   = cookie.get('XSRF-TOKEN')
+Vue.prototype.secret = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
 Vue.component('RowHead', IRowHead)
 Vue.component('Languages', ILanguages)
 Vue.component('InputGroup', IInputGroup)
 
+Vue.config.devtools = true
 Vue.config.productionTip = false
+
 new Vue({
   el: '#app',
   i18n,

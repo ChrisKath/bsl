@@ -4,10 +4,10 @@
     {{ $t('i.form.title.auth') }}
   </h2>
 
-  <Form ref="login"
+  <Form ref="signin"
     :model="form"
     :rules="rule"
-    @keyup.enter.native="touch('login')">
+    @keyup.enter.native="touch('signin')">
 
     <FormItem class="mg-b10">
       <Alert show-icon>Brand Short Link - Project (bata)</Alert>
@@ -48,10 +48,9 @@
       <Button type="primary" size="large"
         class="min-w100"
         icon="log-in"
-        @click="touch('login')">
+        @click="touch('signin')">
         <span>{{ $t('i.form.button.signin') }}</span>
       </Button>
-      <input type="hidden" v-model="form._token">
     </FormItem>
 
   </Form>
@@ -73,7 +72,7 @@ export default {
         username: '',
         password: '',
         remember: false,
-        _token: this.$csrf
+        timestamp: Date.now()
       },
       rule: {
         username: [verify.fill, verify.default],
@@ -84,17 +83,23 @@ export default {
 
   methods: {
     ...mapActions({
-      login: 'auth/login'
+      signin: 'auth/signin'
     }),
 
     touch (name) {
-      const _al = this.$Message
       this.$refs[name].validate((verify) => {
-        if (!verify) _al.warning(this.$t('i.notice.warning'))
-        else {
-          _al.success(this.$t('i.notice.success'))
-          this.$Loading.start()
-          this.login(this.form)
+        if (!verify) {
+          this.$Message.warning(
+            this.$t('i.notice.warning')
+          )
+        } else {
+          // this.$Loading.start()
+
+          this.$Message.success(
+            this.$t('i.notice.success')
+          )
+
+          this.signin(this.form)
         }
       })
     }

@@ -82,12 +82,12 @@ import ICreation from '~/components/UIComponent/Other/creation'
 export default {
   methods: {
     ...mapActions({
-      clear: 'auth/logout'
+      signout: 'auth/signout'
     }),
 
     logout () {
       this.$Loading.start()
-      this.clear()
+      this.signout()
     }
   },
 

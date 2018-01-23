@@ -8,13 +8,13 @@ Vue.use(VueI18n)
 const internationalization = new VueI18n({
   messages,
   fallbackLocale: 'en-US',
-  locale: localStorage.getItem('tap.bsl.lang') || navigator.language
+  locale: localStorage.getItem('TYPE.Internationalization') || navigator.language
 })
 
 Vue.prototype.$lang = {
   take (lang) {
     if (!lang) return
-    localStorage.setItem('tap.bsl.lang', lang)
+    localStorage.setItem('TYPE.Internationalization', lang)
     internationalization.locale = lang
     document.querySelector('html').setAttribute('lang', lang)
   }

@@ -1,6 +1,6 @@
 <template lang="html">
   <Row class-name="ivu-panel-store">
-    <RowHead :router-back="head.back" :title-name="$t('i.title.createAccount')"/>
+    <RowHead :router-back="head.back" :title-name="head.title"/>
 
     <Row class-name="ivu-row-body pd-40">
       <Form ref="store"
@@ -25,12 +25,12 @@
           </RadioGroup>
         </FormItem>
 
-        <FormItem prop="display">
+        <FormItem prop="name">
           <InputGroup :placeholder="$t('i.form.display')" icon="ios-compose-outline">
 
             <Input slot="input"
               :maxlength="16"
-              v-model="form.display"
+              v-model="form.name"
             />
 
           </InputGroup>
@@ -58,7 +58,7 @@
           </InputGroup>
         </FormItem>
 
-        <FormItem prop="password">
+        <FormItem prop="password" v-if="form.password !== 'none'">
           <InputGroup :placeholder="$t('i.form.pass')" icon="ios-locked-outline">
 
             <Input slot="input"
@@ -72,9 +72,9 @@
         <FormItem class="pd-t5">
           <Button type="primary" size="large"
             class="min-w100"
-            :loading="loading"
+            :loading="i.loading"
             @click="touch('store')">
-            <span v-if="!loading">{{ $t('i.form.button.save') }}</span>
+            <span v-if="!i.loading">{{ $t('i.form.button.save') }}</span>
             <span v-else>{{ $t('i.select.loading') }}...</span>
           </Button>
 
@@ -93,44 +93,101 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import verify from '~/components/validator'
 
 export default {
   data () {
     return {
+      i: { loading: false },
       head: {
+        type: 'add',
         back:  'auth.panel',
-        title: 'Create New Account'
+        title: this.$t('i.title.createAccount')
       },
       form: {
         permis:  1,
-        display: '',
-        email: '',
-        username: '',
-        password: ''
+        name: null,
+        email: null,
+        username: null,
+        password: null
       },
       rule: {
         permis:   [verify.fill],
-        display:  [verify.fill],
+        name:  [verify.fill],
         email:    [verify.fill, verify.email],
         username: [verify.fill, verify.default],
         password: [verify.fill, verify.default]
-      },
-      loading: false
+      }
     }
   },
 
   methods: {
+    ...mapActions({
+      add:  'manage.account/add',
+      edit: 'manage.account/edit'
+    }),
+
     touch (name) {
-      const _al = this.$Message
       this.$refs[name].validate((verify) => {
-        if (!verify) _al.warning(this.$t('i.notice.warning'))
-        else {
-          _al.success(this.$t('i.notice.success'))
-          this.$Loading.start()
-          // this.login(this.form)
+        if (!verify) {
+          this.$Message.warning(
+            this.$t('i.notice.warning')
+          )
+        } else {
+          this.$Message.success(
+            this.$t('i.notice.success')
+          )
+          this.i.loading = true
+          // this.$Loading.start()
+
+          setTimeout(() => {
+            this.i.loading = false
+            if (this.head.type === 'add') {
+              this.add(this.form)
+            }
+
+            if (this.head.type === 'edit') {
+              const data = Object.assign({
+                uid: this.$route.params.key
+              }, this.form)
+
+              delete data.password
+              this.edit(data)
+            }
+          }, 2560)
         }
       })
+    },
+
+    async setupData () {
+      const fined = await this.$lodash.find(this.item, {
+        uid: this.$route.params.key
+      })
+      if (fined === undefined) {
+        return this.$router.push({name: 'auth.panel'})
+      }
+
+      // setup header info
+      this.head.type = 'edit'
+      this.head.title = fined.name
+
+      // setup form data
+      this.form.permis = fined.permis
+      this.form.name = fined.name
+      this.form.email = fined.email
+      this.form.username = fined.username
+      this.form.password = 'none'
+    }
+  },
+
+  computed: mapGetters({
+    item: 'manage.account/accounts'
+  }),
+
+  created () {
+    if (this.$route.params.type === 'edit' && this.$route.params.key) {
+      this.setupData()
     }
   }
 }
