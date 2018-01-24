@@ -6,7 +6,6 @@
       </Input>
     </Form>
 
-    <Creation ref="c"/>
     <Button type="primary" shape="circle" size="large"
       class="size-w700 min-w200"
       v-text="$t('i.menu.createlink')"
@@ -24,7 +23,7 @@
         <DropdownItem class="ivu-dropdown-info">
           <div class>
             <h2 class="size-w600">ゴジです</h2>
-            <h3 class="grey">root</h3>
+            <h3 class="grey" v-text="decrypt.username"/>
           </div>
         </DropdownItem>
 
@@ -57,21 +56,23 @@
         </DropdownItem>
 
         <DropdownItem>
-          <a @click="$refs.l.open()">
+          <div @click="$refs.l.open()">
             <i class="fa fa-language align-m mg-r5 size-20"/>
             <span v-text="$t('i.lang')"/>
             <Languages ref="l"/>
-          </a>
+          </div>
         </DropdownItem>
 
         <DropdownItem divided>
-          <a @click="logout" target="_self">
+          <div @click="logout" target="_self">
             <Icon type="log-out" :size="20" class="align-m mg-r5"/>
             {{ $t('i.form.button.signout') }}
-          </a>
+          </div>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
+
+    <Creation ref="c"/>
   </div>
 </template>
 
@@ -91,9 +92,16 @@ export default {
     }
   },
 
-  computed: mapGetters({
-    authen: 'auth/check'
-  }),
+  computed: {
+    ...mapGetters({
+      voice: 'auth/voice',
+      authen: 'auth/check'
+    }),
+
+    decrypt () {
+      return this.$jwt.decode(this.$secret, this.voice).value
+    }
+  },
 
   components: {
     'Creation': ICreation

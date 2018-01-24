@@ -1,17 +1,16 @@
-import { HTTP } from '../http'
+// import { HTTP } from '../http'
 import router from '~/router'
-import JWToken from 'json-web-token'
 import cookieStore from 'vue-cookie'
 
 // setup Instant.
-const _app = router.app
-const _name = 'TYPE.Authentication'
-const _seed = {
+// 秘密鍵
+const secret = 'H-I-M-I-T-S-U-K-E-N'
+const _name  = 'TYPE.Authentication'
+const _seed  = {
   iss: 'TAP Technology co., ltd.',
-  aud: 'Private user',
+  aud: 'PRIVATE USER',
   iat: Date.now()
 }
-const secret = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
 
 // state
 export const state = {
@@ -29,7 +28,7 @@ export const mutations = {
   FETCH_AUTH_SUCCESS (state, payload) {
     if (payload) {
       const observe = Object.assign({ payload }, _seed)
-      const encrypt = JWToken.encode(secret, observe)
+      const encrypt = router.app.$jwt.encode(secret, observe)
 
       cookieStore.set(_name, encrypt.value, {
         expires: payload.remember
@@ -38,11 +37,11 @@ export const mutations = {
       })
 
       state.voice = encrypt.value
-      router.push({name: 'auth.main'})
+      setTimeout(() => router.push({name: 'auth.main'}), 1280)
     } else {
       state.voice = null
-      _app.$Loading.error()
-      _app.$Notice.error({
+      router.app.$Loading.error()
+      router.app.$Notice.error({
         title: 'Authentication Failed.',
         desc: 'Username or Password is incorrect'
       })
@@ -69,9 +68,9 @@ export const actions = {
 
   async signout ({ commit }) {
     try {
-      await HTTP.get('/api/v1/logout')
+      // await HTTP.get('/api/v1/logout')
       await commit('LOGOUT')
-      router.push({name: 'guest.login'})
+      setTimeout(() => router.push({name: 'guest.login'}), 1280)
     } catch (e) {
       console.error(e)
     }

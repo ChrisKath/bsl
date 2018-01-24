@@ -4,6 +4,7 @@ import Vue from 'vue'
 import iView from 'iview'
 import lodash from 'lodash'
 import moment from 'vue-moment'
+import JWToken from 'json-web-token'
 import clipboard from 'vue-clipboard2'
 
 import App from './App'
@@ -24,8 +25,9 @@ Vue.use(iView)
 Vue.use(moment)
 Vue.use(clipboard)
 Vue.prototype.$lodash = lodash
+Vue.prototype.$jwt    = JWToken
 Vue.prototype.$uri    = `${location.host}/`
-Vue.prototype.secret = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
+Vue.prototype.$secret = 'H-I-M-I-T-S-U-K-E-N'
 Vue.component('RowHead', IRowHead)
 Vue.component('Languages', ILanguages)
 Vue.component('InputGroup', IInputGroup)

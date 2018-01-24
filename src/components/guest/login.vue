@@ -93,7 +93,7 @@ export default {
             this.$t('i.notice.warning')
           )
         } else {
-          // this.$Loading.start()
+          this.$Loading.start()
 
           this.$Message.success(
             this.$t('i.notice.success')

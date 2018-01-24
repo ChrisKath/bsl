@@ -2,11 +2,31 @@
   <Row class-name="ivu-panel-store">
     <RowHead :router-back="head.back" :title-name="head.title"/>
 
-    <Row class-name="ivu-row-body pd-40">
+    <Row class-name="ivu-row-body"
+      :class="[
+        (head.type === 'edit')
+          ? 'pd-t20 pd-r40 pd-b40 pd-l40'
+          : 'pd-40'
+      ]">
+
       <Form ref="store"
         :model="form"
         :rules="rule"
         @keyup.enter.native="touch('store')">
+
+        <FormItem class="size-13" v-if="head.type === 'edit'">
+          <span class="mg-r25">
+            <strong>{{ $t('i.title.created') }}:</strong>
+            <i class="pd-l5 txt-up">{{ new Date() | moment('ll') }}</i>
+            <a class="pd-r5">(ゴジです)</a>
+          </span>
+
+          <span class>
+            <strong>{{ $t('i.title.updated') }}:</strong>
+            <i class="pd-l5 txt-up">{{ new Date() | moment('ll') }}</i>
+            <a class="pd-r5">(ゴジです)</a>
+          </span>
+        </FormItem>
 
         <FormItem prop="permis">
           <RadioGroup v-model="form.permis" type="button" size="large">
@@ -102,7 +122,7 @@ export default {
       i: { loading: false },
       head: {
         type: 'add',
-        back:  'auth.panel',
+        back: 'auth.panel',
         title: this.$t('i.title.createAccount')
       },
       form: {
@@ -114,7 +134,7 @@ export default {
       },
       rule: {
         permis:   [verify.fill],
-        name:  [verify.fill],
+        name:     [verify.fill],
         email:    [verify.fill, verify.email],
         username: [verify.fill, verify.default],
         password: [verify.fill, verify.default]

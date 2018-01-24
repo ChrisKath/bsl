@@ -41,10 +41,10 @@
         <Select remote multiple filterable
           placeholder="@tag"
           v-model="form.tags">
-          <Option v-for="item in tagList"
-            :value="item.value"
-            :key="item.value"
-            :text="item.value"
+          <Option v-for="(item, key) in items"
+            :value="item.name"
+            :key="item.id"
+            :text="item.name"
           />
         </Select>
       </FormItem>
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import verify from '~/components/validator'
 
 export default {
@@ -130,6 +131,10 @@ export default {
         setTimeout(() => this.open(false), 2400)
       }, 3200)
     }
-  }
+  },
+
+  computed: mapGetters({
+    items: 'manage.tag/tags'
+  })
 }
 </script>

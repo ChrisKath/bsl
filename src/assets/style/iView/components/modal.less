@@ -2,138 +2,127 @@
 @confirm-prefix-cls: ~"@{css-prefix}modal-confirm";
 
 .@{modal-prefix-cls} {
-    width: auto;
-    margin: 0 auto;
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  outline: none;
+  top: 100px;
+
+  &-hidden {
+    display: none !important;
+  }
+
+  &-wrap {
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: @zindex-modal;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+  }
+
+  &-wrap * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  &-mask {
+    .mask;
+  }
+
+  &-content {
     position: relative;
-    outline: none;
-    top: 100px;
+    background-color: #fff;
+    border: 0;
+    border-radius: @border-radius-small;
+    background-clip: padding-box;
+  }
 
-    &-hidden {
-        display: none !important;
-    }
+  &-header {
+    .content-header;
+  }
 
-    &-wrap {
-        position: fixed;
-        overflow: auto;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: @zindex-modal;
-        -webkit-overflow-scrolling: touch;
-        outline: 0;
-    }
+  &-close {
+    .content-close(1px, 31px);
+  }
 
-    &-wrap * {
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
+  &-body {
+    padding: 20px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
 
-    &-mask {
-        .mask;
+  &-footer {
+    border-top: 1px solid @border-color-split;
+    padding: 12px 18px 12px 18px;
+    text-align: right;
+    button + button {
+      margin-left: 8px;
+      margin-bottom: 0;
     }
-
-    &-content {
-        position: relative;
-        background-color: #fff;
-        border: 0;
-        border-radius: @border-radius-small;
-        background-clip: padding-box;
-    }
-
-    &-header {
-        .content-header;
-    }
-
-    &-close {
-        .content-close(1px, 31px);
-    }
-
-    &-body {
-        padding: 20px;
-        font-size: 12px;
-        line-height: 1.5;
-    }
-
-    &-footer {
-        border-top: 1px solid @border-color-split;
-        padding: 12px 18px 12px 18px;
-        text-align: right;
-        button + button {
-            margin-left: 8px;
-            margin-bottom: 0;
-        }
-    }
+  }
 }
 
 @media (max-width: 768px) {
+  .@{modal-prefix-cls} {
+    width: auto !important;
+    margin: 10px;
+  }
+  .vertical-center-modal {
     .@{modal-prefix-cls} {
-        width: auto !important;
-        margin: 10px;
+      flex: 1;
     }
-    .vertical-center-modal {
-        .@{modal-prefix-cls} {
-            flex: 1;
-        }
-    }
+  }
 }
 
 .@{confirm-prefix-cls} {
-    padding: 0 4px;
-    &-head {
+  &-head {display: none !important}
+  &-body {
+    padding-top: 18px;
+    padding-left: 48px;
+    font-size: @font-size-small;
+    color: @text-color;
+    position: relative;
 
-        &-title {
-            display: inline-block;
-            font-size: @font-size-base;
-            color: @title-color;
-            font-weight: 700;
-        }
+    &-render{
+      margin: 0;
+      padding: 0;
     }
 
-    &-body{
-        margin-top: 6px;
-        padding-left: 48px;
-        padding-top: 18px;
-        font-size: @font-size-small;
-        color: @text-color;
-        position: relative;
+    &-icon {
+      font-size: 36px;
+      position: absolute;
+      top: 0;
+      left: 0;
 
-        &-render{
-            margin: 0;
-            padding: 0;
-        }
-
-        &-icon {
-            font-size: 36px;
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            &-info {
-                color: @primary-color;
-            }
-            &-success {
-                color: @success-color;
-            }
-            &-warning {
-                color: @warning-color;
-            }
-            &-error {
-                color: @error-color;
-            }
-            &-confirm {
-                color: @warning-color;
-            }
-        }
+      &-info {
+        color: @primary-color;
+      }
+      &-success {
+        color: @success-color;
+      }
+      &-warning {
+        color: @warning-color;
+      }
+      &-error {
+        color: @error-color;
+      }
+      &-confirm {
+        color: lighten(@warning-color, 6%);
+      }
     }
+  }
 
-    &-footer{
-        margin-top: 40px;
-        text-align: right;
+  &-footer{
+    margin-top: 20px;
+    text-align: right;
 
-        button + button {
-            margin-left: 8px;
-            margin-bottom: 0;
-        }
+    button + button {
+      margin-left: 8px;
+      margin-bottom: 0;
     }
+  }
 }
