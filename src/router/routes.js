@@ -19,7 +19,7 @@ export default [
       component: dashboard
     },
     {
-      name: 'auth.bslink',
+      name: 'auth.watch',
       path: '/watch/:key',
       component: watch
     },

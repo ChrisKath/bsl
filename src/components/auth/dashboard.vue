@@ -1,64 +1,63 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
-
-    <div class="ivu-none" v-if="!items">
-      <Icon type="social-buffer" />
-      <div class="ivu-noData size-w900">
-        {{ $t('i.table.noDataText') }}
-      </div>
-    </div>
+    <NoData v-if="!haved"/>
 
     <div class="ivu-list" v-else>
-      <div class="ivu-list-li" v-for="(i, key) in 12">
-        <router-link :to="{name: 'auth.bslink', params: {key: items.key}}">
+      <div class="ivu-list-li" v-for="(item, key) in items">
+        <router-link :to="{name: 'auth.watch', params: {key: item.key}}">
 
           <Icon type="ios-play-outline" :size="40"/>
 
-          <Row type="flex" align="middle" justify="space-between">
+          <Row class="txt-up" type="flex" align="middle" justify="space-between">
             <Col class="col-title size-16 size-w800">
-              {{ items.title }}
+              {{ item.name }}
             </Col>
-            <Col class="col-date txt-up size-12 size-w600 flexed">
-              {{ new Date() | moment('ll') }}
+            <Col class="col-date size-11 size-w600 flexed">
+              <span class>
+                {{ new Date(item.create_at) | moment('ll') }}
+              </span>
+              &nbsp;|&nbsp;
+              <span class>
+                {{ new Date(item.create_at) | moment('from', 'now') }}
+              </span>
             </Col>
           </Row>
 
-          <div class="li size-14 size-w400 pd-t5 pd-b5">{{ items.origin }}</div>
+          <div class="li size-14 size-w400 pd-t5 pd-b5">{{ item.href }}</div>
 
           <Row type="flex" align="middle" justify="space-between"
             class-name="size-14 size-w600">
             <Col class="col-short primary">
-              {{ $uri }}<b v-text="items.key"/>
+              {{ $uri }}<b v-text="item.key"/>
             </Col>
 
             <Col class="col-click size-14">
-              <code :class="[items.fly?'success':'disable']"><Icon type="ios-checkmark"/></code>
-              <code>0 <Icon type="stats-bars"/></code>
+              <code :class="[item.fly ? 'success' : 'disable']">
+                <Icon type="ios-checkmark"/>
+              </code>
+
+              <code>{{ item.click }} <Icon type="stats-bars"/></code>
             </Col>
           </Row>
 
         </router-link>
       </div>
     </div>
-
-    <!-- <Details /> -->
   </Row>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import INoData from '~/components/UIComponent/noDataText'
 
 export default {
-  methods: {
-    fly (status) {
-      this.$Message.info(
-        `${this.$t('i.notice.success')}: ${status}`
-      )
-    }
-  },
-
   computed: mapGetters({
-    items: 'items/item'
-  })
+    items: 'manage.watch/watch',
+    haved: 'manage.watch/haved'
+  }),
+
+  components: {
+    'NoData': INoData
+  }
 }
 </script>

@@ -148,6 +148,7 @@ const lang = {
       }
     },
     title: {
+      tag: 'แท็ก',
       click: 'กดฉันสิๆ',
       clickTimeline: 'ประวัติการคลิกส์',
       created: 'วันที่ถูกสร้าง',

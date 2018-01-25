@@ -3,10 +3,8 @@ import router from '~/router'
 import cookieStore from 'vue-cookie'
 
 // setup Instant.
-// 秘密鍵
-const secret = 'H-I-M-I-T-S-U-K-E-N'
-const _name  = 'TYPE.Authentication'
-const _seed  = {
+const _name = 'TYPE.Authentication'
+const _seed = {
   iss: 'TAP Technology co., ltd.',
   aud: 'PRIVATE USER',
   iat: Date.now()
@@ -28,7 +26,7 @@ export const mutations = {
   FETCH_AUTH_SUCCESS (state, payload) {
     if (payload) {
       const observe = Object.assign({ payload }, _seed)
-      const encrypt = router.app.$jwt.encode(secret, observe)
+      const encrypt = router.app.$jwt.encode(router.app.$secret, observe)
 
       cookieStore.set(_name, encrypt.value, {
         expires: payload.remember

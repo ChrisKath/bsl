@@ -24,10 +24,13 @@ import '~/assets/core.less'
 Vue.use(iView)
 Vue.use(moment)
 Vue.use(clipboard)
+
 Vue.prototype.$lodash = lodash
 Vue.prototype.$jwt    = JWToken
 Vue.prototype.$uri    = `${location.host}/`
-Vue.prototype.$secret = 'H-I-M-I-T-S-U-K-E-N'
+Vue.prototype.$typeA  = 'TYPE.Authentication'
+Vue.prototype.$secret = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
+
 Vue.component('RowHead', IRowHead)
 Vue.component('Languages', ILanguages)
 Vue.component('InputGroup', IInputGroup)

@@ -1,63 +1,66 @@
-@mx-width: 400px;
+@header-height: 72px;
 
-.@{css-prefix}modal-create {
-  text-align: left;
+.@{css-prefix}create-link {
   .@{css-prefix}modal {
-    top: 0px;
-    height: 100vh;
-    box-shadow: 0 20px 40px fade(@menu-dark-active-bg, 20%);
+    max-width: @screen-sm;
+    top: 10vh;
+    text-align: left;
 
     &-close {
-      top: 15px;
-      & *:hover {color:#999}
+      @x64: (@header-height / 2);
+
+      overflow: hidden;
+      top: @x64;
+      right: 7px;
+      height: @x64;
+      padding: 0 20px;
+      transform: translateY(-50%);
+
+      .@{css-prefix}icon {
+        line-height: @x64;
+        font-size: 45px;
+        color: lighten(@text-color, 20%);
+      }
     }
 
-    &-header {
-      line-height: normal;
-      padding: 15px 20px;
-      border: none;
-      color: @head-bg;
-      background-color: @menu-dark-title;
+    &-content {
+      flex-direction: column;
+      flex: auto;
+      display: flex;
+      border-radius: @border-radius-base;
     }
 
     &-header, &-footer {
       flex: 0 0 auto;
-      height: @layout-header-height;
+      height: @header-height;
     }
 
-    &-content {
-      display: flex;
-      flex-direction: column;
-      flex: auto;
-      height: 100%;
+    &-header {
+      padding: 0 30px;
+      line-height: @header-height;
+      border-color: lighten(@border-color-base, 8%);
     }
 
     &-body {
       flex: auto;
-      padding: 25px 0;
-      overflow-y: overlay;
-
-      .@{css-prefix}alert {
-        margin: 0;
-      }
+      padding: 40px;
+      overflow-y: auto;
     }
 
     &-footer {
-      padding: 8px 20px;
+      .flex-middle-end();
+      padding: 0 40px;
+      border-color: lighten(@border-color-base, 8%);
 
-      button {
-        width: 100%;
-        height: 47px;
-        display: block;
-        margin: 0 auto;
-        max-width: @mx-width;
+      .@{css-prefix}btn {
+        text-transform: uppercase;
       }
     }
 
     .@{css-prefix}form {
       padding: 0;
       margin: 0 auto;
-      max-width: @mx-width;
+      max-width: auto;
       background-color: transparent;
 
       .@{css-prefix}select {
@@ -106,21 +109,9 @@
       }
 
       &-item {
-        label {
-          position: absolute;
-          z-index: 1;
-          width: 100%;
-          pointer-events: none;
-          line-height: normal;
-          text-transform: uppercase;
-        }
-
         textarea.@{css-prefix}input {
-          overflow: hidden;
-          display: block;
           resize: none;
-          padding: 15px;
-          padding-top: 40px;
+          overflow: hidden;
         }
 
         .@{css-prefix}date-picker {

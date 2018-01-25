@@ -148,6 +148,7 @@ const lang = {
       }
     },
     title: {
+      tag: 'Tags',
       click: 'Click',
       clickTimeline: 'Clicked timeline logger',
       created: 'Created',

@@ -148,6 +148,7 @@ const lang = {
       }
     },
     title: {
+      tag: 'タグ',
       click: 'クリック',
       clickTimeline: 'クリック タイムライン ログ',
       created: '作成する',
