@@ -3,7 +3,8 @@
 .@{css-prefix}create-link {
   .@{css-prefix}modal {
     max-width: @screen-sm;
-    top: 10vh;
+    top: 0;
+    margin: 5vh auto;
     text-align: left;
 
     &-close {
@@ -44,7 +45,6 @@
     &-body {
       flex: auto;
       padding: 40px;
-      overflow-y: auto;
     }
 
     &-footer {
@@ -67,11 +67,16 @@
         &-selection {
           cursor: text;
           min-height: auto;
-          padding: 35px 10px 5px 10px;
+          padding: 40px 10px 2.5px;
 
           .@{css-prefix}tag {
-            margin: 0 5px 0 0;
+            opacity: .88;
+            padding: 3px 7px;
+            margin: 0 5px 0 3px;
             text-transform: capitalize;
+            background-color: transparent;
+            border-radius: @border-radius-base;
+            border: dashed 1px lighten(@primary-color, 25%);
           }
         }
 
@@ -94,12 +99,16 @@
         }
 
         &-dropdown {
-          margin: 0
+          margin: 0;
+          left: 0 !important;
+          box-shadow: none;
+          border: solid 1px @border-color-split;
+          box-shadow: 0 0 5px @shadow-color;
         }
 
         &-item {
           display: block;
-          padding: 5px 10px;
+          padding: 7px 10px;
           text-transform: capitalize;
 
           &:after {

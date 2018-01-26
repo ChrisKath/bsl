@@ -27,7 +27,7 @@ Vue.use(clipboard)
 
 Vue.prototype.$lodash = lodash
 Vue.prototype.$jwt    = JWToken
-Vue.prototype.$uri    = `${location.host}/`
+Vue.prototype.$uri    = 'tap.co/' // `${location.host}/`
 Vue.prototype.$typeA  = 'TYPE.Authentication'
 Vue.prototype.$secret = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
 

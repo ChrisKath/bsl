@@ -1,10 +1,10 @@
 <template lang="html">
-  <Row class-name="ivu-watch">
+  <Row class-name="ivu-watch" v-if="items">
 
     <RowHead router-back="auth.main" :title-name="items.name.toUpperCase()">
       <Col slot="col-2">
         <span class="size-14 size-w700 txt-up mg-r5">{{ $t('i.form.button.enable') }}:</span>
-        <Switch size="large" v-model="flies" @on-change="fly">
+        <Switch size="large" v-model="status" @on-change="fly">
           <span slot="open">{{ $t('i.form.button.on') }}</span>
           <span slot="close">{{ $t('i.form.button.off') }}</span>
         </Switch>
@@ -41,8 +41,11 @@
         <Row class-name="ivu-handler pd-t25">
           <Col>
             <h5 class="mg-b5">
-              <strong>EXP:</strong>
-              <i>{{ new Date() | moment('ll') }}</i>
+              <strong>Expiry:</strong>
+              <i v-if="items.expiry" class="txt-up">
+                {{ new Date(items.expiry) | moment('ll') }}
+              </i>
+              <i v-else>Immortal</i>
             </h5>
 
             <a class="ltd-1 size-16 size-w600" target="_blank"
@@ -70,11 +73,13 @@
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.edit')"
+                  @click="$refs.c.open(true, items.key)"
                 />
 
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.remove')"
+                  @click="clear"
                 />
               </Col>
             </Row>
@@ -111,22 +116,26 @@
       </Col>
     </Row>
 
+    <Creation ref="c"/>
   </Row>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import INoData from '~/components/UIComponent/noDataText'
+import ICreation from '~/components/UIComponent/Other/creation'
 
 export default {
   data () {
     return {
-      flies: false
+      key: this.$route.params.key,
+      status: false
     }
   },
 
   methods: {
     ...mapActions({
+      remove: 'manage.watch/remove',
       disable: 'manage.watch/disable'
     }),
 
@@ -136,9 +145,18 @@ export default {
       )
     },
 
+    clear () {
+      this.$Modal.confirm({
+        onOk: () => this.remove(this.key),
+        okText: this.$t('i.form.button.confirm'),
+        cancelText: this.$t('i.form.button.cancel'),
+        content: `<b class=txt-up>${this.items.name}</b>, An deletion?`
+      })
+    },
+
     fly (status) {
       this.disable({
-        key: this.$route.params.key,
+        key: this.key,
         value: status
       })
     }
@@ -150,20 +168,22 @@ export default {
     }),
 
     items () {
-      const fined = this.$lodash.find(this.watch, {
+      const query = this.$lodash.find(this.watch, {
         key: this.$route.params.key
       })
-      if (fined === undefined) {
+      if (query === undefined) {
         this.$router.push({name: 'auth.main'})
+        return false
       } else {
-        this.flies = fined.fly
-        return fined
+        this.status = query.fly
+        return query
       }
     }
   },
 
   components: {
-    'NoData': INoData
+    'NoData': INoData,
+    'Creation': ICreation
   }
 }
 </script>

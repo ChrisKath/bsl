@@ -6,8 +6,7 @@ var logged = null
 
 // state
 export const state = {
-  watch: [],
-  created: null
+  watch: []
 }
 
 // getters
@@ -19,20 +18,18 @@ export const getters = {
 // mutations
 export const mutations = {
   FETCH_NEW_WATCH (state, payload) {
-    logged = router.app.$jwt.decode(
-      router.app.$secret,
-      cookieStore.get(router.app.$typeA)
-    ).value
-    const domain = new URL(payload.url)
+    const hash = new URL(payload.href).hostname.replace('www.', '')
     const isKey = Date.now()
 
     state.watch.push({
       key: isKey,
-      href: payload.url,
-      name: domain.hostname,
+      href: payload.href,
+      name: hash,
       tags: payload.tags,
       click: 0,
       fly: true,
+      expiry: null,
+      redir: null,
       create_at: Date.now(),
       update_at: Date.now(),
       create_by: logged.username,
@@ -43,36 +40,68 @@ export const mutations = {
   },
 
   UPDATE_AN_WATCH (state, payload) {
-    console.log(payload)
+    const hash = new URL(payload.href).hostname.replace('www.', '')
+    const query = router.app.$lodash.find(state.watch, {
+      key: payload.currentKey
+    })
+
+    query.key       = payload.key
+    query.href      = payload.href
+    query.name      = payload.name || hash
+    query.tags      = payload.tags
+    query.expiry    = payload.expiry || null
+    query.redir     = payload.redir || null
+    query.update_at = Date.now()
+    query.update_by = logged.username
+
+    router.push({name: 'auth.watch', params: {key: payload.key}})
   },
 
   REMOVE_AN_WATCH (state, payload) {
-    console.log(payload)
+    state.watch = router.app.$lodash.reject(state.watch, {
+      key: payload
+    })
+
+    router.push({name: 'auth.main'})
   },
 
   DISABLE_AN_WATCH (state, payload) {
-    const finded = router.app.$lodash.find(state.watch, {
+    const query = router.app.$lodash.find(state.watch, {
       key: payload.key
     })
-    finded.fly = payload.value
+
+    query.fly       = payload.value
+    query.update_at = Date.now()
+    query.update_by = logged.username
   }
 }
 
 // actions
 export const actions = {
-  async add ({ commit }, params) {
+  async add ({ commit, dispatch }, params) {
+    await dispatch('authen')
     await commit('FETCH_NEW_WATCH', params)
   },
 
-  async update ({ commit }, params) {
+  async update ({ commit, dispatch }, params) {
+    await dispatch('authen')
     await commit('UPDATE_AN_WATCH', params)
   },
 
-  async remove ({ commit }, params) {
+  async remove ({ commit, dispatch }, params) {
+    await dispatch('authen')
     await commit('REMOVE_AN_WATCH', params)
   },
 
-  async disable ({ commit }, params) {
+  async disable ({ commit, dispatch }, params) {
+    await dispatch('authen')
     await commit('DISABLE_AN_WATCH', params)
+  },
+
+  async authen () {
+    logged = await router.app.$jwt.decode(
+      router.app.$secret,
+      cookieStore.get(router.app.$typeA)
+    ).value
   }
 }

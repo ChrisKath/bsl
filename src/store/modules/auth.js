@@ -28,14 +28,16 @@ export const mutations = {
       const observe = Object.assign({ payload }, _seed)
       const encrypt = router.app.$jwt.encode(router.app.$secret, observe)
 
-      cookieStore.set(_name, encrypt.value, {
-        expires: payload.remember
+      setTimeout((callback) => {
+        cookieStore.set(_name, encrypt.value, {
+          expires: payload.remember
           ? '15D'
           : '30m'
-      })
+        })
 
-      state.voice = encrypt.value
-      setTimeout(() => router.push({name: 'auth.main'}), 1280)
+        state.voice = encrypt.value
+        router.push({name: 'auth.main'})
+      }, 1280)
     } else {
       state.voice = null
       router.app.$Loading.error()

@@ -7,7 +7,7 @@ export const state = {
     {id: 1, name: 'campaign',  timestamp: Date.now()},
     {id: 2, name: 'promotion', timestamp: Date.now()},
     {id: 3, name: 'email',     timestamp: Date.now()},
-    {id: 4, name: 'sms',       timestamp: Date.now()}
+    {id: 4, name: 'Other',     timestamp: Date.now()}
   ]
 }
 

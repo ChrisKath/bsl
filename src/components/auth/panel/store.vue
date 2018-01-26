@@ -180,7 +180,7 @@ export default {
       })
     },
 
-    async setupData () {
+    async observe () {
       const fined = await this.$lodash.find(this.item, {
         uid: this.$route.params.key
       })
@@ -207,7 +207,7 @@ export default {
 
   created () {
     if (this.$route.params.type === 'edit' && this.$route.params.key) {
-      this.setupData()
+      this.observe()
     }
   }
 }
