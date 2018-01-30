@@ -1,7 +1,7 @@
-@new-border-color: lighten(@border-color-base, 8%);
-
 .@{css-prefix}dashboard {
   .@{css-prefix}list {
+    overflow: hidden;
+
     &-li {
       &:not(:last-child) {
         border-bottom-width: 1px;
@@ -47,26 +47,21 @@
     }
   }
 
-  .@{css-prefix}none {
-    position: fixed;
-    top: 50%;
-    left: 0;
-    right: 0;
-    z-index: @zindex-spin;
-    user-select: none;
-    text-align: center;
-    transform: translateY(-50%);
-    color: fadeout(@shadow-color, 7.222%);
 
-    .@{css-prefix}icon {
-      line-height: .1;
-      font-size: 20rem;
+
+  .@{css-prefix}load-more {
+    position: absolute;
+    padding: 20px 0 0;
+    width: 100%;
+
+    .@{css-prefix}btn {
+      padding: 10px 15px;
+      background-color: white;
+      border-color: lighten(@border-color-base, 6%);
+
+      &:hover {
+        border-color: tint(@primary-color, 30%);
+      }
     }
-
-    .@{css-prefix}noData {
-      font-size: 6.4rem;
-      text-transform: uppercase;
-    }
-
   }
 }

@@ -1,6 +1,6 @@
-# bsl-tap
+# BrandShortLink - Project
 
-> Brand Short Link y- TAP Technology CompanTAP Technology Company Limited.y Limited.
+> Brand Short Link by TAP Technology Company Limited.
 
 ## Build Setup
 
@@ -8,7 +8,7 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:2018
 npm run dev
 
 # build for production with minification

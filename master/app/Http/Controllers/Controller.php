@@ -14,7 +14,7 @@ class Controller extends BaseController
   public $ignoreVueRoute = [
     'login',
     'password',
-    'dashdoard',
+    'dashboard',
     'watch',
     'manage',
   ];

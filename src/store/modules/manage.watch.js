@@ -19,7 +19,7 @@ export const getters = {
 export const mutations = {
   FETCH_NEW_WATCH (state, payload) {
     const hash = new URL(payload.href).hostname.replace('www.', '')
-    const isKey = Date.now()
+    const isKey = '1mqoNSf' //window.btoa(Math.random()).substr(0, 7)
 
     state.watch.push({
       key: isKey,

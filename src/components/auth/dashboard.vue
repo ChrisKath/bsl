@@ -43,6 +43,16 @@
         </router-link>
       </div>
     </div>
+
+    <div class="ivu-load-more txt-c" v-if="haved">
+      <Button type="ghost" class="txt-up size-w600 min-w200"
+        :loading="i.loading"
+        @click="toLoading">
+
+        <span v-if="!i.loading">load more</span>
+        <span v-else>{{ $t('i.select.loading') }}...</span>
+    </Button>
+    </div>
   </Row>
 </template>
 
@@ -51,6 +61,22 @@ import { mapGetters } from 'vuex'
 import INoData from '~/components/UIComponent/noDataText'
 
 export default {
+  data () {
+    return {
+      i: { loading: false }
+    }
+  },
+
+  methods: {
+    toLoading () {
+      this.i.loading = true
+
+      setTimeout(() => {
+        this.i.loading = false
+      }, 2560)
+    }
+  },
+
   computed: mapGetters({
     items: 'manage.watch/watch',
     haved: 'manage.watch/haved'

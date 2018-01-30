@@ -5,6 +5,7 @@ import messages from '~/locale/lang.all'
 Vue.use(VueI18n)
 
 // Create VueI18n instance with options
+// 'i'+ 'nternationalizatio'.length +'n' = i18n
 const internationalization = new VueI18n({
   messages,
   fallbackLocale: 'en-US',

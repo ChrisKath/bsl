@@ -9,13 +9,17 @@
 
   <title>TAP Technology | Digital Studio - Official Site</title>
 
-  <link rel="shortcut icon" href="/static/ico.png">
-  <link href="/static/css/app.css" rel="stylesheet"></head>
+  <link rel="shortcut icon" href="/404/ico.png">
+  <style type="text/css">html,body{font-family:"Open Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif}.err-img{display:block;margin:auto;max-width:800px}.err-info{line-height:1.8;margin:auto;max-width:600px}.err-info a{text-decoration:none;color:#0d8aec}</style>
 <body>
 
-  <app id="app">
+  <img class="err-img" src="/404/img.jpg">
+  <div class="err-info">
+    We can't find the page you're looking for.<br />
+    Check out our <a href="/#">Help Center</a> and <a href="/#">forums</a> for help,
+    or head back to <a href="/#">home</a>.
+  </div>
 
-  <script src="/static/js/bundle.js"></script><script src="/static/js/vendor.js"></script><script src="/static/js/app.js"></script>
 </body>
 </html>
 

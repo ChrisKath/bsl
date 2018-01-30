@@ -6,7 +6,7 @@ const path = require('path')
 
 module.exports = {
   dev: {
-    api: '//api.bslink.local',
+    api: '//api.tap.co/api',
 
     // Paths
     assetsSubDirectory: 'static',
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   build: {
-    api: '//web.bslink.local/api',
+    api: `//${location.host}/api`,
 
     // Template for index.html
     index: path.resolve(__dirname, '../master/public/index.html'),

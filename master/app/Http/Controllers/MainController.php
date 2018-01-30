@@ -13,17 +13,16 @@ class MainController extends Controller {
   * Display a listing of the resource.
   *
   * @param String $key
-  * @return ViewPoint, Redirect
+  * @return ViewPoint,Redirect
   **/
   public function index ($key) {
-    if (in_array(
-      $this->cute($key),
-      $this->ignoreVueRoute)
+    if (
+      in_array($this->cute($key), $this->ignoreVueRoute)
     ) return view('root');
 
-    if ($this->state($key, true)) {
-      return redirect()->away($this->data[$key]);
-    }
+    return $this->state($key, true)
+      ? redirect()->away($this->data[$key])
+      : view('404');
   }
 
   /**

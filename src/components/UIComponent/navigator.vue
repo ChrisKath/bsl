@@ -56,18 +56,18 @@
         </DropdownItem>
 
         <DropdownItem>
-          <div @click="$refs.l.open()">
+          <a @click="$refs.l.open()">
             <i class="fa fa-language align-m mg-r5 size-20"/>
             <span v-text="$t('i.lang')"/>
-            <Languages ref="l"/>
-          </div>
+          </a>
+          <Languages ref="l"/>
         </DropdownItem>
 
         <DropdownItem divided>
-          <div @click="logout" target="_self">
+          <a @click="logout" target="_self">
             <Icon type="log-out" :size="20" class="align-m mg-r5"/>
             {{ $t('i.form.button.signout') }}
-          </div>
+          </a>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
