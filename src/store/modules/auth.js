@@ -2,17 +2,9 @@
 import router from '~/router'
 import cookieStore from 'vue-cookie'
 
-// setup Instant.
-const _name = 'TYPE.Authentication'
-const _seed = {
-  iss: 'TAP Technology co., ltd.',
-  aud: 'PRIVATE USER',
-  iat: Date.now()
-}
-
 // state
 export const state = {
-  voice: cookieStore.get(_name) || null
+  voice: cookieStore.get('TYPE.Authentication') || null
 }
 
 // getters
@@ -25,23 +17,27 @@ export const getters = {
 export const mutations = {
   FETCH_AUTH_SUCCESS (state, payload) {
     if (payload) {
-      const observe = Object.assign({ payload }, _seed)
-      const encrypt = router.app.$jwt.encode(router.app.$secret, observe)
+      const observe = Object.assign({ payload }, {
+        iss: 'TAP Technology co., ltd.',
+        aud: 'P-R-I-V-A-T-E_M-E-M-B-E-R',
+        iat: Date.now()
+      })
+      const { value } = window.app.$jwt.encode(window.app.$secret, observe)
 
       setTimeout((callback) => {
-        cookieStore.set(_name, encrypt.value, {
+        cookieStore.set(window.app.$typeA, value, {
           expires: payload.remember
-          ? '15D'
-          : '30m'
+            ? '15D'
+            : '15s'
         })
 
-        state.voice = encrypt.value
+        state.voice = value
         router.push({name: 'auth.main'})
       }, 1280)
     } else {
       state.voice = null
-      router.app.$Loading.error()
-      router.app.$Notice.error({
+      window.app.$loading.error()
+      window.app.$notice.error({
         title: 'Authentication Failed.',
         desc: 'Username or Password is incorrect'
       })
@@ -50,7 +46,7 @@ export const mutations = {
 
   LOGOUT (state) {
     state.voice = null
-    cookieStore.delete(_name)
+    cookieStore.delete(window.app.$typeA)
   }
 }
 
@@ -58,7 +54,7 @@ export const mutations = {
 export const actions = {
   async signin ({ commit }, params) {
     try {
-      // const response = await HTTP.post('/api/v1/check', params)
+      // const { data } = await HTTP.post('/api/v1/check', params)
       await commit('FETCH_AUTH_SUCCESS', params)
     } catch (e) {
       // IF: FETCH_USER_FAILURE

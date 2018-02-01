@@ -1,6 +1,6 @@
 // See more guide (https://github.com/mzabriskie/axios)
 import Axios from 'axios'
-import cookie from 'vue-cookie'
+import cookieStore from 'vue-cookie'
 const config = require('../../config')
 
 export const HTTP = Axios.create({
@@ -9,7 +9,7 @@ export const HTTP = Axios.create({
     : config.dev.api,
   headers: {
     'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': cookie.get('XSRF-TOKEN'),
-    'Authorization': `Bearer ${cookie.get('XSRF-TOKEN')}`
+    'X-CSRF-TOKEN': cookieStore.get('XSRF-TOKEN'),
+    'Authorization': `Bearer ${cookieStore.get('XSRF-TOKEN')}`
   }
 })

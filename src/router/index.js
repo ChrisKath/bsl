@@ -28,13 +28,13 @@ function touch () {
 
   // Register before guard.
   router.beforeEach((to, from, next) => {
-    router.app.$nextTick(() => router.app.$Loading.start())
+    router.app.$nextTick(() => router.app.$loading.start())
     next()
   })
 
   // Register after hook.
   router.afterEach(() => {
-    router.app.$nextTick(() => router.app.$Loading.finish())
+    router.app.$nextTick(() => router.app.$loading.finish())
   })
 
   return router

@@ -64,7 +64,7 @@ export default [
  * @param  {String|Function} middleware
  * @param  {Array} routes
  * @return {Array}
- */
+**/
 function middleware (middleware, routes) {
   routes.forEach(route =>
     (route.middleware || (route.middleware = [])).unshift(middleware)

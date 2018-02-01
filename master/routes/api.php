@@ -33,5 +33,6 @@ Route::prefix('v1')->group(function () {
     return $request->user();
   });
 
+  Route::get('i18n', 'I18nController@index');
   Route::get('i18n/{locale}', 'I18nController@show');
 });

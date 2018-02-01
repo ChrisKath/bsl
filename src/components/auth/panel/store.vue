@@ -151,11 +151,11 @@ export default {
     touch (name) {
       this.$refs[name].validate((verify) => {
         if (!verify) {
-          this.$Message.warning(
+          this.$message.warning(
             this.$t('i.notice.warning')
           )
         } else {
-          this.$Message.success(
+          this.$message.success(
             this.$t('i.notice.success')
           )
           this.i.loading = true

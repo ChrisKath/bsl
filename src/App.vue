@@ -1,6 +1,6 @@
 <template lang="html">
   <Layout aria-core="Core Program" id="app-wrap">
-    <Navigation :auth="authenticated"/>
+    <Nav :auth="authen"/>
 
     <Content class="layout-content">
       <router-view/>
@@ -10,15 +10,40 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import INavigation from '~/components/layout/navigation'
+import cookieStore from 'vue-cookie'
+import Navigation from '~/components/layout/navigation'
 
 export default {
+  methods: {
+    timer () {
+      setInterval(() => {
+        let cookie = cookieStore.get(this.$typeA)
+        console.log(cookie)
+        // clearInterval(null)
+      }, 1000)
+      // }, 15 * 60 * 1000) // 15m
+    },
+
+    touch () {
+      window.addEventListener('click', events => {
+        console.log(events)
+      })
+    }
+  },
+
   computed: mapGetters({
-    authenticated: 'auth/check'
+    authen: 'auth/check'
   }),
 
+  beforeUpdate () {
+    if (this.authen) {
+      this.timer()
+      this.touch()
+    }
+  },
+
   components: {
-    'Navigation': INavigation
+    'Nav': Navigation
   }
 }
 </script>

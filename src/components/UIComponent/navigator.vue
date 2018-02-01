@@ -87,7 +87,7 @@ export default {
     }),
 
     logout () {
-      this.$Loading.start()
+      this.$loading.start()
       this.signout()
     }
   },

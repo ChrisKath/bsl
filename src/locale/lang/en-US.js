@@ -110,12 +110,15 @@ const lang = {
     form: {
       title: {
         auth: 'Authentication',
+        authInfo: 'Welcome to Brand Short Link - Project',
         resetPass: 'Reset password',
         resetInfo: 'Member information for reset password'
       },
       note: {
+        zero: 'This feature will be coming soon...',
         one: 'If you are logging in email address, please enter your email address in both input fields.',
-        two: 'If you can not confirm yourself, you can\'t reissue your password.'
+        two: 'If you can not confirm yourself, you can\'t reissue your password.',
+        three: 'If you not account. Please contact the administrator. If you want to use this system.'
       },
       display: 'display name',
       email: 'email address',

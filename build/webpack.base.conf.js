@@ -64,7 +64,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[sha512:hash:hex:6].[ext]?[hash]')
+          name: utils.assetsPath('img/[name]-[sha512:hash:hex:4].[ext]?[hash]')
         }
       },
       {
@@ -72,7 +72,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[sha512:hash:hex:6].[ext]')
+          name: utils.assetsPath('media/[name]-[sha512:hash:hex:4].[ext]')
         }
       },
       {
@@ -80,7 +80,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[sha512:hash:hex:6].[ext]')
+          name: utils.assetsPath('fonts/[name]-[sha512:hash:hex:4].[ext]')
         }
       }
     ]

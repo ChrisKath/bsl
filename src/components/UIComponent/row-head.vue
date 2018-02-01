@@ -22,6 +22,7 @@
 
 <script>
 export default {
+  name: 'RowHead',
   props: {
     'title-name': {
       type: String,

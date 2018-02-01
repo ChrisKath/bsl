@@ -15,7 +15,7 @@ export const state = {
       uid: Date.now() + 1,
       permis: 0,
       name: 'DISPLAY NAME',
-      email: 'admin@tap.co',
+      email: 'admin@tap10.com',
       username: 'admin'
     }
   ]
@@ -39,24 +39,24 @@ export const mutations = {
   },
 
   UPDATE_AN_ACCOUNT (state, payload) {
-    const finded = router.app.$lodash.find(state.accounts, {
+    const query = window.app.$lodash.find(state.accounts, {
       uid: payload.uid
     })
-    finded.permis   = payload.permis
-    finded.name     = payload.name
-    finded.email    = payload.email
-    finded.username = payload.username
+    query.permis   = payload.permis
+    query.name     = payload.name
+    query.email    = payload.email
+    query.username = payload.username
   },
 
   NOTICE (state, payload) {
     if (!payload) {
-      router.app.$Notice.error({
+      window.app.$notice.error({
         title: 'Oops!!',
         desc: 'Something went wrong.'
       })
     } else {
-      router.app.$Loading.start()
-      router.app.$Notice.success({
+      window.app.$loading.start()
+      window.app.$notice.success({
         duration: 2.4,
         title: 'Successful',
         desc: 'New account has been created.'

@@ -150,7 +150,9 @@ export default {
     touch () {
       this.$refs[this.form.ref].validate(Verify => {
         if (!Verify) {
-          this.$Message.warning(this.$t('i.notice.warning'))
+          this.$message.warning(
+            this.$t('i.notice.warning')
+          )
         } else {
           this.i.loading = true
 

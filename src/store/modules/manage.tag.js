@@ -1,13 +1,11 @@
 // import { HTTP } from '../http'
-import router from '~/router'
 
 // state
 export const state = {
   tags: [
-    {id: 1, name: 'campaign',  timestamp: Date.now()},
-    {id: 2, name: 'promotion', timestamp: Date.now()},
-    {id: 3, name: 'email',     timestamp: Date.now()},
-    {id: 4, name: 'Other',     timestamp: Date.now()}
+    {id: 1, name: 'promotion', timestamp: Date.now()},
+    {id: 2, name: 'campaign',  timestamp: Date.now()},
+    {id: 3, name: 'other',     timestamp: Date.now()}
   ]
 }
 
@@ -27,7 +25,7 @@ export const mutations = {
   },
 
   REMOVE_AN_TAG (state, payload) {
-    state.tags = router.app.$lodash.reject(state.tags, {
+    state.tags = window.app.$lodash.reject(state.tags, {
       name: payload
     })
   }
@@ -37,7 +35,7 @@ export const mutations = {
 export const actions = {
   async add ({ commit }, params) {
     await commit('FETCH_NEW_TAG', params)
-    router.app.$Notice.success({
+    window.app.$notice.success({
       duration: 2.6,
       title: 'Good job!!',
       desc: `(${params}), New Tag has been added.`
@@ -46,7 +44,7 @@ export const actions = {
 
   async remove ({ commit }, params) {
     await commit('REMOVE_AN_TAG', params)
-    router.app.$Notice.warning({
+    window.app.$notice.warning({
       duration: 2.6,
       title: 'That OK!',
       desc: `Tag (${params}) has been removed.`

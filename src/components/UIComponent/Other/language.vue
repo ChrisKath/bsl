@@ -1,54 +1,54 @@
 <template lang="html">
-  <Modal v-model="visible"
-    class-name="ivu-modal-locale"
-    :width="600"
+  <Modal class-name="ivu-locale" width="auto"
+    v-model="visible"
     :scrollable="true"
     :footerHide="true">
 
-    <div class="ivu--lang-group" v-for="(obj, name) in internationalization">
-      <h3 class="mg-b10" size="large" v-text="name"/>
+    <Row class-name="ivu-group"
+      v-for="(data, key) in internationalization" :key="key.id">
 
-      <ul class="ivu--lang-list">
-        <li v-for="key in $lodash.orderBy(obj, 'lang', 'desc')">
+      <div class="size-14 size-w700 mg-b10" v-text="key"/>
 
-          <a v-text="key.lang"
+      <Row>
+        <Col v-for="(item, key) in $lodash.orderBy(data, ['lang'], ['desc'])"
+          :key="item.id"
+          :span="4">
+
+          <Button type="text"
+            @click="onSwitch(item.locale)"
             :class="{
-              'ivu--switch': true,
-              'ivu--focus': (key.locale === $i18n.locale)
-            }"
-            @click="languageSwitch(key.locale)"
-          />
+              'onFocus': (item.locale === $i18n.locale)
+            }">
 
-        </li>
-      </ul>
-    </div>
+            {{ item.lang }}
+          </Button>
+
+        </Col>
+      </Row>
+    </Row>
 
   </Modal>
 </template>
 
 <script>
-import ILanguage from '~/locale/lang.all'
+import { messages, take } from '~/i18n'
 
 export default {
   name: 'Languages',
   data () {
     return {
-      lang: ILanguage,
       visible: false
     }
   },
 
   methods: {
-    languageSwitch (c) {
-      if (this.$i18n.locale !== c) {
-        this.$Loading.start()
-        setTimeout(() => {
-          this.visible = false
-          this.$lang.take(c)
-          this.$Loading.finish()
-        }, 320)
+    onSwitch (param) {
+      if (this.$i18n.locale !== param) {
+        take(param)
+        this.visible = false
       }
     },
+
     open () {
       this.visible = true
     }
@@ -58,13 +58,13 @@ export default {
     internationalization () {
       const language = {}
 
-      Object.keys(this.lang).forEach(key => {
-        var iKey = this.lang[key].i
-        var continent = iKey.continent
+      Object.keys(messages).forEach(key => {
+        let isKey = messages[key].i
+        let continent = isKey.continent
         if (!language[continent]) language[continent] = []
         language[continent].push({
-          'lang':   iKey.lang,
-          'locale': iKey.locale
+          'lang':   isKey.lang,
+          'locale': isKey.locale
         })
       })
 

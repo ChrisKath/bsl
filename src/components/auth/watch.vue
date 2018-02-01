@@ -140,7 +140,7 @@ export default {
     }),
 
     clipboard () {
-      this.$Message.success(
+      this.$message.success(
         `${this.$t('i.notice.success')} [${this.$uri}${this.items.key}]`
       )
     },
