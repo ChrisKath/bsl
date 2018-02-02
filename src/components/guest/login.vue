@@ -93,7 +93,7 @@ export default {
 
   methods: {
     ...mapActions({
-      signin: 'auth/signin'
+      signin: 'authen/signin'
     }),
 
     touch (name) {

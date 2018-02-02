@@ -9,36 +9,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import cookieStore from 'vue-cookie'
 import Navigation from '~/components/layout/navigation'
 
 export default {
-  methods: {
-    timer () {
-      setInterval(() => {
-        let cookie = cookieStore.get(this.$typeA)
-        console.log(cookie)
-        // clearInterval(null)
-      }, 1000)
-      // }, 15 * 60 * 1000) // 15m
-    },
-
-    touch () {
-      window.addEventListener('click', events => {
-        console.log(events)
-      })
-    }
-  },
-
-  computed: mapGetters({
-    authen: 'auth/check'
+  methods: mapActions({
+    signout: 'authen/signout',
+    reCookies: 'authen/cookies'
   }),
 
-  beforeUpdate () {
+  computed: mapGetters({
+    authen: 'authen/check'
+  }),
+
+  updated () {
     if (this.authen) {
-      this.timer()
-      this.touch()
+      this.reCookies()
+      const valve = setInterval(() => {
+        if (!cookieStore.get(this.$typeA)) {
+          this.signout()
+          clearInterval(valve)
+        }
+      }, 1280)
     }
   },
 

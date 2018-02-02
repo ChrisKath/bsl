@@ -12,7 +12,7 @@ export const state = {
 // getters
 export const getters = {
   watch: state => state.watch,
-  haved: state => Boolean(state.watch.length)
+  check: state => Boolean(state.watch.length)
 }
 
 // mutations

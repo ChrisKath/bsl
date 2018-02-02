@@ -122,8 +122,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import INoData from '~/components/UIComponent/noDataText'
-import ICreation from '~/components/UIComponent/Other/creation'
+import NoData from '~/components/layout/noDataText'
+import Creation from '~/components/UIComponent/Other/creation'
 
 export default {
   data () {
@@ -182,8 +182,8 @@ export default {
   },
 
   components: {
-    'NoData': INoData,
-    'Creation': ICreation
+    'NoData': NoData,
+    'Creation': Creation
   }
 }
 </script>

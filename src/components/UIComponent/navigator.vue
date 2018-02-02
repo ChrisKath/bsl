@@ -23,7 +23,7 @@
         <DropdownItem class="ivu-dropdown-info">
           <div class>
             <h2 class="size-w600">ゴジです</h2>
-            <h3 class="grey" v-text="decrypt.username"/>
+            <h3 class="grey">{{ voice.username }}</h3>
           </div>
         </DropdownItem>
 
@@ -83,7 +83,7 @@ import ICreation from '~/components/UIComponent/Other/creation'
 export default {
   methods: {
     ...mapActions({
-      signout: 'auth/signout'
+      signout: 'authen/signout'
     }),
 
     logout () {
@@ -94,13 +94,9 @@ export default {
 
   computed: {
     ...mapGetters({
-      voice: 'auth/voice',
-      authen: 'auth/check'
-    }),
-
-    decrypt () {
-      return this.$jwt.decode(this.$secret, this.voice).value
-    }
+      voice: 'authen/voice',
+      authen: 'authen/check'
+    })
   },
 
   components: {

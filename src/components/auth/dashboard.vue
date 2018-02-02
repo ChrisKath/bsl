@@ -1,6 +1,6 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
-    <NoData v-if="!haved"/>
+    <NoData v-if="!check"/>
 
     <div class="ivu-list" v-else>
       <div class="ivu-list-li" v-for="(item, key) in items">
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="ivu-load-more txt-c" v-if="haved">
+    <div class="ivu-load-more txt-c" v-if="check">
       <Button type="ghost" class="txt-up size-w600 min-w200"
         :loading="i.loading"
         @click="toLoading">
@@ -58,7 +58,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import INoData from '~/components/UIComponent/noDataText'
+import NoData from '~/components/layout/noDataText'
 
 export default {
   data () {
@@ -79,11 +79,11 @@ export default {
 
   computed: mapGetters({
     items: 'manage.watch/watch',
-    haved: 'manage.watch/haved'
+    check: 'manage.watch/check'
   }),
 
   components: {
-    'NoData': INoData
+    'NoData': NoData
   }
 }
 </script>

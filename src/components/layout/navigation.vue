@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import INavigator from '~/components/UIComponent/navigator'
+import Navigator from '~/components/UIComponent/navigator'
 
 export default {
   props: {
@@ -37,7 +37,7 @@ export default {
   },
 
   components: {
-    'Navigator': INavigator
+    'Navigator': Navigator
   }
 }
 </script>

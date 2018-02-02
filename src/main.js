@@ -16,9 +16,9 @@ import '~/assets/style/iView/index.less'
 import '~/assets/core.less'
 
 // Call Component.
-import Languages  from '~/components/UIComponent/Other/language'
 import InputGroup from '~/components/UIComponent/Other/input-group'
-import RowHead    from '~/components/UIComponent/row-head'
+import Languages  from '~/components/UIComponent/Other/language'
+import RowHead    from '~/components/layout/row-head'
 import {
   Alert,
   Avatar,

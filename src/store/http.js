@@ -8,8 +8,8 @@ export const HTTP = Axios.create({
     ? config.build.api
     : config.dev.api,
   headers: {
-    'Content-Type': 'application/json',
     'X-CSRF-TOKEN': cookieStore.get('XSRF-TOKEN'),
-    'Authorization': `Bearer ${cookieStore.get('XSRF-TOKEN')}`
-  }
+    'Authorization': `Bearer ${cookieStore.get(window.app.$typeA)}`
+  },
+  timeout: 15000
 })
