@@ -1,6 +1,6 @@
 <template lang="html">
   <Layout aria-core="Core Program" id="app-wrap">
-    <Navigation :auth="authenticated"/>
+    <Nav :auth="authen"/>
 
     <Content class="layout-content">
       <router-view/>
@@ -9,16 +9,34 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import INavigation from '~/components/layout/navigation'
+import { mapGetters, mapActions } from 'vuex'
+import cookieStore from 'vue-cookie'
+import Navigation from '~/components/layout/navigation'
 
 export default {
-  computed: mapGetters({
-    authenticated: 'auth/check'
+  methods: mapActions({
+    signout: 'authen/signout',
+    reCookies: 'authen/cookies'
   }),
 
+  computed: mapGetters({
+    authen: 'authen/check'
+  }),
+
+  updated () {
+    if (this.authen) {
+      this.reCookies()
+      const valve = setInterval(() => {
+        if (!cookieStore.get(this.$typeA)) {
+          this.signout()
+          clearInterval(valve)
+        }
+      }, 1280)
+    }
+  },
+
   components: {
-    'Navigation': INavigation
+    'Nav': Navigation
   }
 }
 </script>

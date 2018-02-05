@@ -12,7 +12,7 @@ export const state = {
 // getters
 export const getters = {
   watch: state => state.watch,
-  haved: state => Boolean(state.watch.length)
+  check: state => Boolean(state.watch.length)
 }
 
 // mutations
@@ -41,7 +41,7 @@ export const mutations = {
 
   UPDATE_AN_WATCH (state, payload) {
     const hash = new URL(payload.href).hostname.replace('www.', '')
-    const query = router.app.$lodash.find(state.watch, {
+    const query = window.app.$lodash.find(state.watch, {
       key: payload.currentKey
     })
 
@@ -58,7 +58,7 @@ export const mutations = {
   },
 
   REMOVE_AN_WATCH (state, payload) {
-    state.watch = router.app.$lodash.reject(state.watch, {
+    state.watch = window.app.$lodash.reject(state.watch, {
       key: payload
     })
 
@@ -66,7 +66,7 @@ export const mutations = {
   },
 
   DISABLE_AN_WATCH (state, payload) {
-    const query = router.app.$lodash.find(state.watch, {
+    const query = window.app.$lodash.find(state.watch, {
       key: payload.key
     })
 
@@ -99,9 +99,9 @@ export const actions = {
   },
 
   async authen () {
-    logged = await router.app.$jwt.decode(
-      router.app.$secret,
-      cookieStore.get(router.app.$typeA)
+    logged = await window.app.$jwt.decode(
+      window.app.$secret,
+      cookieStore.get(window.app.$typeA)
     ).value
   }
 }

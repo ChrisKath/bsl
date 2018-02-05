@@ -1,64 +1,74 @@
 <template lang="html">
-<div class="ivu-form--guest">
-  <h2 class="size-26 size-w800 txt-c pd-t20 pd-b20">
-    {{ $t('i.form.title.auth') }}
-  </h2>
+  <Row class="ivu-guest">
+    <div class="ivu-title txt-c txt-up size-29 size-w800">
+      {{ $t('i.form.title.auth') }}
 
-  <Form ref="signin"
-    :model="form"
-    :rules="rule"
-    @keyup.enter.native="touch('signin')">
+      <div class="size-16 size-w300"
+        v-text="$t('i.form.title.authInfo')"
+      />
+    </div>
 
-    <FormItem class="mg-b10">
-      <Alert show-icon>Brand Short Link - Project (bata)</Alert>
-    </FormItem>
+    <Form ref="signin"
+      :model="form"
+      :rules="rule"
+      @keyup.enter.native="touch('signin')">
 
-    <FormItem prop="username">
-      <Input type="text" size="large"
-        v-model="form.username"
-        :maxlength="64"
-        :placeholder="$t('i.form.user')">
-        <Icon type="ios-person-outline" size="23" slot="prepend"/>
-      </Input>
-    </FormItem>
+      <FormItem class="mg-b10">
+        <Alert show-icon>{{ $t('i.form.note.three') }}</Alert>
+      </FormItem>
 
-    <FormItem prop="password">
-      <Input type="password" size="large"
-        v-model="form.password"
-        :maxlength="16"
-        :placeholder="$t('i.form.pass')">
-        <Icon type="ios-locked-outline" size="20" slot="prepend"/>
-      </Input>
-    </FormItem>
+      <FormItem prop="username" class="mg-b20">
+        <InputGroup :placeholder="$t('i.form.user')" icon="ios-person-outline">
 
-    <FormItem class="mg-b10">
-      <Row type="flex" justify="space-between">
-        <Checkbox size="large" class="ivu-checkbox-link"
-          v-model="form.remember">&nbsp;
-          {{ $t('i.form.logged') }}
-        </Checkbox>
+          <Input slot="input" type="text"
+            :maxlength="64"
+            v-model="form.username"
+          />
 
-        <router-link :to="{name: 'guest.reset'}">
-          {{ $t('i.form.forgot') }}
-        </router-link>
-      </Row>
-    </FormItem>
+        </InputGroup>
+      </FormItem>
 
-    <FormItem>
-      <Button type="primary" size="large"
-        class="min-w100"
-        icon="log-in"
-        @click="touch('signin')">
-        <span>{{ $t('i.form.button.signin') }}</span>
-      </Button>
-    </FormItem>
+      <FormItem prop="password" class="mg-b20">
+        <InputGroup :placeholder="$t('i.form.pass')" icon="ios-locked-outline">
 
-  </Form>
+          <Input slot="input" type="password"
+            :maxlength="16"
+            v-model="form.password"
+          />
 
-  <p class="size-12 txt-c mg-t15">
-    &copy;2018 TAP Technology Company Limited. all rights reserved.
-  </p>
-</div>
+        </InputGroup>
+      </FormItem>
+
+      <FormItem class="mg-b10">
+        <Row type="flex" justify="space-between">
+
+          <Checkbox class="ivu-chkbox-keep"
+            size="large"
+            v-model="form.remember">
+            {{ $t('i.form.logged') }}
+          </Checkbox>
+
+          <router-link :to="{name: 'guest.reset'}"
+            v-text="$t('i.form.forgot')"
+          />
+
+        </Row>
+      </FormItem>
+
+      <FormItem>
+        <Button type="primary" size="large"
+          class="txt-up min-w150"
+          icon="log-in"
+          @click="touch('signin')">
+          {{ $t('i.form.button.signin') }}
+        </Button>
+      </FormItem>
+    </Form>
+
+    <div class="ivu-copyright txt-c size-11">
+      &copy;2018 TAP Technology Company Limited. all rights reserved.
+    </div>
+  </Row>
 </template>
 
 <script>
@@ -69,8 +79,8 @@ export default {
   data () {
     return {
       form: {
-        username: '',
-        password: '',
+        username: null,
+        password: null,
         remember: false,
         timestamp: Date.now()
       },
@@ -83,19 +93,19 @@ export default {
 
   methods: {
     ...mapActions({
-      signin: 'auth/signin'
+      signin: 'authen/signin'
     }),
 
     touch (name) {
       this.$refs[name].validate((verify) => {
         if (!verify) {
-          this.$Message.warning(
+          this.$message.warning(
             this.$t('i.notice.warning')
           )
         } else {
-          this.$Loading.start()
+          this.$loading.start()
 
-          this.$Message.success(
+          this.$message.success(
             this.$t('i.notice.success')
           )
 

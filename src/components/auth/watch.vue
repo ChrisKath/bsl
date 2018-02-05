@@ -122,8 +122,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import INoData from '~/components/UIComponent/noDataText'
-import ICreation from '~/components/UIComponent/Other/creation'
+import NoData from '~/components/layout/noDataText'
+import Creation from '~/components/UIComponent/Other/creation'
 
 export default {
   data () {
@@ -140,7 +140,7 @@ export default {
     }),
 
     clipboard () {
-      this.$Message.success(
+      this.$message.success(
         `${this.$t('i.notice.success')} [${this.$uri}${this.items.key}]`
       )
     },
@@ -182,8 +182,8 @@ export default {
   },
 
   components: {
-    'NoData': INoData,
-    'Creation': ICreation
+    'NoData': NoData,
+    'Creation': Creation
   }
 }
 </script>

@@ -24,15 +24,16 @@ Route::prefix('v1')->group(function () {
     return $params;
   });
 
-  Route::get('logout', function (Request $request) {
+  Route::post('logout', function (Request $request) {
     sleep(1);
-    return 1;
+    return response(['status' => true], 200);
   });
 
   Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
   });
 
+  Route::get('i18n', 'I18nController@index');
   Route::get('i18n/{locale}', 'I18nController@show');
 });
 Route::group(['middleware' => ['api']], function () {

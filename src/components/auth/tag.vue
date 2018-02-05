@@ -32,7 +32,7 @@
         <div class="col-form" v-else>
           <Avatar icon="ios-pricetags"/>
 
-          <Input v-model="tag_name" placeholder="Tag name"
+          <Input v-model="tagName" placeholder="Tag name"
             :maxlength="14"
             class="mg-t20"
           />
@@ -55,7 +55,7 @@ export default {
   data () {
     return {
       push: false,
-      tag_name: ''
+      tagName: null
     }
   },
 
@@ -66,15 +66,15 @@ export default {
     }),
 
     touch () {
-      if (!this.tag_name) {
-        this.$Message.warning('Please fill is required')
+      if (!this.tagName) {
+        this.$message.warning('Please fill is required')
       } else {
-        const fined = this.$lodash.find(this.items, {name: this.tag_name})
-        if (fined === undefined) {
-          this.add(this.tag_name)
+        const query = this.$lodash.find(this.items, {name: this.tagName})
+        if (query === undefined) {
+          this.add(this.tagName)
           this.cancle()
         } else {
-          this.$Notice.error({
+          this.$notice.error({
             title: 'Oops!!',
             desc: 'This name has already been used.'
           })
@@ -83,7 +83,7 @@ export default {
     },
 
     clear (name) {
-      this.$Modal.confirm({
+      this.$modal.confirm({
         onOk: () => this.remove(name),
         content: `<b class=txt-up>${name}</b>, Tag an deletion?`,
         okText: this.$t('i.form.button.confirm'),
@@ -93,7 +93,7 @@ export default {
 
     cancle () {
       this.push = false
-      this.tag_name = ''
+      this.tagName = null
     }
   },
 

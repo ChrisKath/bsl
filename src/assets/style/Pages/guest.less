@@ -1,24 +1,25 @@
-.@{css-prefix}form {
-  padding: 40px;
-  background-color: @body-background;
+.@{css-prefix}guest {
+  margin: 10vh auto !important;
+  max-width: @screen-xs !important;
 
-  &--guest {
-    position: relative;
-    margin: 10vh auto;
-    max-width: @screen-xs;
+  .@{css-prefix}title {
+    color: @text-color;
+    padding: 25px 0;
+    border-bottom: solid 1px lighten(@border-color-base, 8%);
+  }
 
-    & > h2 {
-      text-transform: uppercase;
-      letter-spacing: 5px;
-      font-weight: 800;
-      color: #828a9b;
-      background-color: @body-background;
-      border-bottom: solid 1px lighten(@border-color-base, 5%);
-      & * { letter-spacing: normal }
+  .@{css-prefix}form {
+    padding: 40px 40px 20px;
+
+    .@{css-prefix}chkbox-keep {
+      & > span {
+        margin-right: 5px;
+      }
     }
+  }
 
-    .@{css-prefix}btn {
-      text-transform: uppercase;
-    }
+  .@{css-prefix}copyright {
+    padding: 10px 0;
+    border-top: solid 1px lighten(@border-color-base, 8%);
   }
 }
