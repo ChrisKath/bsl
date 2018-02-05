@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TagLink extends Migration {
+class Clickes extends Migration {
   /**
   * Run the migrations.
   *
@@ -12,9 +12,13 @@ class TagLink extends Migration {
   **/
   public function up() {
 
-    Schema::create('url_has_tags', function (Blueprint $table) {
+    Schema::create('clickes', function (Blueprint $table) {
+      $table->increments('id');
+      $table->integer('urls_id')->unsigned();
       $table->foreign('urls_id')->references('id')->on('urls');
-      $table->foreign('tags_id')->references('id')->on('tags');
+      $table->char('user_ip', 45);
+      $table->dateTime('clicked_at')->useCurrent();
+      $table->longText('description')->nullable();
     });
 
   }
@@ -25,6 +29,6 @@ class TagLink extends Migration {
   * @return void
   **/
   public function down() {
-    Schema::dropIfExists('url_has_tags');
+    Schema::dropIfExists('clickes');
   }
 }

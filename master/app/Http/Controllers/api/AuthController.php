@@ -1,51 +1,47 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use JWTAuth;
 use JWTAuthException;
 use App\User;
 
-class AuthController extends Controller
-{
-  public function __construct()
-   {
-       $this->user = new User;
-   }
+class AuthController extends Controller {
 
-   public function login(Request $request){
-       $credentials = $request->only('username', 'password');
-       $token = null;
-       try {
-           if (!$token = JWTAuth::attempt($credentials)) {
-               return response()->json([
-                   'response' => 'error',
-                   'message' => 'invalid_email_or_password',
-               ]);
-           }
-       } catch (JWTAuthException $e) {
-           return response()->json([
-               'response' => 'error',
-               'message' => 'failed_to_create_token',
-           ]);
-       }
-       // $user = JWTAuth::toUser('Bearer '.$token);
-       return response()->json([
-           'response' => 'success',
-           'result' => [
-               'token' => $token
-           ],
-       ]);
-   }
+  public function __construct () {
+    $this->user = new User;
+  }
 
-   public function getAuthUser(Request $request){
-       $user = JWTAuth::toUser($request->input('token'));    
-       return response()->json(['result' => $user]);
-   }
-   public function getEye(Request $request){
-       return response()->json(['result' => $request,'res'=>'eye']);
-   }
+  public function login (Request $request) {
+    $credentials = $request->only('username', 'password');
+    $token = null;
+
+    try {
+      if (!$token = JWTAuth::attempt($credentials)) {
+        return response()->json([
+          'status' => false,
+          'message' => 'account',
+        ]);
+      }
+    } catch (JWTAuthException $e) {
+      return response()->json([
+        'status' => false,
+        'message' => 'token',
+      ]);
+    }
+
+    // $user = JWTAuth::toUser('Bearer '.$token);
+    return response()->json([
+      'status' => true,
+      'message' => $token,
+    ]);
+  }
+
+  public function getAuthUser (Request $request) {
+    $user = JWTAuth::toUser($request->input('token'));
+    return response()->json(['result' => $user]);
+  }
 }

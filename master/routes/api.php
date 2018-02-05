@@ -41,10 +41,15 @@ Route::prefix('v1')->group(function () {
     Route::resource('watch', 'WatchesController');
   });
 });
+
 Route::group(['middleware' => ['api']], function () {
+
     Route::post('auth/login', 'api\AuthController@login');
+
     Route::group(['middleware' => 'auth.jwt'], function () {
+
       Route::post('user', 'api\AuthController@getAuthUser');
       Route::get('eye', 'api\AuthController@getEye');
+
     });
 });
