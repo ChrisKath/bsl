@@ -162,7 +162,16 @@ const lang = {
       info: 'This is a info tip',
       success: 'This is a success tip',
       warning: 'This is a warning! tip',
-      error: 'This is a Error! tip'
+      error: 'This is a Error! tip',
+      requireFill: 'Please fill is required',
+      authDenied: {
+        title: 'Authentication Timeout.',
+        desc: 'System auto destroy session. When your not any action in 15 min. Please login again.'
+      },
+      authFailed: {
+        title: 'Authentication Failed.',
+        desc: 'Username or Password is incorrect'
+      }
     }
   }
 }

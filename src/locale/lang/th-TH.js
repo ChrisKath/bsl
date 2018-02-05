@@ -162,7 +162,16 @@ const lang = {
       info: 'มีบางอบ่างเกิดขึ้น',
       success: 'สำเร็จ',
       warning: 'มีปัญหาแล้ว!',
-      error: 'ผิดพลาดโหดร้าย!!'
+      error: 'ผิดพลาดโหดร้าย!!',
+      requireFill: 'Please fill is required',
+      authDenied: {
+        title: 'Authentication Timeout.',
+        desc: 'System auto destroy session. When your not any action in 15 min. Please login again.'
+      },
+      authFailed: {
+        title: 'Authentication Failed.',
+        desc: 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง'
+      }
     }
   }
 }

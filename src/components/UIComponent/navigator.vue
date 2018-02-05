@@ -78,7 +78,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ICreation from '~/components/UIComponent/Other/creation'
+import Creation from '~/components/UIComponent/Other/creation'
 
 export default {
   methods: {
@@ -92,15 +92,13 @@ export default {
     }
   },
 
-  computed: {
-    ...mapGetters({
-      voice: 'authen/voice',
-      authen: 'authen/check'
-    })
-  },
+  computed: mapGetters({
+    voice: 'authen/voice',
+    authen: 'authen/check'
+  }),
 
   components: {
-    'Creation': ICreation
+    'Creation': Creation
   }
 }
 </script>

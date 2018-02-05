@@ -15,13 +15,13 @@ class CorsAccess
      */
     public function handle($request, Closure $next)
     {
-      $domains = ['http://localhost:2018', 'http://tap.co'];
+      $domains = ['http://localhost:2018', 'http://api.tap.co', 'http://tap.co'];
 
       if (isset($request->server()['HTTP_ORIGIN'])) {
         $origin = $request->server()['HTTP_ORIGIN'];
         if (in_array($origin, $domains)) {
           header('Access-Control-Allow-Origin: ' . $origin);
-          header('Access-Control-Allow-Headers: Origin, Authorization, X-CSRF-TOKEN');
+          header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization');
         }
       }
 

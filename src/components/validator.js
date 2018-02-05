@@ -19,6 +19,6 @@ export default {
   },
   date: {
     type: 'date',
-    message: 'Please enter a valid URL'
+    message: 'Please enter a valid Date'
   }
 }

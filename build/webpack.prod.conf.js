@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const env = require('../config/prod.env')
 
@@ -32,6 +33,13 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+
+    // https://github.com/lodash/lodash-webpack-plugin
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      paths: true
+    }),
+
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
@@ -90,6 +98,8 @@ const webpackConfig = merge(baseWebpackConfig, {
       children: true,
       minChunks: 3
     }),
+
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ja|th|zh/),
 
     // copy custom static assets
     new CopyWebpackPlugin([

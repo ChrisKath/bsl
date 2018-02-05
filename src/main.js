@@ -6,10 +6,10 @@ import moment from 'vue-moment'
 import JWToken from 'json-web-token'
 import clipboard from 'vue-clipboard2'
 
-import App from './App'
+import App from '~/App'
 import i18n from '~/i18n'
-import store from './store'
-import router from './router'
+import store from '~/store'
+import router from '~/router'
 
 // Call Style.
 import '~/assets/style/iView/index.less'
