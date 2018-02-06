@@ -2,6 +2,8 @@ import { HTTP } from '../http'
 import router from '~/router'
 import cookieStore from 'vue-cookie'
 
+let valve = null
+
 // state
 export const state = {
   voice: cookieStore.get('TYPE.Authentication') || null
@@ -35,6 +37,7 @@ export const mutations = {
           ? '15D'
           : '15m'
       })
+      HTTP.defaults.headers.common['Authorization'] = `Bearer ${value}`
 
       router.push({name: 'auth.main'})
     } else {
@@ -42,8 +45,8 @@ export const mutations = {
       cookieStore.delete(window.app.$typeA)
       window.app.$loading.error()
       window.app.$notice.error({
-        title: 'Authentication Failed.',
-        desc: 'Username or Password is incorrect'
+        title: window.app.$t('i.notice.authFailed.title'),
+        desc: window.app.$t('i.notice.authFailed.desc')
       })
     }
   },
@@ -59,6 +62,7 @@ export const mutations = {
           cookieStore.set(window.app.$typeA, state.voice, {
             expires: '15m'
           })
+          HTTP.defaults.headers.common['Authorization'] = `Bearer ${state.voice}`
         }
       }, true)
     }
@@ -67,35 +71,46 @@ export const mutations = {
   LOGOUT (state) {
     state.voice = null
     cookieStore.delete(window.app.$typeA)
+    HTTP.defaults.headers.common['Authorization'] = `Bearer ${state.voice}`
   }
 }
 
 // actions
 export const actions = {
   async signin ({ commit, dispatch }, params) {
-    try {
-      const { data } = await HTTP.post('/check', params)
-      await commit('FETCH_AUTH_SUCCESS', data)
-      if (!params.remember) commit('FETCH_COOKIE')
-    } catch (e) {
-      commit('LOGOUT')
-      console.error(e)
-    }
+    const { data } = await HTTP.post('/check', params)
+    await commit('FETCH_AUTH_SUCCESS', data)
+    if (!params.remember) commit('FETCH_COOKIE')
+
+    dispatch('cookies')
   },
 
   async signout ({ commit }) {
-    try {
-      const { data } = await HTTP.post('/logout')
-      if (data.status) {
-        commit('LOGOUT')
-        router.push({name: 'guest.login'})
-      }
-    } catch (e) {
-      console.error(e)
+    const { data } = await HTTP.post('/logout')
+    if (data.status) {
+      commit('LOGOUT')
+      clearInterval(valve)
+      router.push({name: 'guest.login'})
     }
   },
 
-  cookies ({ commit, state }) {
-    if (state.voice !== null) commit('FETCH_COOKIE')
+  cookies ({ commit, dispatch }) {
+    commit('FETCH_COOKIE')
+
+    window.app.$notice.destroy()
+
+    valve = setInterval(async callback => {
+      if (!cookieStore.get(window.app.$typeA)) {
+        clearInterval(valve)
+
+        await dispatch('signout')
+
+        window.app.$notice.warning({
+          duration: 0,
+          title: window.app.$t('i.notice.authDenied.title'),
+          desc: window.app.$t('i.notice.authDenied.desc')
+        })
+      }
+    }, 2000)
   }
 }

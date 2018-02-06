@@ -20,4 +20,3 @@ phpunit.dusk.xml
 *.ntvs*
 *.njsproj
 *.sln
-composer.lock

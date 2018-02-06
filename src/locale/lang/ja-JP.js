@@ -162,7 +162,16 @@ const lang = {
       info: 'This is a info tip',
       success: 'サクセス',
       warning: '警告!',
-      error: 'エラー!!'
+      error: 'エラー!!',
+      requireFill: 'それを入力してください。',
+      authDenied: {
+        title: '認証タイムアウト。',
+        desc: 'System auto destroy session. When your not any action in 15 min. Please login again.'
+      },
+      authFailed: {
+        title: '認証に失敗しました。',
+        desc: 'ユーザー名かパスワードが間違っています。'
+      }
     }
   }
 }

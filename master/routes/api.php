@@ -33,13 +33,23 @@ Route::prefix('v1')->group(function () {
     return $request->user();
   });
 
-  Route::get('i18n', 'I18nController@index');
-  Route::get('i18n/{locale}', 'I18nController@show');
+  Route::namespace('API')->group(function () {
+
+    Route::get('i18n', 'I18nController@index');
+    Route::get('i18n/{locale}', 'I18nController@show');
+
+    Route::resource('watch', 'WatchesController');
+  });
 });
+
 Route::group(['middleware' => ['api']], function () {
+
     Route::post('auth/login', 'api\AuthController@login');
+
     Route::group(['middleware' => 'auth.jwt'], function () {
+
       Route::post('user', 'api\AuthController@getAuthUser');
       Route::get('eye', 'api\AuthController@getEye');
+
     });
 });
