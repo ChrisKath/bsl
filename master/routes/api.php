@@ -39,17 +39,18 @@ Route::prefix('v1')->group(function () {
     Route::get('i18n/{locale}', 'I18nController@show');
 
     Route::resource('watch', 'WatchesController');
-  });
-});
 
-Route::group(['middleware' => ['api']], function () {
-
-    Route::post('auth/login', 'api\AuthController@login');
-
-    Route::group(['middleware' => 'auth.jwt'], function () {
-
-      Route::post('user', 'api\AuthController@getAuthUser');
-      Route::get('eye', 'api\AuthController@getEye');
-
+    ########################
+    # Router Authentication.
+    Route::group([
+      'middleware' => 'api',
+      'prefix' => 'auth'
+    ], function () {
+      Route::post('me'      , 'AuthController@me');
+      Route::post('login'   , 'AuthController@login');
+      Route::post('logout'  , 'AuthController@logout');
+      Route::post('refresh' , 'AuthController@refresh');
     });
+
+  });
 });
