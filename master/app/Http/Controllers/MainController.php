@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Url as Watch;
+use App\Click;
 
 class MainController extends Controller {
 
-  protected $data = false;
+  protected $href = null;
 
   /**
   * Display a listing of the resource.
@@ -20,8 +21,8 @@ class MainController extends Controller {
       in_array($this->cute($key), $this->ignoreVueRoute)
     ) return view('root');
 
-    return $this->state($key, true)
-      ? redirect()->away($this->data[$key])
+    return $this->state($key)
+      ? redirect()->away($this->href)
       : view('404');
   }
 
@@ -31,14 +32,36 @@ class MainController extends Controller {
   * @param String $key
   * @return Boolean
   **/
-  public function state ($key, $return = false) {
-    // $query = DB::table('urls')->where('key', $key)->first();
-    // $this->data = $query;
-    $this->data = (array)[
-      '1mqoNSf' => '//tuner.hol.es',
-      '2vaafX4' => '//google.com',
-    ];
+  public function state ($key) {
+    $query = Watch::where('key', $key);
 
-    if ($return) return array_key_exists($key, $this->data);
+    if (!$query->count()) return (bool) $query->count();
+
+    $query = (object) $query->first([
+      'id',
+      'href',
+      'expiry',
+      'redirect'
+    ]);
+
+    $this->clicked($query->id);
+    $this->href = (!is_null($query->expiry) && $query->expiry <= date('Y-m-d'))
+      ? $query->redirect
+      : $query->href;
+
+    return true;
+  }
+
+  /**
+  * Save clicked log.
+  *
+  * @param String $this->data->id
+  **/
+  public function clicked ($id) {
+    $click = new Click;
+    $click->urls_id      = $id;
+    $click->user_ip      = \Request::ip();
+    $click->description  = \Request::header('User-Agent');
+    $click->save();
   }
 }

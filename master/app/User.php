@@ -51,4 +51,8 @@ class User extends Authenticatable implements JWTSubject {
   public function getJWTCustomClaims() {
     return [];
   }
+
+  public function url() {
+    return $this->hasMany(__NAMESPACE__ . '\Url');
+  }
 }

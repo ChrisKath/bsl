@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use App\Url as Watch;
 
 class Controller extends BaseController
 {
@@ -27,5 +28,24 @@ class Controller extends BaseController
 
   public function me () {
     return Auth::user();
+  }
+
+  public function ranKey ($length = 7) {
+    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $max = mb_strlen($keyspace, '8bit') - 1;
+    $key = '';
+
+    for ($i = 0; $i < $length; ++$i) {
+      $key .= $keyspace[random_int(0, $max)];
+    }
+
+    return $this->verifyKey($key);
+  }
+
+  public function verifyKey($key) {
+    $query = (bool) Watch::where('key', $key)->count();
+
+    if (!$query) return $key;
+    else $this->ranKey();
   }
 }

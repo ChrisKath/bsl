@@ -15,7 +15,7 @@ class Urls extends Migration {
     Schema::create('urls', function (Blueprint $table) {
       $table->increments('id');
       $table->char('key', 16);
-      $table->text('uri');
+      $table->text('href');
       $table->char('title', 100);
       $table->date('expiry')->nullable();
       $table->text('redirect')->nullable();

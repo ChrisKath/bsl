@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder {
   /**
@@ -8,21 +9,27 @@ class UsersTableSeeder extends Seeder {
   *
   * @return void
   **/
-  public function run() {
-    // Let's clear the users table first
-    App\User::truncate();
+  public function run()
+  {
+    DB::table('users')->insert([
+      'name' => 'root',
+      'email' => 'root@tap10.com',
+      'username' => 'root',
+      'password' => Hash::make('1010'),
+      'isAdmin' => 1,
+      'created_by' => 1,
+      'updated_by' => 1,
+      'remember_token' => str_random(16),
+    ]);
 
-    $faker = \Faker\Factory::create();
-
-    // Let's make sure everyone has the same password and
-    // let's hash it before the loop, or else our seeder
-    // will be too slow.
-    App\User::create([
-      'name' => 'display name',
+    DB::table('users')->insert([
+      'name' => 'admin',
       'email' => 'admin@tap10.com',
       'username' => 'admin',
       'password' => Hash::make('1010'),
       'isAdmin' => 1,
+      'created_by' => 1,
+      'updated_by' => 1,
       'remember_token' => str_random(16),
     ]);
   }
