@@ -89,26 +89,4 @@ class AuthController extends Controller {
       'expires_in'    => Auth::factory()->getTTL()
     ]);
   }
-<<<<<<< HEAD
-
-  /**
-  * Log out
-  * Invalidate the token, so user cannot use it anymore
-  * They have to relogin to get a new token
-  *
-  * @param Request $request
-  */
-
-   public function logout(Request $request) {
-       $this->validate($request, ['token' => 'required']);
-       try {
-           JWTAuth::invalidate($request->input('token'));
-           return response()->json(['success' => true]);
-       } catch (JWTException $e) {
-           // something went wrong whilst attempting to encode the token
-           return response()->json(['success' => false, 'error' => 'Failed to logout, please try again.'], 500);
-       }
-   }
-=======
->>>>>>> c2c594e83940506d5ab2ff4d412b3491e2768a24
 }

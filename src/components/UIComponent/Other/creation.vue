@@ -51,9 +51,10 @@
             v-model="form.tags">
 
             <Option v-for="(tag, key) in $lodash.orderBy(tags, ['name'], ['asc'])"
-              :value="tag.name"
-              :key="tag.id"
+              :value="tag.id"
+              :key="key.id"
               :text="tag.name"
+              :label="tag.name"
             />
 
           </Select>

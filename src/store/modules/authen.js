@@ -61,11 +61,9 @@ export const actions = {
   },
 
   async signout ({ commit }) {
-    const { data } = await HTTP.post('/auth/logout')
-    if (data.status) {
-      clearInterval(valve)
-      commit('LOGGED_OUT')
-    }
+    await HTTP.post('/auth/logout')
+    clearInterval(valve)
+    commit('LOGGED_OUT')
   },
 
   verifyCookies ({ state, dispatch }) {
@@ -95,7 +93,8 @@ export const actions = {
   authFailed () {
     router.app.$notice.error({
       title: router.app.$t('i.notice.authFailed.title'),
-      desc:  router.app.$t('i.notice.authFailed.desc')
+      desc:  router.app.$t('i.notice.authFailed.desc'),
+      duration: 10
     })
     router.app.$loading.error()
   },

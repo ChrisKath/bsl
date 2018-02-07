@@ -1,4 +1,4 @@
-// import { HTTP } from '../http'
+import { HTTP } from '../http'
 import router from '~/router'
 import cookieStore from 'vue-cookie'
 
@@ -79,8 +79,10 @@ export const mutations = {
 // actions
 export const actions = {
   async add ({ commit, dispatch }, params) {
-    await dispatch('authen')
-    await commit('FETCH_NEW_WATCH', params)
+    const res = await HTTP.post('/watch', params)
+    console.log(res)
+    // await dispatch('authen')
+    // await commit('FETCH_NEW_WATCH', params)
   },
 
   async update ({ commit, dispatch }, params) {
