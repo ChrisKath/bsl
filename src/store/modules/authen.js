@@ -1,116 +1,110 @@
 import { HTTP } from '../http'
 import router from '~/router'
-import cookieStore from 'vue-cookie'
+import cookieStorage from 'vue-cookie'
 
 let valve = null
 
 // state
 export const state = {
-  voice: cookieStore.get('TYPE.Authentication') || null
+  voice: cookieStorage.get('TYPE.Authentication') || null
 }
 
 // getters
 export const getters = {
-  check: state => Boolean(state.voice),
-  voice: state => {
-    const { value } = router.app.$jwt.decode(
-      router.app.$secret, state.voice
-    )
-    return value
-  }
+  voice: state => state.voice,
+  check: state => Boolean(state.voice)
 }
 
 // mutations
 export const mutations = {
-  FETCH_AUTH_SUCCESS (state, payload) {
-    if (payload) {
-      const observe = Object.assign({ payload }, {
-        iss: 'TAP Technology co., ltd.',
-        aud: 'P-R-I-V-A-T-E M-E-M-B-E-R',
-        iat: Date.now()
-      })
-      const { value } = window.app.$jwt.encode(window.app.$secret, observe)
-
-      state.voice = value
-      cookieStore.set(window.app.$typeA, value, {
-        expires: payload.remember
-          ? '15D'
-          : '15m'
-      })
-      HTTP.defaults.headers.common['Authorization'] = `Bearer ${value}`
-
-      router.push({name: 'auth.main'})
-    } else {
-      state.voice = null
-      cookieStore.delete(window.app.$typeA)
-      window.app.$loading.error()
-      window.app.$notice.error({
-        title: window.app.$t('i.notice.authFailed.title'),
-        desc: window.app.$t('i.notice.authFailed.desc')
-      })
-    }
+  FETCH_USER_AUTH (state, payload) {
+    state.voice = payload
+    router.push({name: 'auth.main'})
   },
 
-  FETCH_COOKIE (state) {
-    const { value } = window.app.$jwt.decode(window.app.$secret, state.voice)
-    if (value && value.remember === false) {
-      window.addEventListener('click', events => {
-        if (!cookieStore.get(window.app.$typeA)) {
-          state.voice = null
-          return false
-        } else {
-          cookieStore.set(window.app.$typeA, state.voice, {
-            expires: '15m'
-          })
-          HTTP.defaults.headers.common['Authorization'] = `Bearer ${state.voice}`
-        }
-      }, true)
-    }
-  },
-
-  LOGOUT (state) {
+  LOGGED_OUT (state) {
+    HTTP.defaults.headers.common['Authorization'] = null
+    cookieStorage.delete(router.app.$typeA)
     state.voice = null
-    cookieStore.delete(window.app.$typeA)
-    HTTP.defaults.headers.common['Authorization'] = `Bearer ${state.voice}`
+    router.push({name: 'guest.login'})
+  },
+
+  HTTP_HEADERS (state, payload) {
+    HTTP.defaults.headers.common['Authorization'] = `Bearer ${payload}`
   }
 }
 
 // actions
 export const actions = {
   async signin ({ commit, dispatch }, params) {
-    const { data } = await HTTP.post('/check', params)
-    await commit('FETCH_AUTH_SUCCESS', data)
-    if (!params.remember) commit('FETCH_COOKIE')
+    const { data } = await HTTP.post('/auth/login', params)
 
-    dispatch('cookies')
-  },
-
-  async signout ({ commit }) {
-    const { data } = await HTTP.post('/logout')
-    if (data.status) {
-      commit('LOGOUT')
-      clearInterval(valve)
-      router.push({name: 'guest.login'})
+    if (data.error || !data) dispatch(/** notice-error **/ 'authFailed')
+    else {
+      cookieStorage.set('TYPE.Remember', params.remember, 1)
+      cookieStorage.set(window.app.$typeA, data.access_token, {
+        expires: `${data.expires_in}m`
+      })
+      await commit('HTTP_HEADERS', data.access_token)
+      await dispatch('fetchAuth')
+      await dispatch('verifyCookies')
     }
   },
 
-  cookies ({ commit, dispatch }) {
-    commit('FETCH_COOKIE')
+  async fetchAuth ({ commit }) {
+    const token = cookieStorage.get(router.app.$typeA)
+    if (token) {
+      await commit('HTTP_HEADERS', token)
+      const { data } = await HTTP.post('/auth/me')
+      commit('FETCH_USER_AUTH', data)
+    }
+  },
 
+  async signout ({ commit }) {
+    const { data } = await HTTP.post('/auth/logout')
+    if (data.status) {
+      clearInterval(valve)
+      commit('LOGGED_OUT')
+    }
+  },
+
+  verifyCookies ({ state, dispatch }) {
     window.app.$notice.destroy()
 
+    if (cookieStorage.get('TYPE.Remember') === 'false') {
+      window.addEventListener('click', events => {
+        if (state.voice) {
+          cookieStorage.set(
+            window.app.$typeA,
+            cookieStorage.get(window.app.$typeA),
+            { expires: '30m' }
+          )
+        }
+      }, true)
+    }
+
     valve = setInterval(async callback => {
-      if (!cookieStore.get(window.app.$typeA)) {
+      if (!cookieStorage.get(window.app.$typeA)) {
         clearInterval(valve)
-
         await dispatch('signout')
-
-        window.app.$notice.warning({
-          duration: 0,
-          title: window.app.$t('i.notice.authDenied.title'),
-          desc: window.app.$t('i.notice.authDenied.desc')
-        })
+        dispatch(/** notice-warning **/ 'authDenied')
       }
     }, 2000)
+  },
+
+  authFailed () {
+    router.app.$notice.error({
+      title: router.app.$t('i.notice.authFailed.title'),
+      desc:  router.app.$t('i.notice.authFailed.desc')
+    })
+    router.app.$loading.error()
+  },
+
+  authDenied () {
+    router.app.$notice.warning({
+      title: router.app.$t('i.notice.authDenied.title'),
+      desc:  router.app.$t('i.notice.authDenied.desc'),
+      duration: 0
+    })
   }
 }

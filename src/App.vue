@@ -14,16 +14,21 @@ import Navigation from '~/components/layout/navigation'
 
 export default {
   methods: mapActions({
-    cookies: 'authen/cookies'
+    fetchAuth: 'authen/fetchAuth',
+    enableVerifyCookies: 'authen/verifyCookies'
   }),
 
   computed: mapGetters({
     authen: 'authen/check'
   }),
 
+  async created () {
+    await this.fetchAuth(true)
+  },
+
   mounted () {
     this.$nextTick(() => {
-      if (this.authen) this.cookies()
+      if (this.authen) this.enableVerifyCookies()
     })
   },
 

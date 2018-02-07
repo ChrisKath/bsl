@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use JWTAuth;
 use App\Watches;
 
 class WatchesController extends Controller {
@@ -33,9 +32,8 @@ class WatchesController extends Controller {
   * @param  \Illuminate\Http\Request  $request
   * @return \Illuminate\Http\Response
   **/
-  public function store(Request $req) {
-    $user  = substr($req->header('Authorization'), 7);
-    $title = str_replace('www.', '', parse_url($req->url, PHP_URL_HOST));
+  public function store(Request $request) {
+    $user = $this->me();
 
     return response($user, 200);
   }

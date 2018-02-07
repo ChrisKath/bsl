@@ -22,7 +22,7 @@
       <DropdownMenu slot="list">
         <DropdownItem class="ivu-dropdown-info">
           <div class>
-            <h2 class="size-w600">ゴジです</h2>
+            <h2 class="size-w600">{{ voice.name }}</h2>
             <h3 class="grey">{{ voice.username }}</h3>
           </div>
         </DropdownItem>
