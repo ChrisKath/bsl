@@ -72,13 +72,13 @@
       </DropdownMenu>
     </Dropdown>
 
-    <Creation ref="c"/>
+    <Complex ref="c"/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Creation from '~/components/UIComponent/Other/creation'
+import Complex from '~/components/UIComponent/Other/complex'
 
 export default {
   methods: {
@@ -98,7 +98,7 @@ export default {
   }),
 
   components: {
-    'Creation': Creation
+    'Complex': Complex
   }
 }
 </script>

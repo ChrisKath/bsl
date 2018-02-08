@@ -1,6 +1,6 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
-    <NoData v-if="!check"/>
+    <NoData v-if="!items.length"/>
 
     <div class="ivu-list" v-else>
       <div class="ivu-list-li" v-for="(item, key) in items">
@@ -10,16 +10,14 @@
 
           <Row class="txt-up" type="flex" align="middle" justify="space-between">
             <Col class="col-title size-16 size-w800">
-              {{ item.name }}
+              {{ item.title }}
             </Col>
             <Col class="col-date size-11 size-w600 flexed">
-              <span class>
-                {{ new Date(item.create_at) | moment('ll') }}
-              </span>
-              &nbsp;|&nbsp;
-              <span class>
-                {{ new Date(item.create_at) | moment('from', 'now') }}
-              </span>
+              {{ `
+                ${$moment(item.created_at).format('ll')}
+                &nbsp;|&nbsp;
+                ${$moment(item.created_at).fromNow()}
+              ` }}
             </Col>
           </Row>
 
@@ -32,7 +30,13 @@
             </Col>
 
             <Col class="col-click size-14">
-              <code :class="[item.fly ? 'success' : 'disable']">
+              <code v-if="$moment(item.expiry).isBefore(Date.now())"
+                class="warning" title="Expiry">
+                <Icon type="ios-alarm"/>
+              </code>
+
+              <code :class="[item.enable ? 'success' : 'disable']"
+                :title="[item.enable ? 'Enable': 'Disable']">
                 <Icon type="ios-checkmark"/>
               </code>
 
@@ -44,10 +48,10 @@
       </div>
     </div>
 
-    <div class="ivu-load-more txt-c" v-if="check">
+    <div class="ivu-load-more txt-c mg-b30" v-if="items.length">
       <Button type="ghost" class="txt-up size-w600 min-w200"
         :loading="i.loading"
-        @click="toLoading">
+        @click="takeMore">
 
         <span v-if="!i.loading">load more</span>
         <span v-else>{{ $t('i.select.loading') }}...</span>
@@ -57,30 +61,50 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import NoData from '~/components/layout/noDataText'
+import { HTTP } from '~/store/http'
 
 export default {
   data () {
     return {
+      items: [],
       i: { loading: false }
     }
   },
 
   methods: {
-    toLoading () {
+    async takeMore () {
       this.i.loading = true
 
-      setTimeout(() => {
+      // observe items id.
+      const items = []
+      this.items.forEach((item, key) => {
+        items.push(
+          item.id
+        )
+      })
+
+      // call more items setp-10
+      await setTimeout(async callback => {
+        const { data } = await HTTP.post('/watch/take', {'items': items})
+
+        data.forEach((item, key) => {
+          this.items.push(item)
+        })
+
         this.i.loading = false
-      }, 2560)
+      }, 1280)
+    },
+
+    async call () {
+      const { data } = await HTTP.get('/watch')
+      this.items = data
     }
   },
 
-  computed: mapGetters({
-    items: 'manage.watch/watch',
-    check: 'manage.watch/check'
-  }),
+  async created () {
+    await this.call()
+  },
 
   components: {
     'NoData': NoData

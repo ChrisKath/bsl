@@ -19,7 +19,6 @@ export const getters = {
 export const mutations = {
   FETCH_USER_AUTH (state, payload) {
     state.voice = payload
-    router.push({name: 'auth.main'})
   },
 
   LOGGED_OUT (state) {
@@ -48,6 +47,7 @@ export const actions = {
       await commit('HTTP_HEADERS', data.access_token)
       await dispatch('fetchAuth')
       await dispatch('verifyCookies')
+      router.push({name: 'auth.main'})
     }
   },
 

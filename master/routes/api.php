@@ -26,6 +26,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
 
       Route::resource('watch', 'WatchController');
+      Route::post('watch/take', 'WatchController@showly');
+
+      Route::resource('tags',  'TagController');
 
     });
 

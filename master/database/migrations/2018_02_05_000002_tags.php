@@ -11,10 +11,11 @@ class Tags extends Migration {
   * @return void
   **/
   public function up() {
-    
+
     Schema::create('tags', function (Blueprint $table) {
       $table->increments('id');
       $table->char('name', 100);
+      $table->dateTime('created_at')->useCurrent();
     });
 
   }

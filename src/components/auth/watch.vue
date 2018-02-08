@@ -1,10 +1,13 @@
 <template lang="html">
-  <Row class-name="ivu-watch" v-if="items">
+  <Row class-name="ivu-watch">
 
-    <RowHead router-back="auth.main" :title-name="items.name.toUpperCase()">
+    <RowHead router-back="auth.main" :title-name="item.title">
       <Col slot="col-2">
-        <span class="size-14 size-w700 txt-up mg-r5">{{ $t('i.form.button.enable') }}:</span>
-        <Switch size="large" v-model="status" @on-change="fly">
+        <span class="size-14 size-w700 txt-up mg-r5">
+          {{ $t('i.form.button.enable') }}:
+        </span>
+
+        <Switch size="large" v-model="enable" @on-change="fly">
           <span slot="open">{{ $t('i.form.button.on') }}</span>
           <span slot="close">{{ $t('i.form.button.off') }}</span>
         </Switch>
@@ -15,23 +18,28 @@
       <Col :span="16">
         <Row type="flex" align="top" justify="space-between">
           <Col class="size-13">
+
             <span class="mg-r10">
               <strong>{{ $t('i.title.created') }}:</strong>
-              <i class="pd-l5 txt-up">{{ new Date(items.create_at) | moment('ll') }}</i>
-              <a class="pd-r5">({{ items.create_by }})</a>
+              <i class="pd-l5 txt-up">
+                {{ $moment(item.created_at).format('ll') }}
+              </i>
+              <a class="pd-r5">({{ item.created_by }})</a>
             </span>
+
             <span class="mg-l10">
               <strong>{{ $t('i.title.updated') }}:</strong>
-              <i class="pd-l5 txt-up">{{ new Date(items.update_at) | moment('ll') }}</i>
-              <a class="pd-r5">({{ items.update_by }})</a>
+              <i class="pd-l5 txt-up">
+                {{ $moment(item.updated_at).format('ll') }}
+              </i>
+              <a class="pd-r5">({{ item.updated_by }})</a>
             </span>
+
           </Col>
 
           <Col>
             <div class>
-              <b class="size-18 size-w700">
-                {{ items.click }}
-              </b>
+              <b class="size-18 size-w700" v-text="timeline"/>
               <Icon type="stats-bars"/>
             </div>
             <div class="size-10 size-w900 disable">TOTAL CLICKS</div>
@@ -42,23 +50,26 @@
           <Col>
             <h5 class="mg-b5">
               <strong>Expiry:</strong>
-              <i v-if="items.expiry" class="txt-up">
-                {{ new Date(items.expiry) | moment('ll') }}
+
+              <i v-if="item.expiry === null">Immortal</i>
+              <i v-else class="txt-up">
+                {{ $moment(item.expiry).format('ll') }}
+                <span v-if="expiry" class="warning">(Death)</span>
               </i>
-              <i v-else>Immortal</i>
             </h5>
 
-            <a class="ltd-1 size-16 size-w600" target="_blank"
-              v-text="items.href"
-              :href="items.href"
-            />
+            <Row class="ltd-1 size-16 size-w600">
+              <a :href="item.href" target="_blank">
+                {{ item.href }}
+              </a>
+            </Row>
 
             <Row type="flex" align="middle" justify="start"
               class-name="mg-t20">
               <Col :span="5">
                 <a class="size-14 primary" target="_blank"
-                  :href="`//${$uri}${items.key}`">
-                  {{ $uri }}<strong>{{ items.key }}</strong>
+                  :href="`//${$uri}${item.key}`">
+                  {{ $uri }}<strong>{{ item.key }}</strong>
                 </a>
               </Col>
 
@@ -66,29 +77,28 @@
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up"
                   v-text="$t('i.form.button.copy')"
-                  v-clipboard:copy="`${$uri}${items.key}`"
+                  v-clipboard:copy="`${$uri}${item.key}`"
                   v-clipboard:success="clipboard"
                 />
 
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.edit')"
-                  @click="$refs.c.open(true, items.key)"
+                  @click="$refs.c.open(true, item.key)"
                 />
 
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.remove')"
-                  @click="clear"
+                  @click="removed"
                 />
               </Col>
             </Row>
 
             <Row type="flex" align="top" justify="start"
-              class-name="mg-t20"
-              v-if="items.tags">
-              <Tag class="mg-r5" v-for="(i, key) in items.tags" :key="i.id">
-                {{ i }}
+              class-name="mg-t20">
+              <Tag class="mg-r5" v-for="(tag, key) in item.tags" :key="key.id">
+                {{ tag.name }}
               </Tag>
             </Row>
 
@@ -102,11 +112,21 @@
 
         <Scroll class="pd-l15 mg-t10" height="auto">
 
-          <Timeline v-if="items.click">
-            <TimelineItem v-for="(i, key) in items.click" :key="i.id">
+          <Timeline v-if="timeline">
+            <TimelineItem v-for="(click, key) in item.timeline" :key="key.id">
               <Icon type="ios-pulse-strong" slot="dot"/>
-              <p>{{ new Date() | moment('ll') }}</p>
-              <p class="disable">ip address</p>
+
+              <p class>
+                <span class>
+                  {{ $moment(item.clicked_at).format('ll') }}
+                </span>
+                &nbsp;|&nbsp;
+                <span>
+                  {{ $moment(click.clicked_at).fromNow() }}
+                </span>
+              </p>
+
+              <p class="disable">{{ click.user_ip }}</p>
             </TimelineItem>
           </Timeline>
 
@@ -115,21 +135,21 @@
         </Scroll>
       </Col>
     </Row>
-
-    <Creation ref="c"/>
   </Row>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import NoData from '~/components/layout/noDataText'
-import Creation from '~/components/UIComponent/Other/creation'
+import { mapActions } from 'vuex'
+import { HTTP } from '~/store/http'
 
 export default {
   data () {
     return {
-      key: this.$route.params.key,
-      status: false
+      item: [],
+      enable: false,
+      expiry: false,
+      timeline: 0
     }
   },
 
@@ -141,49 +161,47 @@ export default {
 
     clipboard () {
       this.$message.success(
-        `${this.$t('i.notice.success')} [${this.$uri}${this.items.key}]`
+        `${this.$t('i.notice.success')} [${this.$uri}${this.item.key}]`
       )
     },
 
-    clear () {
-      this.$Modal.confirm({
-        onOk: () => this.remove(this.key),
+    removed () {
+      this.$modal.confirm({
+        onOk: () => this.remove(this.item.key),
         okText: this.$t('i.form.button.confirm'),
         cancelText: this.$t('i.form.button.cancel'),
-        content: `<b class=txt-up>${this.items.name}</b>, An deletion?`
+        content: `<b class=txt-up>${this.item.title}</b>, An deletion?`
       })
     },
 
     fly (status) {
       this.disable({
-        key: this.key,
+        key: this.item.key,
         value: status
       })
-    }
-  },
+    },
 
-  computed: {
-    ...mapGetters({
-      watch: 'manage.watch/watch'
-    }),
+    async call () {
+      const { data } = await HTTP.get(`/watch/${this.$route.params.key}`)
 
-    items () {
-      const query = this.$lodash.find(this.watch, {
-        key: this.$route.params.key
-      })
-      if (query === undefined) {
+      if (data === false) {
         this.$router.push({name: 'auth.main'})
-        return false
       } else {
-        this.status = query.fly
-        return query
+        this.item = data
+        this.enable = Boolean(data.enable)
+        this.timeline = data.timeline.length
+        this.expiry = this.$moment(data.expiry).isBefore(new Date())
       }
     }
   },
 
+  async created () {
+    await this.call()
+    this.clipboard()
+  },
+
   components: {
-    'NoData': NoData,
-    'Creation': Creation
+    'NoData': NoData
   }
 }
 </script>

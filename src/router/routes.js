@@ -19,6 +19,16 @@ export default [
       component: dashboard
     },
     {
+      name: 'auth.watch.add',
+      path: '/watch/add/:type',
+      component: dashboard
+    },
+    {
+      name: 'auth.watch.edit',
+      path: '/watch/:key/edit',
+      component: watch
+    },
+    {
       name: 'auth.watch',
       path: '/watch/:key',
       component: watch

@@ -11,9 +11,9 @@
         <div class="mg-t20 pd-b10">
           <p class="size-17 size-w700 txt-up">{{ item.name }}</p>
           <p class="size-10 txt-up pd-t5">
-            {{ new Date(item.timestamp) | moment('ll') }}
+            {{ new Date(item.created_at) | moment('ll') }}
             <br />
-            {{ new Date(item.timestamp) | moment('from', 'now') }}
+            {{ new Date(item.created_at) | moment('from', 'now') }}
           </p>
         </div>
 
@@ -61,6 +61,7 @@ export default {
 
   methods: {
     ...mapActions({
+      call: 'manage.tag/call',
       add: 'manage.tag/add',
       remove: 'manage.tag/remove'
     }),
@@ -95,6 +96,10 @@ export default {
       this.push = false
       this.tagName = null
     }
+  },
+
+  async created () {
+    await this.call()
   },
 
   computed: mapGetters({

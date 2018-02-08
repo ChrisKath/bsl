@@ -15,10 +15,10 @@ class Taggable extends Model {
   public $timestamps = false;
 
   public function url() {
-    return $this->belongsTo(__NAMESPACE__ . '\Url');
+    return $this->belongsTo(__NAMESPACE__ . '\Url', 'urls_id');
   }
 
   public function tags() {
-    return $this->belongsTo(__NAMESPACE__ . '\Tag');
+    return $this->belongsTo(__NAMESPACE__ . '\Tag', 'tags_id');
   }
 }

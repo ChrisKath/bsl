@@ -1,12 +1,8 @@
-// import { HTTP } from '../http'
+import { HTTP } from '../http'
 
 // state
 export const state = {
-  tags: [
-    {id: 1, name: 'promotion', timestamp: Date.now()},
-    {id: 2, name: 'campaign',  timestamp: Date.now()},
-    {id: 3, name: 'other',     timestamp: Date.now()}
-  ]
+  tags: []
 }
 
 // getters
@@ -16,6 +12,10 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  FETCH_TAGS (state, payload) {
+    state.tags = payload
+  },
+
   FETCH_NEW_TAG (state, payload) {
     state.tags.push({
       id: state.tags.length + 1,
@@ -33,6 +33,11 @@ export const mutations = {
 
 // actions
 export const actions = {
+  async call ({ commit }) {
+    const { data } = await HTTP.get('/tags')
+    commit('FETCH_TAGS', data)
+  },
+
   async add ({ commit }, params) {
     await commit('FETCH_NEW_TAG', params)
     window.app.$notice.success({

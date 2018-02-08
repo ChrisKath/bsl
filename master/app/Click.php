@@ -11,7 +11,6 @@ class Click extends Model {
   *
   * @var string
   **/
-  protected $table = 'clickes';
   public $timestamps = false;
 
   public function url() {

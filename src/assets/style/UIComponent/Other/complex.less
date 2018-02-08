@@ -1,0 +1,31 @@
+.@{css-prefix}complex {
+  .@{css-prefix} {
+
+    &modal {
+      max-width: 840px;
+      top: @layout-header-height;
+
+      &-body {
+        padding: 50px;
+        line-height: normal;
+      }
+      &-footer { display: none }
+    }
+
+    &added {
+      border-radius: @border-radius-base;
+      border: solid 1px @border-color-split;
+
+      & > a {
+        display: block;
+        padding: 10px;
+        text-align: center;
+      }
+
+      &:hover {
+        border-color: @link-hover-color;
+      }
+    }
+
+  }
+}
