@@ -22,8 +22,8 @@
       <DropdownMenu slot="list">
         <DropdownItem class="ivu-dropdown-info">
           <div class>
-            <h2 class="size-w600">{{ voice.name }}</h2>
-            <h3 class="grey">{{ voice.username }}</h3>
+            <h2 class="txt-up size-w600">{{ voice.name }}</h2>
+            <h3 class="txt-cap grey">{{ voice.username }}</h3>
           </div>
         </DropdownItem>
 
@@ -41,14 +41,14 @@
           </router-link>
         </DropdownItem>
 
-        <DropdownItem>
+        <DropdownItem v-if="voice.isAdmin">
           <router-link :to="{name: 'auth.tag'}">
             <Icon type="ios-pricetags-outline" :size="20" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.manageTag')"/>
           </router-link>
         </DropdownItem>
 
-        <DropdownItem>
+        <DropdownItem v-if="voice.isAdmin">
           <router-link :to="{name: 'auth.panel'}">
             <Icon type="ios-personadd-outline" :size="23" class="align-m mg-r5"/>
             <span v-text="$t('i.menu.manageAccounts')"/>

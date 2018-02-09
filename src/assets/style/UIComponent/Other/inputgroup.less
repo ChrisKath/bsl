@@ -15,6 +15,12 @@
       vertical-align: text-bottom;
       border-right: solid 1px @border-color-base;
     }
+
+    .needed::after {
+      content: ' *';
+      font-size: 14px;
+      color: tint(@error-color, 15%);
+    }
   }
 
   .@{css-prefix}input {

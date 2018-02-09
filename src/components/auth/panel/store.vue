@@ -1,10 +1,10 @@
 <template lang="html">
   <Row class-name="ivu-panel-store">
-    <RowHead :router-back="head.back" :title-name="head.title"/>
+    <RowHead :route-back="i.back" :title-name="i.title"/>
 
     <Row class-name="ivu-row-body"
       :class="[
-        (head.type === 'edit')
+        (i.type === 'edit')
           ? 'pd-t20 pd-r40 pd-b40 pd-l40'
           : 'pd-40'
       ]">
@@ -14,7 +14,7 @@
         :rules="rule"
         @keyup.enter.native="touch('store')">
 
-        <FormItem class="size-13" v-if="head.type === 'edit'">
+        <FormItem class="size-13" v-if="i.type === 'edit'">
           <span class="mg-r25">
             <strong>{{ $t('i.title.created') }}:</strong>
             <i class="pd-l5 txt-up">{{ new Date() | moment('ll') }}</i>
@@ -119,10 +119,10 @@ import verify from '~/components/validator'
 export default {
   data () {
     return {
-      i: { loading: false },
-      head: {
+      i: {
+        loading: false,
         type: 'add',
-        back: 'auth.panel',
+        back: {name: 'auth.panel'},
         title: this.$t('i.title.createAccount')
       },
       form: {
@@ -163,11 +163,11 @@ export default {
 
           setTimeout(() => {
             this.i.loading = false
-            if (this.head.type === 'add') {
+            if (this.i.type === 'add') {
               this.add(this.form)
             }
 
-            if (this.head.type === 'edit') {
+            if (this.i.type === 'edit') {
               const data = Object.assign({
                 uid: this.$route.params.key
               }, this.form)

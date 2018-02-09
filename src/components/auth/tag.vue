@@ -1,6 +1,6 @@
 <template lang="html">
   <Row class-name="ivu-tags">
-    <RowHead router-back="auth.main" :title-name="$t('i.menu.manageTag')"/>
+    <RowHead :route-back="{name: 'auth.main'}" :title-name="$t('i.menu.manageTag')"/>
 
     <Row class-name="ivu-row-body pd-15">
       <Col class-name="ivu-col-card mg-15 pd-15 pd-b30"

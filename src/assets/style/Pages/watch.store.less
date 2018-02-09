@@ -1,0 +1,72 @@
+.@{css-prefix}watch-store {
+  max-width: @screen-sm !important;
+
+  .@{css-prefix} {
+
+    &form {
+      padding: 40px;
+      background-color: transparent;
+    }
+
+    &select {
+      &-selection {
+        min-height: auto;
+        font-size: 13px;
+        padding: 40px 15px 10px;
+      }
+
+      .@{css-prefix}tag {
+        padding: 5px 10px;
+        margin: 0 8px 0 0;
+        text-transform: capitalize;
+        background-color: transparent;
+        border-radius: @border-radius-base;
+        border: dashed 1px lighten(@primary-color, 25%);
+      }
+
+      &-dropdown {
+        max-height: 320px;
+        margin: -2px 0 0;
+        border: solid 1px tint(@input-hover-border-color, 40%);
+      }
+
+      &-item {
+        padding: 5px 15px;
+        border-radius: 0;
+        text-transform: capitalize;
+        transition: padding-left 200ms ease-in-out;
+
+        &-selected {
+          font-weight: 600;
+
+          &::after {
+            line-height: 12px;
+          }
+        }
+
+
+        &:hover {
+          padding-left: 20px;
+        }
+      }
+
+      &-input {
+        height: 26px;
+        line-height: normal;
+      }
+
+      &-not-found {
+        display: none !important;
+      }
+    }
+
+    &date-picker {
+      width: 100%;
+
+      .@{css-prefix}input-icon {
+        display: none;
+      }
+    }
+
+  }
+}

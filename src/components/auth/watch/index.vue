@@ -1,7 +1,7 @@
 <template lang="html">
   <Row class-name="ivu-watch">
 
-    <RowHead router-back="auth.main" :title-name="item.title">
+    <RowHead :route-back="{name: 'auth.main'}" :title-name="item.title">
       <Col slot="col-2">
         <span class="size-14 size-w700 txt-up mg-r5">
           {{ $t('i.form.button.enable') }}:
@@ -81,11 +81,17 @@
                   v-clipboard:success="clipboard"
                 />
 
-                <Button type="ghost" size="small"
-                  class="size-11 size-w600 txt-up mg-l5"
-                  v-text="$t('i.form.button.edit')"
-                  @click="$refs.c.open(true, item.key)"
-                />
+                <router-link :to="{name: 'auth.watch.store',
+                  params: {
+                    key: item.key,
+                    type: 'edit'
+                  }
+                }">
+                  <Button type="ghost" size="small"
+                    class="size-11 size-w600 txt-up mg-l5"
+                    v-text="$t('i.form.button.edit')"
+                  />
+                </router-link>
 
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
@@ -197,7 +203,6 @@ export default {
 
   async created () {
     await this.call()
-    this.clipboard()
   },
 
   components: {

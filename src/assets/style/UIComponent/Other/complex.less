@@ -6,24 +6,35 @@
       top: @layout-header-height;
 
       &-body {
-        padding: 50px;
         line-height: normal;
+        padding: 60px 60px 40px;
       }
-      &-footer { display: none }
+
+      &-footer {
+        display: none;
+      }
     }
 
     &added {
-      border-radius: @border-radius-base;
+      border-radius: 6px;
       border: solid 1px @border-color-split;
 
       & > a {
         display: block;
-        padding: 10px;
         text-align: center;
+        min-height: 340px;
+        padding: 50px 30px;
       }
 
       &:hover {
-        border-color: @link-hover-color;
+        border-color: tint(@link-hover-color, 20%);
+      }
+
+      .@{css-prefix} {
+        &icon {
+          font-size: 7.2rem;
+          color: @avatar-bg;
+        }
       }
     }
 

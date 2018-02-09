@@ -5,14 +5,13 @@
     justify="space-between">
 
     <Col class="flexed">
-      <router-link :to="{name: routerBack}">
+      <router-link :to="routeBack">
         <Button type="text" size="large" class="size-w800"
           icon="chevron-left">{{ $t('i.form.button.back') }}</Button>
       </router-link>
 
-      <span class="cal-m mg-l15 size-24 size-w700 deep-black">
-        {{ titleName }}
-      </span>
+      <span class="cal-m mg-l15 size-24 size-w700 deep-black"
+        v-html="titleName"/>
     </Col>
 
     <slot name="col-2"></slot>
@@ -28,9 +27,11 @@ export default {
       type: String,
       default: ''
     },
-    'router-back': {
-      type: String,
-      default: 'auth.main'
+    'route-back': {
+      type: [Object, Array],
+      default: {
+        name: 'auth.main'
+      }
     }
   }
 }

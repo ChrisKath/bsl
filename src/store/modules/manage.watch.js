@@ -18,25 +18,9 @@ export const getters = {
 // mutations
 export const mutations = {
   FETCH_NEW_WATCH (state, payload) {
-    const hash = new URL(payload.href).hostname.replace('www.', '')
-    const isKey = '1mqoNSf' //window.btoa(Math.random()).substr(0, 7)
+    // const hash = new URL(payload.href).hostname.replace('www.', '')
 
-    state.watch.push({
-      key: isKey,
-      href: payload.href,
-      name: hash,
-      tags: payload.tags,
-      click: 0,
-      fly: true,
-      expiry: null,
-      redir: null,
-      create_at: Date.now(),
-      update_at: Date.now(),
-      create_by: logged.username,
-      update_by: logged.username
-    })
-
-    router.push({name: 'auth.watch', params: {key: isKey}})
+    // router.push({name: 'auth.watch', params: {key: isKey}})
   },
 
   UPDATE_AN_WATCH (state, payload) {
@@ -78,11 +62,15 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async add ({ commit, dispatch }, params) {
-    const res = await HTTP.post('/watch', params)
-    console.log(res)
-    // await dispatch('authen')
-    // await commit('FETCH_NEW_WATCH', params)
+  async add ({ commit }, params) {
+    const { data } = await HTTP.post('/watch', params)
+
+    router.push({
+      name: 'auth.watch',
+      params: {
+        key: data.key
+      }
+    })
   },
 
   async update ({ commit, dispatch }, params) {

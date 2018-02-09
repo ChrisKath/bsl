@@ -1,8 +1,11 @@
-const login = () => import('~/components/guest/login')
-const reset = () => import('~/components/guest/reset')
+const login     = () => import('~/components/guest/login')
+const reset     = () => import('~/components/guest/reset')
 
 const dashboard = () => import('~/components/auth/dashboard')
-const watch     = () => import('~/components/auth/watch')
+
+const watch     = () => import('~/components/auth/watch/index')
+const add       = () => import('~/components/auth/watch/store')
+
 const tag       = () => import('~/components/auth/tag')
 
 const panel     = () => import('~/components/auth/panel/index')
@@ -19,14 +22,9 @@ export default [
       component: dashboard
     },
     {
-      name: 'auth.watch.add',
-      path: '/watch/add/:type',
-      component: dashboard
-    },
-    {
-      name: 'auth.watch.edit',
-      path: '/watch/:key/edit',
-      component: watch
+      name: 'auth.watch.store',
+      path: '/watch/:key/:type',
+      component: add
     },
     {
       name: 'auth.watch',
