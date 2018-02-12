@@ -41,6 +41,7 @@ class MainController extends Controller {
       'id',
       'href',
       'expiry',
+      'enable',
       'redirect'
     ]);
 
@@ -49,7 +50,7 @@ class MainController extends Controller {
       ? $query->redirect
       : $query->href;
 
-    return true;
+    return (bool) $query->enable;
   }
 
   /**

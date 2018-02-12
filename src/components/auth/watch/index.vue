@@ -1,7 +1,7 @@
 <template lang="html">
   <Row class-name="ivu-watch">
 
-    <RowHead :route-back="{name: 'auth.main'}" :title-name="item.title">
+    <RowHead :route-back="{name: 'auth.main'}" :title-name="watch.title">
       <Col slot="col-2">
         <span class="size-14 size-w700 txt-up mg-r5">
           {{ $t('i.form.button.enable') }}:
@@ -22,17 +22,17 @@
             <span class="mg-r10">
               <strong>{{ $t('i.title.created') }}:</strong>
               <i class="pd-l5 txt-up">
-                {{ $moment(item.created_at).format('ll') }}
+                {{ $moment(watch.created_at).format('ll') }}
               </i>
-              <a class="pd-r5">({{ item.created_by }})</a>
+              <a class="pd-r5">({{ watch.created_by }})</a>
             </span>
 
             <span class="mg-l10">
               <strong>{{ $t('i.title.updated') }}:</strong>
               <i class="pd-l5 txt-up">
-                {{ $moment(item.updated_at).format('ll') }}
+                {{ $moment(watch.updated_at).format('ll') }}
               </i>
-              <a class="pd-r5">({{ item.updated_by }})</a>
+              <a class="pd-r5">({{ watch.updated_by }})</a>
             </span>
 
           </Col>
@@ -51,16 +51,16 @@
             <h5 class="mg-b5">
               <strong>Expiry:</strong>
 
-              <i v-if="item.expiry === null">Immortal</i>
+              <i v-if="watch.expiry === null">Immortal</i>
               <i v-else class="txt-up">
-                {{ $moment(item.expiry).format('ll') }}
+                {{ $moment(watch.expiry).format('ll') }}
                 <span v-if="expiry" class="warning">(Death)</span>
               </i>
             </h5>
 
             <Row class="ltd-1 size-16 size-w600">
-              <a :href="item.href" target="_blank">
-                {{ item.href }}
+              <a :href="watch.href" target="_blank">
+                {{ watch.href }}
               </a>
             </Row>
 
@@ -68,8 +68,8 @@
               class-name="mg-t20">
               <Col :span="5">
                 <a class="size-14 primary" target="_blank"
-                  :href="`//${$uri}${item.key}`">
-                  {{ $uri }}<strong>{{ item.key }}</strong>
+                  :href="`//${$uri}${watch.key}`">
+                  {{ $uri }}<strong>{{ watch.key }}</strong>
                 </a>
               </Col>
 
@@ -77,13 +77,13 @@
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up"
                   v-text="$t('i.form.button.copy')"
-                  v-clipboard:copy="`${$uri}${item.key}`"
+                  v-clipboard:copy="`${$uri}${watch.key}`"
                   v-clipboard:success="clipboard"
                 />
 
                 <router-link :to="{name: 'auth.watch.store',
                   params: {
-                    key: item.key,
+                    key: watch.key,
                     type: 'edit'
                   }
                 }">
@@ -103,7 +103,7 @@
 
             <Row type="flex" align="top" justify="start"
               class-name="mg-t20">
-              <Tag class="mg-r5" v-for="(tag, key) in item.tags" :key="key.id">
+              <Tag class="mg-r5" v-for="(tag, key) in watch.tags" :key="key.id">
                 {{ tag.name }}
               </Tag>
             </Row>
@@ -119,12 +119,12 @@
         <Scroll class="pd-l15 mg-t10" height="auto">
 
           <Timeline v-if="timeline">
-            <TimelineItem v-for="(click, key) in item.timeline" :key="key.id">
+            <TimelineItem v-for="(click, key) in watch.timeline" :key="key.id">
               <Icon type="ios-pulse-strong" slot="dot"/>
 
               <p class>
                 <span class>
-                  {{ $moment(item.clicked_at).format('ll') }}
+                  {{ $moment(watch.clicked_at).format('ll') }}
                 </span>
                 &nbsp;|&nbsp;
                 <span>
@@ -146,13 +146,12 @@
 
 <script>
 import NoData from '~/components/layout/noDataText'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { HTTP } from '~/store/http'
 
 export default {
   data () {
     return {
-      item: [],
       enable: false,
       expiry: false,
       timeline: 0
@@ -161,45 +160,44 @@ export default {
 
   methods: {
     ...mapActions({
-      remove: 'manage.watch/remove',
-      disable: 'manage.watch/disable'
+      mock: 'manage.watch/mock',
+      remove: 'manage.watch/remove'
     }),
 
     clipboard () {
       this.$message.success(
-        `${this.$t('i.notice.success')} [${this.$uri}${this.item.key}]`
+        `${this.$t('i.notice.success')} [${this.$uri}${this.watch.key}]`
       )
     },
 
     removed () {
       this.$modal.confirm({
-        onOk: () => this.remove(this.item.key),
+        onOk: () => this.remove(this.watch.id),
         okText: this.$t('i.form.button.confirm'),
         cancelText: this.$t('i.form.button.cancel'),
-        content: `<b class=txt-up>${this.item.title}</b>, An deletion?`
+        content: `<b class=txt-up>${this.watch.title}</b>, An deletion?`
       })
     },
 
-    fly (status) {
-      this.disable({
-        key: this.item.key,
-        value: status
+    async fly (status) {
+      await HTTP.post('/watch/fly', {
+        id: this.watch.id,
+        key: this.watch.key,
+        fly: Number(status)
       })
     },
 
     async call () {
-      const { data } = await HTTP.get(`/watch/${this.$route.params.key}`)
-
-      if (data === false) {
-        this.$router.push({name: 'auth.main'})
-      } else {
-        this.item = data
-        this.enable = Boolean(data.enable)
-        this.timeline = data.timeline.length
-        this.expiry = this.$moment(data.expiry).isBefore(new Date())
-      }
+      await this.mock(this.$route.params.key)
+      this.enable   = Boolean(this.watch.enable)
+      this.timeline = this.watch.timeline.length
+      this.expiry   = this.$moment(this.watch.expiry).isBefore(new Date())
     }
   },
+
+  computed: mapGetters({
+    watch: 'manage.watch/watch'
+  }),
 
   async created () {
     await this.call()

@@ -30,7 +30,7 @@ class WatchController extends Controller {
   /**
   * Store a newly created resource in storage.
   *
-  * @param  \Illuminate\Http\Request  $request
+  * @param  \Illuminate\Http\Request  $req
   * @return \Illuminate\Http\Response
   **/
   public function store(Request $req) {
@@ -44,9 +44,11 @@ class WatchController extends Controller {
 
     # newly created.
     $watch = new Watch;
-    $watch->key         = $this->ranKey();
+    $watch->key         = $this->runKey();
     $watch->href        = $req->href;
-    $watch->title       = str_replace('www.', '', $title);
+    $watch->title       = $req->title || str_replace('www.', '', $title);
+    $watch->expiry      = $req->expiry;
+    $watch->redirect    = $req->redir;
     $watch->created_by  = $user->id;
     $watch->updated_by  = $user->id;
     $watch->save();
@@ -57,9 +59,10 @@ class WatchController extends Controller {
       $req->tags
     );
 
-    return response()->json(
-      $this->show($watch->key, true)
-    );
+    return response()->json([
+      'id'  => $watch->id,
+      'key' => $watch->key
+    ]);
   }
 
 
@@ -78,12 +81,12 @@ class WatchController extends Controller {
     # gathering tags on table-connect.
     $tags = Taggable::where('url_has_tags.urls_id', $watch->id)
       ->join('tags', 'tags.id', '=', 'url_has_tags.tags_id')
-      ->get(['tags.id', 'tags.name']);
+      ->get(['tags.name']);
 
     # gathering clicked timeline log.
     $timeline = Click::where('urls_id', $watch->id)
       ->orderBy('clicked_at', 'desc')
-      ->get(['user_ip', 'clicked_at', 'description']);
+      ->get(['user_ip', 'clicked_at']);
 
     # updated watch details.
     $watch->tags       = $tags;
@@ -98,7 +101,7 @@ class WatchController extends Controller {
   /**
   * Display the specified resource.
   *
-  * @param  \Illuminate\Http\Request  $request
+  * @param  \Illuminate\Http\Request  $req
   * @return \Illuminate\Http\Response
   **/
   public function showly(Request $req) {
@@ -127,26 +130,43 @@ class WatchController extends Controller {
   /**
   * Update the specified resource in storage.
   *
-  * @param  \Illuminate\Http\Request  $request
+  * @param  \Illuminate\Http\Request  $req
   * @param  \App\Watch  $watch
   * @return \Illuminate\Http\Response
   **/
-  public function update(Request $request, Watch $watch) {
+  public function update(Request $req, Watch $watch) {
     //
+  }
+
+
+  /**
+  * Update the specified resource in storage.
+  *
+  * @param  \Illuminate\Http\Request  $req
+  * @return \Illuminate\Http\Response
+  **/
+  public function fly(Request $req) {
+    $enable = Watch::where('id', $req->id)
+      ->update([
+        'enable' => $req->fly
+      ]);
+
+    return response()->json(['status' => (bool) $enable]);
   }
 
 
   /**
   * Remove the specified resource from storage.
   *
-  * @param  \App\Watch  $watch
+  * @param  \Illuminate\Http\Request  $req
   * @return \Illuminate\Http\Response
   **/
-  public function destroy(Watch $watch) {
-    $drop = Taggable::where('urls_id', $watch->id)->delete();
-    $drop = Watch::where('id', $watch->id)->delete();
+  public function destroy(Request $req, $id) {
+    $drop = Taggable::where('urls_id', $id)->delete();
+    $drop = Click::where('urls_id', $id)->delete();
+    $drop = Watch::where('id', $id)->delete();
 
-    return response()->json($drop);
+    return response()->json(['status' => (bool) $drop]);
   }
 
 
@@ -154,7 +174,9 @@ class WatchController extends Controller {
   # Helpers Scope.
   public function verifyHref($href) {
     $query = Watch::where('href', $href);
-    return $query->count() ? $query->first() : false;
+    return $query->count()
+      ? $query->first(['key'])
+      : false;
   }
 
 

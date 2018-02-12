@@ -9,10 +9,26 @@
         @keyup.enter.native="touch">
 
         <FormItem class="mg-b10">
-          <Alert show-icon type="error">
+          <Alert show-icon>
             <Icon slot="icon" type="ios-information"/>
             Fill out the required fields (marked with *) in the form below.
           </Alert>
+
+          <Alert show-icon v-if="i.type.advanced">
+            More information and examples for Campaign URL builder
+            <a href="//ga-dev-tools.appspot.com/campaign-url-builder"
+              target="_blank" class="size-w700">
+              Click here.
+            </a>
+          </Alert>
+        </FormItem>
+
+        <!-- ############################################################### -->
+        <!-- Campaign URL Builder -->
+        <FormItem v-if="i.type.advanced">
+
+          <Campaign ref="campaign" @on-emit="campaign"/>
+
         </FormItem>
 
         <!-- ############################################################### -->
@@ -22,7 +38,7 @@
             :placeholder="$t('i.form.display')">
 
             <Input slot="input" type="text"
-              v-model="form.name"
+              v-model="form.title"
             />
 
           </InputGroup>
@@ -36,7 +52,6 @@
             :placeholder="$uri">
 
             <Input slot="input" type="text"
-              :disabled="false"
               v-model="form.key"
             />
 
@@ -53,6 +68,7 @@
             <Input slot="input" v-model="form.href"
               type="textarea"
               :autosize="{ minRows: 2 }"
+              :readonly="Boolean(i.type.advanced)"
             />
 
           </InputGroup>
@@ -119,7 +135,7 @@
             @click="touch">
 
             <span v-if="!i.loading">
-              {{i.route.type==='edit'?$t('i.form.button.save'):$t('i.menu.create')}}
+              {{i.type.edit?$t('i.form.button.save'):$t('i.menu.create')}}
             </span>
             <span v-else>{{ $t('i.select.loading') }}...</span>
 
@@ -140,6 +156,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Campaign from '~/components/layout/campaign'
 import verify from '~/components/validator'
 
 function FormData () {
@@ -168,7 +185,7 @@ export default {
         loading: false,
         name: 'watch',
         route: {key: 'add', type: 'normal'},
-        type: {edit: 0, normal: 0, advanced: 0}
+        type: {edit: false, normal: false, advanced: false}
       }
     }
   },
@@ -180,8 +197,8 @@ export default {
     }),
 
     touch () {
-      this.$refs[this.i.name].validate(Verify => {
-        if (!Verify) {
+      this.$refs[this.i.name].validate(bool => {
+        if (!bool) {
           this.$message.warning(
             this.$t('i.notice.warning')
           )
@@ -194,14 +211,14 @@ export default {
           }
 
           setTimeout(() => {
-            this.add(
-              this.i.type.normal
-                ? normal
-                : this.form
-            )
+            this.add(this.i.type.normal ? normal : this.form)
           }, 2560)
         }
       })
+    },
+
+    campaign (url) {
+      this.form.href = url.trim()
     },
 
     hash (href) {
@@ -212,15 +229,31 @@ export default {
 
     setup () {
       this.i.route = this.$route.params
-      this.i.type.edit = (this.i.route.type === 'edit') ? 1 : 0
-      this.i.type.normal = (this.i.route.type === 'normal') ? 1 : 0
-      this.i.type.advanced = (this.i.route.type === 'advanced') ? 1 : 0
+      this.i.type.edit = (this.i.route.type === 'edit')
+      this.i.type.normal = (this.i.route.type === 'normal')
+      this.i.type.advanced = (this.i.route.type === 'advanced')
+
+      if (this.i.type.edit && this.check) {
+        // this.form.title   = this.watch.title
+        // this.form.key     = this.watch.key
+        // this.form.href    = this.watch.href
+        // this.form.tags    = this.watch.tags
+        // this.form.expiry  = this.watch.expiry
+        // this.form.redir   = this.watch.redirect
+      } else {
+        this.$router.push({
+          name: 'auth.watch',
+          params: {key: this.$route.params.key}
+        })
+      }
     }
   },
 
   computed: {
     ...mapGetters({
-      tags: 'manage.tag/tags'
+      tags: 'manage.tag/tags',
+      watch: 'manage.watch/watch',
+      check: 'manage.watch/check'
     }),
 
     // #########################################################################
@@ -237,7 +270,7 @@ export default {
         </i>`
 
       return (this.$route.params.type === 'edit')
-        ? 'SHORT-LINK-NAME'
+        ? this.watch.title
         : normal
     }
     // #########################################################################
@@ -259,6 +292,10 @@ export default {
 
   destroyed () {
     this.form = new FormData().form
+  },
+
+  components: {
+    'Campaign': Campaign
   }
 }
 </script>

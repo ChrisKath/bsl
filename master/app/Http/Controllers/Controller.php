@@ -30,7 +30,7 @@ class Controller extends BaseController
     return Auth::user();
   }
 
-  public function ranKey ($length = 7) {
+  public function runKey ($length = 7) {
     $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $max = mb_strlen($keyspace, '8bit') - 1;
     $key = '';
@@ -46,6 +46,6 @@ class Controller extends BaseController
     $query = (bool) Watch::where('key', $key)->count();
 
     if (!$query) return $key;
-    else $this->ranKey();
+    else $this->runKey();
   }
 }

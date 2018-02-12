@@ -26,6 +26,10 @@ const internationalization = new VueI18n({
 })
 
 locale(messages[internationalization.locale])
+document.querySelector('html').setAttribute(
+  'lang',
+  internationalization.locale
+)
 
 export function take (param) {
   if (!param || internationalization.locale === param) return

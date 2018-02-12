@@ -22,14 +22,14 @@ export default [
       component: dashboard
     },
     {
-      name: 'auth.watch.store',
-      path: '/watch/:key/:type',
-      component: add
-    },
-    {
       name: 'auth.watch',
       path: '/watch/:key',
       component: watch
+    },
+    {
+      name: 'auth.watch.store',
+      path: '/watch/:key/:type',
+      component: add
     },
     {
       name: 'auth.tag',
