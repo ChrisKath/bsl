@@ -81,7 +81,7 @@ class WatchController extends Controller {
     # gathering tags on table-connect.
     $tags = Taggable::where('url_has_tags.urls_id', $watch->id)
       ->join('tags', 'tags.id', '=', 'url_has_tags.tags_id')
-      ->get(['tags.name']);
+      ->get(['tags.id', 'tags.name']);
 
     # gathering clicked timeline log.
     $timeline = Click::where('urls_id', $watch->id)
@@ -134,8 +134,31 @@ class WatchController extends Controller {
   * @param  \App\Watch  $watch
   * @return \Illuminate\Http\Response
   **/
-  public function update(Request $req, Watch $watch) {
-    //
+  public function update(Request $req, $key) {
+    # verify key exist.
+    $watch = Watch::where('key', $req->key)->count();
+    if ($watch) return response()->json(['status' => false]);
+
+    # update on Urls
+    $watch = Watch::where('key', $key);
+    $urls  = $watch->first(['id']);
+    $user  = $this->me();
+    $watch->update([
+      'key'       => $req->key,
+      'href'      => $req->href,
+      'title'     => $req->title,
+      'expiry'    => $req->expiry,
+      'redirect'  => $req->redir,
+      'updated_by'=> $user->id
+    ]);
+
+    # insert tags.
+    $tags = $this->fetchTags(
+      $urls['id'],
+      $req->tags
+    );
+
+    return response()->json(['status' => true]);
   }
 
 
@@ -148,7 +171,8 @@ class WatchController extends Controller {
   public function fly(Request $req) {
     $enable = Watch::where('id', $req->id)
       ->update([
-        'enable' => $req->fly
+        'enable' => $req->fly,
+        'updated_by' => $this->me()->id
       ]);
 
     return response()->json(['status' => (bool) $enable]);

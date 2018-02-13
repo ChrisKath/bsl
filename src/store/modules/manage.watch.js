@@ -9,7 +9,7 @@ export const state = {
 // getters
 export const getters = {
   watch: state => state.watch,
-  check: state => Boolean(state.watch)
+  check: state => Object.keys(state.watch).length
 }
 
 // mutations
@@ -37,16 +37,33 @@ export const actions = {
     })
   },
 
-  async update ({ commit }, params) {
-    await commit('UPDATE_AN_WATCH', params)
+  async update ({ commit, dispatch }, params) {
+    const { data } = await HTTP.patch(`/watch/${params.id}`, params.form)
+    if (!data.status) {
+      dispatch(/** notice-error **/ 'keyExist', params.form.key)
+      return false
+    } else {
+      router.push({
+        name: 'auth.watch',
+        params: {key: params.form.key}
+      })
+    }
   },
 
   async remove ({ commit }, params) {
-    const { data } = await HTTP.delete(`/watch/${this.item.id}`)
+    const { data } = await HTTP.delete(`/watch/${params}`)
     if (data.status) {
       router.push({
         name: 'auth.main'
       })
     }
+  },
+
+  keyExist ({ commit }, key) {
+    router.app.$notice.error({
+      title: 'Error exist key',
+      desc:  `<b>[${key}]</b> This Short Key is already exist.`,
+      duration: 6.4
+    })
   }
 }

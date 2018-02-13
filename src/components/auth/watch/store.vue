@@ -81,15 +81,15 @@
           <InputGroup icon="ios-pricetags-outline"
             :placeholder="$t('i.title.tag')">
 
-            <Select remote multiple filterable placeholder
+            <Select multiple filterable placeholder
               slot="input"
               placement="bottom"
               v-model="form.tags">
 
-              <Option v-for="(tag, key) in tags"
-                :key="key.id"
+              <Option v-for="tag in tags"
                 :value="tag.id"
                 :label="tag.name"
+                :key="tag.id"
               />
             </Select>
 
@@ -193,7 +193,8 @@ export default {
   methods: {
     ...mapActions({
       call: 'manage.tag/call',
-      add: 'manage.watch/add'
+      add: 'manage.watch/add',
+      update: 'manage.watch/update'
     }),
 
     touch () {
@@ -210,9 +211,18 @@ export default {
             tags: this.form.tags
           }
 
-          setTimeout(() => {
-            this.add(this.i.type.normal ? normal : this.form)
-          }, 2560)
+          setTimeout(async call => {
+            if (this.i.type.edit) {
+              if (!this.form.expiry) this.form.redir = null
+              const res = await this.update({
+                id: this.watch.key,
+                form: this.form
+              })
+              if (!res) this.i.loading = false
+            } else {
+              this.add(this.i.type.normal ? normal : this.form)
+            }
+          }, 512)
         }
       })
     },
@@ -232,14 +242,18 @@ export default {
       this.i.type.edit = (this.i.route.type === 'edit')
       this.i.type.normal = (this.i.route.type === 'normal')
       this.i.type.advanced = (this.i.route.type === 'advanced')
+    },
 
-      if (this.i.type.edit && this.check) {
-        // this.form.title   = this.watch.title
-        // this.form.key     = this.watch.key
-        // this.form.href    = this.watch.href
-        // this.form.tags    = this.watch.tags
-        // this.form.expiry  = this.watch.expiry
-        // this.form.redir   = this.watch.redirect
+    mock () {
+      if (this.check) {
+        this.form.title   = this.watch.title
+        this.form.key     = this.watch.key
+        this.form.href    = this.watch.href
+        this.form.expiry  = this.watch.expiry
+        this.form.redir   = this.watch.redirect
+        this.watch.tags.forEach((item, key) => {
+          this.form.tags.push(item.id)
+        })
       } else {
         this.$router.push({
           name: 'auth.watch',
@@ -279,7 +293,8 @@ export default {
   mounted () {
     this.$nextTick(async () => {
       if (!this.tags.length) await this.call()
-      this.setup()
+      await this.setup()
+      if (this.i.type.edit) this.mock()
     })
   },
 

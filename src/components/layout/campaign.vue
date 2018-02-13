@@ -155,11 +155,12 @@ export default {
         medium:   this.form.medium  ? `&utm_medium=${this.form.medium}`   : '',
         name:     this.form.name    ? `&utm_campaign=${this.form.name}`   : '',
         term:     this.form.term    ? `&utm_term=${this.form.term}`       : '',
-        content:  this.form.content ? `&utm_content=${this.form.content}` : ''
+        content:  this.form.content ? `&utm_content=${this.form.content}` : '',
+        cron:     this.form.domain.search(/[?]/g) <= 1 ? '?' : '&'
       }
 
       this.i.building = `
-        ${this.form.domain}?utm_source=${this.form.source}${builder.medium}${builder.name}${builder.term}${builder.content}
+        ${this.form.domain}${builder.cron}utm_source=${this.form.source}${builder.medium}${builder.name}${builder.term}${builder.content}
       `
 
       if (this.i.building.trim()) {
