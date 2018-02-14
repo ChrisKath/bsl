@@ -23,51 +23,43 @@
     <Row class-name="ivu-row-body pd-15">
 
       <Col class-name="ivu-col-card mg-20 pd-15 pd-b25"
-        v-for="(item, key) in $lodash.orderBy(items, ['permis'], ['asc'])"
-        :key="item.id"
-        :class="{'ROOT': item.permis === '#'}">
+        v-for="(user, key) in users"
+        :key="user.id"
+        :class="{'ROOT': user.id===1}">
 
-        <Icon
-          class="ivu-root size-24 primary"
-          v-if="item.permis === 0 || item.permis === '#'"
-          :type="item.permis === '#' ? 'ios-world' : 'ribbon-b'"
-          :class="{'error': item.permis === '#'}"
+        <Icon v-if="user.isAdmin || user.id===1"
+          :type="user.id===1 ? 'ios-world' : 'ribbon-b'"
+          :class="{'ivu-root size-24 primary': true, 'error': user.id===1}"
         />
 
         <Avatar icon="person"/>
 
         <div class="ivu-display mg-t20 pd-b10 size-17 size-w700">
-          <div class="txt-up size-10" v-if="item.permis === '#'">root</div>
+          <div class="txt-up size-10" v-if="user.id===1">root</div>
           <div class="txt-up size-10" v-else>
-            {{ item.permis === 0 ? 'admin' : 'member' }}
+            {{ user.isAdmin ? 'admin' : 'member' }}
           </div>
-          <p>{{ item.name }}</p>
+          <p class="txt-up">{{ user.name }}</p>
         </div>
 
         <div class="ivu-more pd-t10 pd-b10 size-12 txt-c">
-          <p>{{ item.username }}</p>
-          <p>{{ item.email }}</p>
+          <p>{{ user.username }}</p>
+          <p>{{ user.email }}</p>
         </div>
 
         <ButtonGroup size="small">
-          <router-link
-            :to="{
-              name: 'auth.panel.edit',
-              params: {
-                key: item.uid,
-                type: 'edit'
-              }
-            }">
-
+          <router-link :to="{
+            name: 'auth.panel.edit',
+            params: {key: user.id, type: 'edit'}
+          }">
             <Button icon="settings"
-              :type="item.permis === '#' ? 'error' : 'primary'"
+              :type="user.id===1 ? 'error' : 'primary'"
             />
-
           </router-link>
 
           <Button icon="refresh"
-            :type="item.permis === '#' ? 'error' : 'primary'"
-            />
+            :type="user.id===1 ? 'error' : 'primary'"
+          />
         </ButtonGroup>
       </Col>
 
@@ -77,11 +69,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  methods: {
+    ...mapActions({
+      call: 'manage.account/call'
+    })
+  },
+
   computed: mapGetters({
-    items: 'manage.account/accounts'
-  })
+    users: 'manage.account/users'
+  }),
+
+  async created () {
+    await this.call()
+  }
 }
 </script>

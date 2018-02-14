@@ -292,7 +292,7 @@ export default {
 
   mounted () {
     this.$nextTick(async () => {
-      if (!this.tags.length) await this.call()
+      await this.call()
       await this.setup()
       if (this.i.type.edit) this.mock()
     })

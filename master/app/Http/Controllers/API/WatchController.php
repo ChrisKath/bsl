@@ -34,19 +34,20 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function store(Request $req) {
-    if ($href = $this->verifyHref($req->href)) {
+    if ($href = $this->verifyHref($req->href))
       return response()->json($href);
-    }
 
     # setup data.
-    $user  = $this->me();
-    $title = parse_url($req->href, PHP_URL_HOST);
+    $user = $this->me();
+    $hostname = str_replace('www.', '', parse_url(
+      $req->href, PHP_URL_HOST
+    ));
 
     # newly created.
     $watch = new Watch;
     $watch->key         = $this->runKey();
     $watch->href        = $req->href;
-    $watch->title       = $req->title || str_replace('www.', '', $title);
+    $watch->title       = $req->title ? $req->title : $hostname;
     $watch->expiry      = $req->expiry;
     $watch->redirect    = $req->redir;
     $watch->created_by  = $user->id;

@@ -17,16 +17,12 @@ export const mutations = {
   },
 
   FETCH_NEW_TAG (state, payload) {
-    state.tags.push({
-      id: state.tags.length + 1,
-      name: payload,
-      timestamp: Date.now()
-    })
+    state.tags.push(payload)
   },
 
   REMOVE_AN_TAG (state, payload) {
     state.tags = window.app.$lodash.reject(state.tags, {
-      name: payload
+      id: payload
     })
   }
 }
@@ -39,20 +35,31 @@ export const actions = {
   },
 
   async add ({ commit }, params) {
-    await commit('FETCH_NEW_TAG', params)
-    window.app.$notice.success({
-      duration: 2.6,
-      title: 'Good job!!',
-      desc: `(${params}), New Tag has been added.`
-    })
+    const { data } = await HTTP.post('/tags', {name: params})
+    if (!data.status) {
+      window.app.$notice.error({
+        title: 'Oops!!',
+        desc: 'This name has already been used.'
+      })
+    } else {
+      await commit('FETCH_NEW_TAG', data.item)
+      window.app.$notice.success({
+        title: 'Good job!!',
+        desc: `<b>(${data.item.name})</b>, New Tag has been added.`
+      })
+    }
+
+    return data.status
   },
 
   async remove ({ commit }, params) {
-    await commit('REMOVE_AN_TAG', params)
-    window.app.$notice.warning({
-      duration: 2.6,
-      title: 'That OK!',
-      desc: `Tag (${params}) has been removed.`
-    })
+    const { data } = await HTTP.delete(`/tags/${params.id}`)
+    if (data.status) {
+      commit('REMOVE_AN_TAG', params.id)
+      window.app.$notice.warning({
+        title: 'Removed!',
+        desc: `<b>(${params.name})</b>, Tag has been removed.`
+      })
+    }
   }
 }

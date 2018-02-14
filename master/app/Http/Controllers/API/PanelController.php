@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Tag as Tags;
-use App\Taggable;
+use App\User as USER;
 
-class TagController extends Controller {
+class PanelController extends Controller {
 
   /**
   * Display a listing of the resource.
@@ -16,9 +16,7 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function index() {
-    return response()->json(
-      $this->queries()->get()
-    );
+    return $this->queries()->get();
   }
 
 
@@ -39,19 +37,33 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function store(Request $req) {
-    if ($this->haved($req->name)) return response()->json([
-      'status' => false
-    ]);
+    # check something already used.
+    if ($this->exist('username', $req->username)) {
+      return response()->json([
+        'status' => false,
+        'code'   => 16
+      ]);
+    }
+    else if ($this->exist('email', $req->email)) {
+      return response()->json([
+        'status' => false,
+        'code'   => 40
+      ]);
+    }
 
     # newly created.
-    $tag = new Tags;
-    $tag->name = $req->name;
-    $tag->save();
+    $user = new USER;
+    $user->isAdmin        = $req->isAdmin;
+    $user->name           = $req->name;
+    $user->email          = $req->email;
+    $user->username       = $req->username;
+    $user->password       = Hash::make($req->password);
+    $user->created_by     = $this->me()->id;
+    $user->updated_by     = $this->me()->id;
+    $user->remember_token = str_random(16);
+    $user->save();
 
-    return response()->json([
-      'status' => true,
-      'item' => $this->haved($tag->name)
-    ]);
+    return response()->json(['status' => (bool) $user]);
   }
 
 
@@ -96,32 +108,25 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function destroy($id) {
-    $drop = Taggable::where('tags_id', $id)->delete();
-    $drop = Tags::where('id', $id)->delete();
-
-    return response()->json(['status' => (bool) $drop]);
+    //
   }
 
 
   #############################################################################
   # Helpers Scope.
-  public function haved($name) {
-    $query = Tags::where('name', $name);
-
-    return $query->count()
-      ? $this->queries()->where('name', $name)->first()
-      : false;
+  public function queries() {
+    return USER::join('users AS udx', 'users.created_by', 'udx.id')
+      ->select(
+        DB::raw('users.*'),
+        'udx.name AS created_by',
+        'udx.name AS updated_by'
+      );
   }
 
-  public function queries() {
-    return Tags::leftJoin('url_has_tags', 'tags.id', '=', 'url_has_tags.tags_id')
-      ->select(
-        'id',
-        'name',
-        'created_at',
-        DB::raw('count(url_has_tags.tags_id) used')
-      )
-      ->orderBy('created_at', 'desc')
-      ->groupBy('tags.id');
+  public function exist($field, $value) {
+    return USER::where(
+      $field,
+      $value
+    )->count();
   }
 }

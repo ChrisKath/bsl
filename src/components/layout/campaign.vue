@@ -156,7 +156,7 @@ export default {
         name:     this.form.name    ? `&utm_campaign=${this.form.name}`   : '',
         term:     this.form.term    ? `&utm_term=${this.form.term}`       : '',
         content:  this.form.content ? `&utm_content=${this.form.content}` : '',
-        cron:     this.form.domain.search(/[?]/g) <= 1 ? '?' : '&'
+        cron:     this.form.domain.search(/[?]/g) < 1 ? '?' : '&'
       }
 
       this.i.building = `

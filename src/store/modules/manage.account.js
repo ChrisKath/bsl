@@ -1,80 +1,85 @@
-// import { HTTP } from '../http'
+import { HTTP } from '../http'
 import router from '~/router'
 
 // state
 export const state = {
-  accounts: [
-    {
-      uid: Date.now(),
-      permis: '#',
-      name: 'CREATOR',
-      email: 'root@tap10.com',
-      username: 'root'
-    },
-    {
-      uid: Date.now() + 1,
-      permis: 0,
-      name: 'DISPLAY NAME',
-      email: 'admin@tap10.com',
-      username: 'admin'
-    }
-  ]
+  users: []
 }
 
 // getters
 export const getters = {
-  accounts: state => state.accounts
+  users: state => state.users,
+  check: state => Object.keys(state.users).length
 }
 
 // mutations
 export const mutations = {
-  FETCH_NEW_ACCOUNT (state, payload) {
-    state.accounts.push({
-      uid     : Date.now(),
-      permis  : payload.permis,
-      name    : payload.name,
-      email   : payload.email,
-      username: payload.username
-    })
+  FETCH_DATA (state, payload) {
+    state.users = payload
   },
 
-  UPDATE_AN_ACCOUNT (state, payload) {
-    const query = window.app.$lodash.find(state.accounts, {
-      uid: payload.uid
-    })
-    query.permis   = payload.permis
-    query.name     = payload.name
-    query.email    = payload.email
-    query.username = payload.username
+  FETCH_NEW_USER (state, payload) {
+    // state.users.push()
   },
 
-  NOTICE (state, payload) {
-    if (!payload) {
-      window.app.$notice.error({
-        title: 'Oops!!',
-        desc: 'Something went wrong.'
-      })
-    } else {
-      window.app.$loading.start()
-      window.app.$notice.success({
-        duration: 2.4,
-        title: 'Successful',
-        desc: 'New account has been created.'
-      })
-      setTimeout(() => router.push({name: 'auth.panel'}), 2400)
-    }
+  UPDATE_AN_USER (state, payload) {
+    //
   }
 }
 
 // actions
 export const actions = {
-  async add ({ commit }, params) {
-    await commit('FETCH_NEW_ACCOUNT', params)
-    commit('NOTICE', true)
+  async call ({ commit }) {
+    const { data } = await HTTP.get('/panel')
+    commit('FETCH_DATA', data)
   },
 
-  async edit ({ commit }, params) {
-    await commit('UPDATE_AN_ACCOUNT', params)
-    commit('NOTICE', true)
+  async add ({ commit, dispatch }, params) {
+    const { data } = await HTTP.post('/panel', params)
+
+    if (!data.ststus) {
+      if (data.code === 16) dispatch('uExist')
+      else if (data.code === 40) dispatch('eExist')
+    } else {
+      dispatch('isSuccess')
+    }
+
+    return data.ststus
+  },
+
+  async update ({ commit, dispatch }, params) {
+    await commit('UPDATE_AN_USER', params)
+    dispatch('isSuccess')
+  },
+
+  isSuccess () {
+    window.app.$loading.start()
+    window.app.$notice.success({
+      duration: 2.4,
+      title: 'Successful',
+      desc: 'New account has been created.'
+    })
+    setTimeout(h => router.push({name: 'auth.panel'}), 1999)
+  },
+
+  isError () {
+    window.app.$notice.error({
+      title: 'Oops!!',
+      desc: 'Something went wrong.'
+    })
+  },
+
+  uExist () {
+    window.app.$notice.error({
+      title: 'Oops!!',
+      desc: 'Username is already used.'
+    })
+  },
+
+  eExist () {
+    window.app.$notice.error({
+      title: 'Oops!!',
+      desc: 'Email Address is already used.'
+    })
   }
 }

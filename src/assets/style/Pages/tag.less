@@ -13,6 +13,18 @@
       overflow: hidden;
       transition: box-shadow 240ms, border-color 240ms, transform 240ms;
 
+      @media only screen and (max-width: 960px) {
+        width: ~'calc(100% / 5 - 30px)';
+      }
+
+      .@{css-prefix}badge-count {
+        font-size: 11px;
+        top: -5px;
+        right: 5px;
+        height: 20px;
+        background-color: @success-color;
+      }
+
       &:not(.col-dis):hover {
         transform: translateY(-2px);
         border-color: @warning-color;

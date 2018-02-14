@@ -79,9 +79,7 @@ export default {
       // observe items id.
       const items = []
       this.items.forEach((item, key) => {
-        items.push(
-          item.id
-        )
+        items.push(item.id)
       })
 
       // call more items setp-10

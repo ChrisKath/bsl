@@ -1,44 +1,44 @@
 <template lang="html">
   <Row class-name="ivu-panel-store">
-    <RowHead :route-back="i.back" :title-name="i.title"/>
+    <RowHead :route-back="i.back" :title-name="info"/>
 
     <Row class-name="ivu-row-body"
-      :class="[
-        (i.type === 'edit')
-          ? 'pd-t20 pd-r40 pd-b40 pd-l40'
-          : 'pd-40'
-      ]">
+      :class="[i.edit ? 'pd-t20 pd-r40 pd-b40 pd-l40' : 'pd-40']">
 
-      <Form ref="store"
+      <Form :ref="i.name"
         :model="form"
         :rules="rule"
-        @keyup.enter.native="touch('store')">
+        @keyup.enter.native="touch">
 
-        <FormItem class="size-13" v-if="i.type === 'edit'">
+        <FormItem class="size-13" v-if="i.edit">
           <span class="mg-r25">
             <strong>{{ $t('i.title.created') }}:</strong>
-            <i class="pd-l5 txt-up">{{ new Date() | moment('ll') }}</i>
-            <a class="pd-r5">(ゴジです)</a>
+            <i class="pd-l5 txt-up">
+              {{ $moment(i.info.created_at).format('ll') }}
+            </i>
+            <a class="pd-r5">({{ i.info.created_by }})</a>
           </span>
 
           <span class>
             <strong>{{ $t('i.title.updated') }}:</strong>
-            <i class="pd-l5 txt-up">{{ new Date() | moment('ll') }}</i>
-            <a class="pd-r5">(ゴジです)</a>
+            <i class="pd-l5 txt-up">
+              {{ $moment(i.info.updated_at).format('ll') }}
+            </i>
+            <a class="pd-r5">({{ i.info.updated_by }})</a>
           </span>
         </FormItem>
 
-        <FormItem prop="permis">
-          <RadioGroup v-model="form.permis" type="button" size="large">
-            <Radio :label="`x`" disabled>
+        <FormItem prop="isAdmin">
+          <RadioGroup v-model="form.isAdmin" type="button" size="large">
+            <Radio :label="null" disabled>
               <Icon type="ios-world-outline"/>
               <span class="size-w600">{{ $t('i.form.root') }}</span>
             </Radio>
-            <Radio :label="0">
+            <Radio :label="1">
               <Icon type="ribbon-b"/>
               <span class="size-w600">{{ $t('i.form.admin') }}</span>
             </Radio>
-            <Radio :label="1">
+            <Radio :label="0">
               <Icon type="ios-person"/>
               <span class="size-w600">{{ $t('i.form.member') }}</span>
             </Radio>
@@ -46,7 +46,8 @@
         </FormItem>
 
         <FormItem prop="name">
-          <InputGroup :placeholder="$t('i.form.display')" icon="ios-compose-outline">
+          <InputGroup icon="ios-compose-outline" required
+            :placeholder="$t('i.form.display')">
 
             <Input slot="input"
               :maxlength="16"
@@ -57,7 +58,7 @@
         </FormItem>
 
         <FormItem prop="email">
-          <InputGroup :placeholder="$t('i.form.email')" icon="ios-email-outline">
+          <InputGroup :placeholder="$t('i.form.email')" icon="ios-email-outline" required>
 
             <Input slot="input"
               :maxlength="40"
@@ -68,7 +69,8 @@
         </FormItem>
 
         <FormItem prop="username">
-          <InputGroup :placeholder="$t('i.form.user')" icon="ios-person-outline">
+          <InputGroup icon="ios-person-outline" required
+            :placeholder="$t('i.form.user')">
 
             <Input slot="input"
               :maxlength="24"
@@ -78,8 +80,9 @@
           </InputGroup>
         </FormItem>
 
-        <FormItem prop="password" v-if="form.password !== 'none'">
-          <InputGroup :placeholder="$t('i.form.pass')" icon="ios-locked-outline">
+        <FormItem prop="password" v-if="!i.edit">
+          <InputGroup icon="ios-locked-outline" required
+            :placeholder="$t('i.form.pass')">
 
             <Input slot="input"
               :maxlength="16"
@@ -93,9 +96,11 @@
           <Button type="primary" size="large"
             class="min-w100"
             :loading="i.loading"
-            @click="touch('store')">
+            @click="touch">
+
             <span v-if="!i.loading">{{ $t('i.form.button.save') }}</span>
             <span v-else>{{ $t('i.select.loading') }}...</span>
+
           </Button>
 
           <router-link :to="{name: 'auth.panel'}">
@@ -116,97 +121,100 @@
 import { mapGetters, mapActions } from 'vuex'
 import verify from '~/components/validator'
 
+function FormData () {
+  return {
+    form: {
+      isAdmin:  0,
+      name:     null,
+      email:    null,
+      username: null,
+      password: null
+    },
+    rule: {
+      isAdmin:  [verify.fill],
+      name:     [verify.fill],
+      email:    [verify.fill, verify.email],
+      username: [verify.fill, verify.default],
+      password: [verify.fill, verify.default]
+    }
+  }
+}
+
 export default {
   data () {
     return {
+      ...new FormData(),
       i: {
         loading: false,
-        type: 'add',
-        back: {name: 'auth.panel'},
-        title: this.$t('i.title.createAccount')
-      },
-      form: {
-        permis:  1,
-        name: null,
-        email: null,
-        username: null,
-        password: null
-      },
-      rule: {
-        permis:   [verify.fill],
-        name:     [verify.fill],
-        email:    [verify.fill, verify.email],
-        username: [verify.fill, verify.default],
-        password: [verify.fill, verify.default]
+        info: [],
+        edit: false,
+        name: 'store',
+        back: {name: 'auth.panel'}
       }
     }
   },
 
   methods: {
     ...mapActions({
-      add:  'manage.account/add',
-      edit: 'manage.account/edit'
+      add: 'manage.account/add',
+      update: 'manage.account/update'
     }),
 
-    touch (name) {
-      this.$refs[name].validate((verify) => {
-        if (!verify) {
-          this.$message.warning(
-            this.$t('i.notice.warning')
-          )
-        } else {
-          this.$message.success(
-            this.$t('i.notice.success')
-          )
+    touch () {
+      this.$refs[this.i.name].validate(h => {
+        if (!h) this.$message.warning(this.$t('i.notice.warning'))
+        else {
+          this.$message.success(this.$t('i.notice.success'))
           this.i.loading = true
-          // this.$Loading.start()
 
-          setTimeout(() => {
+          setTimeout(async h => {
+            const res = await (this.i.edit)
+              ? this.update(this.form)
+              : this.add(this.form)
+
+            console.log(res)
             this.i.loading = false
-            if (this.i.type === 'add') {
-              this.add(this.form)
-            }
-
-            if (this.i.type === 'edit') {
-              const data = Object.assign({
-                uid: this.$route.params.key
-              }, this.form)
-
-              delete data.password
-              this.edit(data)
-            }
-          }, 2560)
+          }, 1280)
         }
       })
     },
 
-    async observe () {
-      const fined = await this.$lodash.find(this.item, {
-        uid: this.$route.params.key
+    observe () {
+      const query = this.$lodash.find(this.users, {
+        id: this.$route.params.key
       })
-      if (fined === undefined) {
+      if (query === undefined) {
         return this.$router.push({name: 'auth.panel'})
       }
 
-      // setup header info
-      this.head.type = 'edit'
-      this.head.title = fined.name
-
       // setup form data
-      this.form.permis = fined.permis
-      this.form.name = fined.name
-      this.form.email = fined.email
-      this.form.username = fined.username
-      this.form.password = 'none'
+      delete this.form.password
+      this.i.info         = query
+      this.form.isAdmin   = query.isAdmin
+      this.form.name      = query.name
+      this.form.email     = query.email
+      this.form.username  = query.username
     }
   },
 
-  computed: mapGetters({
-    item: 'manage.account/accounts'
-  }),
+  computed: {
+    ...mapGetters({
+      users: 'manage.account/users'
+    }),
+
+    // #########################################################################
+    // ### Header info scope.
+    info () {
+      return (this.i.edit)
+        ? `<span class=txt-up>${this.form.name}</span>`
+        : this.$t('i.title.createAccount')
+    }
+    // #########################################################################
+  },
 
   created () {
-    if (this.$route.params.type === 'edit' && this.$route.params.key) {
+    if (this.$route.params.type === 'edit') {
+      this.i.edit = true
       this.observe()
     }
   }

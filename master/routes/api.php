@@ -31,6 +31,8 @@ Route::prefix('v1')->group(function () {
 
       Route::resource('tags',  'TagController');
 
+      Route::resource('panel',  'PanelController');
+
     });
 
     ############################################################################

@@ -1,24 +1,30 @@
 <template lang="html">
   <Row class-name="ivu-tags">
-    <RowHead :route-back="{name: 'auth.main'}" :title-name="$t('i.menu.manageTag')"/>
+    <RowHead :route-back="i.back" :title-name="$t('i.menu.manageTag')"/>
 
     <Row class-name="ivu-row-body pd-15">
       <Col class-name="ivu-col-card mg-15 pd-15 pd-b30"
-        v-for="(item, key) in $lodash.orderBy(items, ['name'], ['asc'])"
-        :key="item.id">
-        <Avatar icon="ios-pricetags"/>
+        v-for="(tag, key) in tags"
+        :key="tag.id">
+
+        <Badge :count="tag.used">
+          <Avatar icon="ios-pricetags"/>
+        </Badge>
 
         <div class="mg-t20 pd-b10">
-          <p class="size-17 size-w700 txt-up">{{ item.name }}</p>
+          <p class="size-17 size-w700 txt-up" style="white-space: nowrap">
+            {{ tag.name }}
+          </p>
+
           <p class="size-10 txt-up pd-t5">
-            {{ new Date(item.created_at) | moment('ll') }}
+            {{ $moment(tag.created_at).format('ll') }}
             <br />
-            {{ new Date(item.created_at) | moment('from', 'now') }}
+            {{ $moment(tag.created_at).fromNow() }}
           </p>
         </div>
 
         <Button type="warning" class="ivu-btn-sub" icon="ios-trash-outline"
-          @click="clear(item.name)">
+          @click="clear(tag.id, tag.name)">
           {{ $t('i.form.button.remove') }}
         </Button>
       </Col>
@@ -32,7 +38,7 @@
         <div class="col-form" v-else>
           <Avatar icon="ios-pricetags"/>
 
-          <Input v-model="tagName" placeholder="Tag name"
+          <Input v-model="name" placeholder="Tag name"
             :maxlength="14"
             class="mg-t20"
           />
@@ -54,8 +60,12 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      push: false,
-      tagName: null
+      i: {
+        loading: false,
+        back: { name: 'auth.main' }
+      },
+      name: null,
+      push: false
     }
   },
 
@@ -66,35 +76,27 @@ export default {
       remove: 'manage.tag/remove'
     }),
 
-    touch () {
-      if (!this.tagName) {
+    async touch () {
+      if (!this.name) {
         this.$message.warning('Please fill is required')
       } else {
-        const query = this.$lodash.find(this.items, {name: this.tagName})
-        if (query === undefined) {
-          this.add(this.tagName)
-          this.cancle()
-        } else {
-          this.$notice.error({
-            title: 'Oops!!',
-            desc: 'This name has already been used.'
-          })
-        }
+        const res = await this.add(this.name)
+        if (res) this.cancle()
       }
     },
 
-    clear (name) {
+    clear (id, name) {
       this.$modal.confirm({
-        onOk: () => this.remove(name),
-        content: `<b class=txt-up>${name}</b>, Tag an deletion?`,
+        onOk: () => this.remove({id, name}),
         okText: this.$t('i.form.button.confirm'),
-        cancelText: this.$t('i.form.button.cancel')
+        cancelText: this.$t('i.form.button.cancel'),
+        content: `<b class=txt-up>${name}</b>, Tag an deletion?`
       })
     },
 
     cancle () {
       this.push = false
-      this.tagName = null
+      this.name = null
     }
   },
 
@@ -103,7 +105,7 @@ export default {
   },
 
   computed: mapGetters({
-    items: 'manage.tag/tags'
+    tags: 'manage.tag/tags'
   })
 }
 </script>
