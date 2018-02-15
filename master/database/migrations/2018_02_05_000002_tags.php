@@ -15,7 +15,7 @@ class Tags extends Migration {
     Schema::create('tags', function (Blueprint $table) {
       $table->increments('id');
       $table->char('name', 100);
-      $table->dateTime('created_at')->useCurrent();
+      $table->timestamp('created_at')->useCurrent();
     });
 
   }

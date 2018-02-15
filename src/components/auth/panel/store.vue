@@ -164,17 +164,15 @@ export default {
       this.$refs[this.i.name].validate(h => {
         if (!h) this.$message.warning(this.$t('i.notice.warning'))
         else {
-          this.$message.success(this.$t('i.notice.success'))
           this.i.loading = true
 
           setTimeout(async h => {
-            const res = await (this.i.edit)
-              ? this.update(this.form)
+            await (this.i.edit)
+              ? this.update({id: this.i.info.id, form: this.form})
               : this.add(this.form)
 
-            console.log(res)
             this.i.loading = false
-          }, 1280)
+          }, 999)
         }
       })
     },
@@ -206,7 +204,7 @@ export default {
     // ### Header info scope.
     info () {
       return (this.i.edit)
-        ? `<span class=txt-up>${this.form.name}</span>`
+        ? `<span class=txt-up>${this.i.info.name}</span>`
         : this.$t('i.title.createAccount')
     }
     // #########################################################################

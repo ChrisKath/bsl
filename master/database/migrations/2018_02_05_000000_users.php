@@ -24,7 +24,7 @@ class Users extends Migration {
       $table->integer('updated_by')->unsigned();
       $table->foreign('created_by')->references('id')->on('users');
       $table->foreign('updated_by')->references('id')->on('users');
-      $table->timestamps();
+      $table->timestamp();
     });
 
   }

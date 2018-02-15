@@ -147,7 +147,6 @@
 <script>
 import NoData from '~/components/layout/noDataText'
 import { mapGetters, mapActions } from 'vuex'
-import { HTTP } from '~/store/http'
 
 export default {
   data () {
@@ -161,6 +160,7 @@ export default {
   methods: {
     ...mapActions({
       mock: 'manage.watch/mock',
+      witch: 'manage.watch/fly',
       remove: 'manage.watch/remove'
     }),
 
@@ -180,7 +180,7 @@ export default {
     },
 
     async fly (status) {
-      await HTTP.post('/watch/fly', {
+      this.witch({
         id: this.watch.id,
         key: this.watch.key,
         fly: Number(status)

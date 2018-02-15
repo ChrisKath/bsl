@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Clickes extends Migration {
+class Clicks extends Migration {
   /**
   * Run the migrations.
   *
@@ -12,12 +12,12 @@ class Clickes extends Migration {
   **/
   public function up() {
 
-    Schema::create('clickes', function (Blueprint $table) {
+    Schema::create('clicks', function (Blueprint $table) {
       $table->increments('id');
       $table->integer('urls_id')->unsigned();
       $table->foreign('urls_id')->references('id')->on('urls');
       $table->char('user_ip', 45);
-      $table->dateTime('clicked_at')->useCurrent();
+      $table->timestamp('clicked_at')->useCurrent();
       $table->longText('description')->nullable();
     });
 
@@ -29,6 +29,6 @@ class Clickes extends Migration {
   * @return void
   **/
   public function down() {
-    Schema::dropIfExists('clickes');
+    Schema::dropIfExists('clicks');
   }
 }

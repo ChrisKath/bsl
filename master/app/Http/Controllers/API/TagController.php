@@ -10,6 +10,10 @@ use App\Taggable;
 
 class TagController extends Controller {
 
+  public function __construct() {
+    if (!$this->me()->isAdmin) exit();
+  }
+
   /**
   * Display a listing of the resource.
   *

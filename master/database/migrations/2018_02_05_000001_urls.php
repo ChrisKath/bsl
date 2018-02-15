@@ -19,12 +19,12 @@ class Urls extends Migration {
       $table->char('title', 100);
       $table->date('expiry')->nullable();
       $table->text('redirect')->nullable();
-      $table->boolean('enable')->default(1);
+      $table->boolean('enable')->default(true);
       $table->integer('created_by')->unsigned();
       $table->integer('updated_by')->unsigned();
       $table->foreign('created_by')->references('id')->on('users');
       $table->foreign('updated_by')->references('id')->on('users');
-      $table->timestamps();
+      $table->timestamp();
     });
 
   }

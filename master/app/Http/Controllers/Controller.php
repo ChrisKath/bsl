@@ -21,10 +21,6 @@ class Controller extends BaseController
     'manage',
   ];
 
-  public function __construct() {
-    if (!$this->me()->isAdmin) exit();
-  }
-
   public function cute ($value) {
     $value = explode('/', $value);
     return $value[0];

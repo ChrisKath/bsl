@@ -16,6 +16,11 @@ export const getters = {
 export const mutations = {
   MOCK_DATA (state, payload) {
     state.watch = payload
+  },
+
+  FLYING (state, payload) {
+    state.watch.updated_by = payload.name
+    state.watch.updated_at = Date.now()
   }
 }
 
@@ -50,6 +55,11 @@ export const actions = {
     }
   },
 
+  async fly ({ commit }, params) {
+    const { data } = await HTTP.post('/watch/fly', params)
+    if (data.status) commit('FLYING', data)
+  },
+
   async remove ({ commit }, params) {
     const { data } = await HTTP.delete(`/watch/${params}`)
     if (data.status) {
@@ -62,7 +72,7 @@ export const actions = {
   keyExist ({ commit }, key) {
     router.app.$notice.error({
       title: 'Error exist key',
-      desc:  `<b>[${key}]</b> This Short Key is already exist.`,
+      desc: `<b>[${key}]</b> This Short Key is already exist.`,
       duration: 6.4
     })
   }

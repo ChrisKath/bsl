@@ -95,7 +95,7 @@ Object.keys(components).forEach(key => {
 
 Vue.use(moment)
 Vue.use(clipboard)
-Vue.prototype.$uri      = 'tap.co/' // `${location.host}/`
+Vue.prototype.$uri      = process.env.NODE_ENV === 'production' ? 'de1.us/' : 'tap.co/'
 Vue.prototype.$typeA    = 'TYPE.Authentication'
 Vue.prototype.$secret   = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
 Vue.prototype.$lodash   = lodash

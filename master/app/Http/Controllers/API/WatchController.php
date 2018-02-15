@@ -38,7 +38,6 @@ class WatchController extends Controller {
       return response()->json($href);
 
     # setup data.
-    $user = $this->me();
     $hostname = str_replace('www.', '', parse_url(
       $req->href, PHP_URL_HOST
     ));
@@ -50,8 +49,8 @@ class WatchController extends Controller {
     $watch->title       = $req->title ? $req->title : $hostname;
     $watch->expiry      = $req->expiry;
     $watch->redirect    = $req->redir;
-    $watch->created_by  = $user->id;
-    $watch->updated_by  = $user->id;
+    $watch->created_by  = $this->me()->id;
+    $watch->updated_by  = $this->me()->id;
     $watch->save();
 
     # insert tags.
@@ -135,29 +134,27 @@ class WatchController extends Controller {
   * @param  \App\Watch  $watch
   * @return \Illuminate\Http\Response
   **/
-  public function update(Request $req, $key) {
+  public function update(Request $req, $id) {
     # verify key exist.
-    $watch = Watch::where('key', $req->key)->count();
+    $watch = Watch::where('key', $req->key)
+      ->where('id', '!=', $id)
+      ->count();
     if ($watch) return response()->json(['status' => false]);
 
     # update on Urls
-    $watch = Watch::where('key', $key);
+    $watch = Watch::where('id', $id);
     $urls  = $watch->first(['id']);
-    $user  = $this->me();
     $watch->update([
       'key'       => $req->key,
       'href'      => $req->href,
       'title'     => $req->title,
       'expiry'    => $req->expiry,
       'redirect'  => $req->redir,
-      'updated_by'=> $user->id
+      'updated_by'=> $this->me()->id
     ]);
 
     # insert tags.
-    $tags = $this->fetchTags(
-      $urls['id'],
-      $req->tags
-    );
+    $tags = $this->fetchTags($urls['id'], $req->tags);
 
     return response()->json(['status' => true]);
   }
@@ -176,7 +173,10 @@ class WatchController extends Controller {
         'updated_by' => $this->me()->id
       ]);
 
-    return response()->json(['status' => (bool) $enable]);
+    return response()->json([
+      'status' => (bool) $enable,
+      'name'   => $this->me()->name
+    ]);
   }
 
 

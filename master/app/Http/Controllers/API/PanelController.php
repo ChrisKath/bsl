@@ -10,6 +10,10 @@ use App\User as USER;
 
 class PanelController extends Controller {
 
+  public function __construct() {
+    if (!$this->me()->isAdmin) exit();
+  }
+
   /**
   * Display a listing of the resource.
   *
@@ -37,33 +41,28 @@ class PanelController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function store(Request $req) {
-    # check something already used.
-    if ($this->exist('username', $req->username)) {
-      return response()->json([
-        'status' => false,
-        'code'   => 16
-      ]);
-    }
-    else if ($this->exist('email', $req->email)) {
-      return response()->json([
-        'status' => false,
-        'code'   => 40
-      ]);
-    }
-
     # newly created.
-    $user = new USER;
-    $user->isAdmin        = $req->isAdmin;
-    $user->name           = $req->name;
-    $user->email          = $req->email;
-    $user->username       = $req->username;
-    $user->password       = Hash::make($req->password);
-    $user->created_by     = $this->me()->id;
-    $user->updated_by     = $this->me()->id;
-    $user->remember_token = str_random(16);
-    $user->save();
+    try {
+      $user = new USER;
+      $user->isAdmin        = $req->isAdmin;
+      $user->name           = $req->name;
+      $user->email          = $req->email;
+      $user->username       = $req->username;
+      $user->password       = Hash::make($req->password);
+      $user->created_by     = $this->me()->id;
+      $user->updated_by     = $this->me()->id;
+      $user->remember_token = str_random(16);
+      $user->save();
 
-    return response()->json(['status' => (bool) $user]);
+      return response()->json([
+        'status' => (bool) $user
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'status' => false,
+        'error'  => $e->errorInfo
+      ]);
+    }
   }
 
 
@@ -97,7 +96,26 @@ class PanelController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function update(Request $req, $id) {
-    //
+    # update user account.
+    try {
+      $user = USER::where('id', $id)
+        ->update([
+          'isAdmin'         => $req->isAdmin,
+          'name'            => $req->name,
+          'email'           => $req->email,
+          'username'        => $req->username,
+          'updated_by'      => $this->me()->id
+        ]);
+
+      return response()->json([
+        'status' => (bool) $user
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'status' => false,
+        'error'  => $e->errorInfo
+      ]);
+    }
   }
 
 
@@ -115,18 +133,12 @@ class PanelController extends Controller {
   #############################################################################
   # Helpers Scope.
   public function queries() {
-    return USER::join('users AS udx', 'users.created_by', 'udx.id')
-      ->select(
-        DB::raw('users.*'),
-        'udx.name AS created_by',
+    return USER::select(DB::raw('users.*'),
+        'cdx.name AS created_by',
         'udx.name AS updated_by'
-      );
-  }
-
-  public function exist($field, $value) {
-    return USER::where(
-      $field,
-      $value
-    )->count();
+      )
+      ->join('users AS cdx', 'users.created_by', 'cdx.id')
+      ->join('users AS udx', 'users.updated_by', 'udx.id')
+      ->orderBy('id');
   }
 }

@@ -215,7 +215,7 @@ export default {
             if (this.i.type.edit) {
               if (!this.form.expiry) this.form.redir = null
               const res = await this.update({
-                id: this.watch.key,
+                id: this.watch.id,
                 form: this.form
               })
               if (!res) this.i.loading = false
