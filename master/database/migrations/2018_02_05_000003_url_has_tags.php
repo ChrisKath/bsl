@@ -13,10 +13,12 @@ class UrlHasTags extends Migration {
   public function up() {
 
     Schema::create('url_has_tags', function (Blueprint $table) {
+
       $table->integer('urls_id')->unsigned();
       $table->integer('tags_id')->unsigned();
       $table->foreign('urls_id')->references('id')->on('urls');
       $table->foreign('tags_id')->references('id')->on('tags');
+
     });
 
   }
@@ -27,6 +29,6 @@ class UrlHasTags extends Migration {
   * @return void
   **/
   public function down() {
-    Schema::dropIfExists('url_has_tags');
+    Schema::drop('url_has_tags');
   }
 }

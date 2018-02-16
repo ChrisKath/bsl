@@ -2,11 +2,12 @@ import { HTTP } from '../http'
 import router from '~/router'
 import cookieStorage from 'vue-cookie'
 
-let valve = null
+var typeA = 'TYPE.Authentication'
+var VALVE = null
 
 // state
 export const state = {
-  voice: cookieStorage.get('TYPE.Authentication') || null
+  voice: cookieStorage.get('TYPE.Authentication') || 0
 }
 
 // getters
@@ -22,9 +23,9 @@ export const mutations = {
   },
 
   LOGGED_OUT (state) {
-    HTTP.defaults.headers.common['Authorization'] = null
-    cookieStorage.delete(router.app.$typeA)
-    state.voice = null
+    HTTP.defaults.headers.common['Authorization'] = ''
+    state.voice = 0
+    cookieStorage.delete(typeA)
     router.push({name: 'guest.login'})
   },
 
@@ -40,9 +41,9 @@ export const actions = {
 
     if (data.error || !data) dispatch(/** notice-error **/ 'authFailed')
     else {
-      cookieStorage.set('TYPE.Remember', params.remember, 1)
-      cookieStorage.set(window.app.$typeA, data.access_token, {
-        expires: `${data.expires_in}m`
+      localStorage.setItem('TYPE.Remember', params.remember)
+      cookieStorage.set(typeA, data.access_token, {
+        expires: params.remember ? '30D' : '30m'
       })
       await commit('HTTP_HEADERS', data.access_token)
       await dispatch('fetchAuth')
@@ -52,7 +53,7 @@ export const actions = {
   },
 
   async fetchAuth ({ commit }) {
-    const token = cookieStorage.get(router.app.$typeA)
+    const token = cookieStorage.get(typeA)
     if (token) {
       await commit('HTTP_HEADERS', token)
       const { data } = await HTTP.post('/auth/me')
@@ -62,28 +63,25 @@ export const actions = {
 
   async signout ({ commit }) {
     await HTTP.post('/auth/logout')
-    clearInterval(valve)
+    clearInterval(VALVE)
     commit('LOGGED_OUT')
   },
 
   verifyCookies ({ state, dispatch }) {
-    window.app.$notice.destroy()
+    router.app.$notice.destroy()
 
-    if (cookieStorage.get('TYPE.Remember') === 'false') {
+    if (localStorage.getItem('TYPE.Remember') === 'false') {
       window.addEventListener('click', events => {
-        if (state.voice) {
-          cookieStorage.set(
-            window.app.$typeA,
-            cookieStorage.get(window.app.$typeA),
-            { expires: '30m' }
-          )
+        let token = cookieStorage.get(typeA)
+        if (state.voice && token) {
+          cookieStorage.set(typeA, token, {expires: '30m'})
         }
       }, true)
     }
 
-    valve = setInterval(async callback => {
-      if (!cookieStorage.get(window.app.$typeA)) {
-        clearInterval(valve)
+    VALVE = setInterval(async h => {
+      if (!cookieStorage.get(typeA)) {
+        clearInterval(VALVE)
         await dispatch('signout')
         dispatch(/** notice-warning **/ 'authDenied')
       }

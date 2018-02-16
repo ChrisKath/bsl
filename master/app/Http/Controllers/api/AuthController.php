@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller {
 
@@ -26,11 +26,8 @@ class AuthController extends Controller {
   **/
   public function login(Request $req) {
     $credentials = request(['username', 'password']);
-    $expires = $req->remember
-      ? 21600 # 15D
-      : 30;   # 30m
 
-    if (!$token = Auth::setTTL($expires)->attempt($credentials)) {
+    if (!$token = Auth::attempt($credentials)) {
       return response()->json([
         'error' => 'Unauthorized'
       ]);

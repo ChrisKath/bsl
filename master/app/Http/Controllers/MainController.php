@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Url as Watch;
-use App\Click;
+use App\Url as WATCH;
+use App\Click as CLICK;
 
 class MainController extends Controller {
 
@@ -33,7 +33,7 @@ class MainController extends Controller {
   * @return Boolean
   **/
   public function state ($key) {
-    $query = Watch::where('key', $key);
+    $query = WATCH::where('key', $key);
 
     if (!$query->count()) return (bool) $query->count();
 
@@ -59,7 +59,7 @@ class MainController extends Controller {
   * @param String $this->data->id
   **/
   public function clicked ($id) {
-    $click = new Click;
+    $click = new CLICK;
     $click->urls_id      = $id;
     $click->user_ip      = \Request::ip();
     $click->description  = \Request::header('User-Agent');

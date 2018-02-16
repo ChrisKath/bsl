@@ -12,7 +12,7 @@
       & > a {
         position: relative;
         display: block;
-        padding: 10px 15px;
+        padding: 12px 15px;
         transition: padding 400ms, background 320ms;
 
         &> .@{css-prefix}icon {
@@ -37,13 +37,24 @@
       .col {
         &-date {}
         &-title {}
-        &-origin {
+        &-href {
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
         }
-        &-short {}
+
+        &-key {
+          .@{css-prefix}tag {
+            padding: 8px 10px;
+            font-size: 11px;
+            opacity: .6;
+            text-transform: capitalize;
+            background-color: transparent;
+            border-radius: @border-radius-base;
+            border: dashed 1px lighten(@primary-color, 20%);
+          }
         }
+      }
     }
   }
 

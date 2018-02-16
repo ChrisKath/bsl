@@ -12,6 +12,9 @@ class Url extends Model {
   * @var string
   **/
   protected $table = 'urls';
+  protected $casts = [
+    'enable' => 'integer'
+  ];
 
   public function click() {
     return $this->hasMany(__NAMESPACE__ . '\Click');

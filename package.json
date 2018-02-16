@@ -49,7 +49,6 @@
     "html-webpack-plugin": "^2.30.1",
     "iview": "^2.8.0",
     "iview-loader": "^1.1.0",
-    "json-web-token": "^2.1.3",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lodash-webpack-plugin": "^0.11.4",

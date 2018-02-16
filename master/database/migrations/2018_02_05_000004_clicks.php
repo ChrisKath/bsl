@@ -13,12 +13,14 @@ class Clicks extends Migration {
   public function up() {
 
     Schema::create('clicks', function (Blueprint $table) {
+
       $table->increments('id');
       $table->integer('urls_id')->unsigned();
       $table->foreign('urls_id')->references('id')->on('urls');
       $table->char('user_ip', 45);
       $table->timestamp('clicked_at')->useCurrent();
       $table->longText('description')->nullable();
+
     });
 
   }
@@ -29,6 +31,6 @@ class Clicks extends Migration {
   * @return void
   **/
   public function down() {
-    Schema::dropIfExists('clicks');
+    Schema::drop('clicks');
   }
 }

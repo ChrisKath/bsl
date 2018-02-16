@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import lodash from 'lodash'
 import moment from 'vue-moment'
-import JWToken from 'json-web-token'
 import clipboard from 'vue-clipboard2'
 
 import App from '~/App'
@@ -95,15 +94,14 @@ Object.keys(components).forEach(key => {
 
 Vue.use(moment)
 Vue.use(clipboard)
-Vue.prototype.$uri      = process.env.NODE_ENV === 'production' ? 'de1.us/' : 'tap.co/'
-Vue.prototype.$typeA    = 'TYPE.Authentication'
-Vue.prototype.$secret   = 'H-I-M-I-T-S-U-K-E-N' // 秘密鍵
 Vue.prototype.$lodash   = lodash
-Vue.prototype.$jwt      = JWToken
 Vue.prototype.$loading  = LoadingBar
 Vue.prototype.$message  = Message
 Vue.prototype.$modal    = Modal
 Vue.prototype.$notice   = Notice
+Vue.prototype.$uri      = process.env.NODE_ENV === 'production'
+  ? 'de1.us/'
+  : 'tap.co/'
 
 Vue.config.devtools = true
 Vue.config.productionTip = false

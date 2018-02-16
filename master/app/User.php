@@ -33,6 +33,9 @@ class User extends Authenticatable implements JWTSubject {
   ];
 
   // Rest omitted for brevity
+  protected $casts = [
+    'isAdmin' => 'integer'
+  ];
 
   /**
   * Get the identifier that will be stored in the subject claim of the JWT.

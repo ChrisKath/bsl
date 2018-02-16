@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Tag as Tags;
-use App\Taggable;
+use App\Tag as TAGS;
+use App\Taggable as TAGSYNC;
 
 class TagController extends Controller {
 
@@ -48,7 +48,7 @@ class TagController extends Controller {
     ]);
 
     # newly created.
-    $tag = new Tags;
+    $tag = new TAGS;
     $tag->name = $req->name;
     $tag->save();
 
@@ -100,8 +100,8 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function destroy($id) {
-    $drop = Taggable::where('tags_id', $id)->delete();
-    $drop = Tags::where('id', $id)->delete();
+    $drop = TAGSYNC::where('tags_id', $id)->delete();
+    $drop = TAGS::where('id', $id)->delete();
 
     return response()->json(['status' => (bool) $drop]);
   }
@@ -110,7 +110,7 @@ class TagController extends Controller {
   #############################################################################
   # Helpers Scope.
   public function haved($name) {
-    $query = Tags::where('name', $name);
+    $query = TAGS::where('name', $name);
 
     return $query->count()
       ? $this->queries()->where('name', $name)->first()
@@ -118,7 +118,7 @@ class TagController extends Controller {
   }
 
   public function queries() {
-    return Tags::leftJoin('url_has_tags', 'tags.id', '=', 'url_has_tags.tags_id')
+    return TAGS::leftJoin('url_has_tags', 'tags.id', '=', 'url_has_tags.tags_id')
       ->select(
         'id',
         'name',

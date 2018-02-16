@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
-use App\Url as Watch;
+use App\Url as WATCH;
 
 class Controller extends BaseController
 {
@@ -43,9 +43,9 @@ class Controller extends BaseController
   }
 
   public function verifyKey($key) {
-    $query = (bool) Watch::where('key', $key)->count();
+    $query = WATCH::where('key', $key)->count();
 
-    if (!$query) return $key;
+    if (!(bool) $query) return $key;
     else $this->runKey();
   }
 }

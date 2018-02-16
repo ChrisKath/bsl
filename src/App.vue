@@ -22,8 +22,8 @@ export default {
     authen: 'authen/check'
   }),
 
-  async created () {
-    await this.fetchAuth(true)
+  created () {
+    this.fetchAuth(true)
   },
 
   mounted () {

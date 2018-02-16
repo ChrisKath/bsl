@@ -29,8 +29,8 @@ export const actions = {
   async add ({ commit, dispatch }, params) {
     const { data } = await HTTP.post('/panel', params)
 
-    if (!data.ststus) {
-      dispatch(/** notice-error **/ 'isError', data.error[2])
+    if (!data.ststus && data.error) {
+      dispatch(/** notice-error **/ 'isError', data.error)
     } else {
       dispatch(/** notice-success **/ 'isCreated')
     }
@@ -42,7 +42,7 @@ export const actions = {
     const { data } = await HTTP.patch(`/panel/${params.id}`, params.form)
 
     if (!data.status) {
-      dispatch(/** notice-error **/ 'isError', data.error[2])
+      dispatch(/** notice-error **/ 'isError', data.error)
     } else {
       dispatch(/** notice-success **/ 'isUpdated', params.form.name)
     }
@@ -74,7 +74,7 @@ export const actions = {
     window.app.$notice.error({
       duration: 10,
       title: 'Wrong!!',
-      desc: errInfo
+      desc: errInfo[2]
     })
   }
 }

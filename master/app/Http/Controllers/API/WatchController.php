@@ -5,11 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Url as Watch;
-use App\User;
-use App\Tag;
-use App\Click;
-use App\Taggable;
+use App\Url as WATCH;
+use App\User as USER;
+use App\Click as CLICK;
+use App\Taggable as TAGSYNC;
 
 class WatchController extends Controller {
 
@@ -19,10 +18,8 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function index() {
-    $watch = $this->fetchTake();
-
     return response()->json(
-      $watch->get()
+      $this->queries()->take(10)->get()
     );
   }
 
@@ -43,7 +40,7 @@ class WatchController extends Controller {
     ));
 
     # newly created.
-    $watch = new Watch;
+    $watch = new WATCH;
     $watch->key         = $this->runKey();
     $watch->href        = $req->href;
     $watch->title       = $req->title ? $req->title : $hostname;
@@ -54,10 +51,7 @@ class WatchController extends Controller {
     $watch->save();
 
     # insert tags.
-    $tags = $this->fetchTags(
-      $watch->id,
-      $req->tags
-    );
+    $this->fetchTags($watch->id, $req->tags);
 
     return response()->json([
       'id'  => $watch->id,
@@ -74,17 +68,17 @@ class WatchController extends Controller {
   **/
   public function show($key, $return = false) {
     # gathering url by key.
-    $watch = Watch::where('key', $key)->first();
+    $watch = WATCH::where('key', $key)->first();
 
     if (!(bool) $watch) return response()->json((bool) $watch);
 
     # gathering tags on table-connect.
-    $tags = Taggable::where('url_has_tags.urls_id', $watch->id)
+    $tags = TAGSYNC::where('url_has_tags.urls_id', $watch->id)
       ->join('tags', 'tags.id', '=', 'url_has_tags.tags_id')
       ->get(['tags.id', 'tags.name']);
 
     # gathering clicked timeline log.
-    $timeline = Click::where('urls_id', $watch->id)
+    $timeline = CLICK::where('urls_id', $watch->id)->take(15)
       ->orderBy('clicked_at', 'desc')
       ->get(['user_ip', 'clicked_at']);
 
@@ -105,10 +99,10 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function showly(Request $req) {
-    $watch = $this->fetchTake();
+    $watch = $this->queries();
     $watch->whereNotIn(
       'urls.id', $req->items
-    );
+    )->take(10);
 
     return response()->json(
       $watch->get()
@@ -136,13 +130,13 @@ class WatchController extends Controller {
   **/
   public function update(Request $req, $id) {
     # verify key exist.
-    $watch = Watch::where('key', $req->key)
+    $watch = WATCH::where('key', $req->key)
       ->where('id', '!=', $id)
       ->count();
     if ($watch) return response()->json(['status' => false]);
 
     # update on Urls
-    $watch = Watch::where('id', $id);
+    $watch = WATCH::where('id', $id);
     $urls  = $watch->first(['id']);
     $watch->update([
       'key'       => $req->key,
@@ -154,7 +148,7 @@ class WatchController extends Controller {
     ]);
 
     # insert tags.
-    $tags = $this->fetchTags($urls['id'], $req->tags);
+    $this->fetchTags($urls['id'], $req->tags);
 
     return response()->json(['status' => true]);
   }
@@ -167,7 +161,7 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function fly(Request $req) {
-    $enable = Watch::where('id', $req->id)
+    $enable = WATCH::where('id', $req->id)
       ->update([
         'enable' => $req->fly,
         'updated_by' => $this->me()->id
@@ -187,18 +181,18 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function destroy(Request $req, $id) {
-    $drop = Taggable::where('urls_id', $id)->delete();
-    $drop = Click::where('urls_id', $id)->delete();
-    $drop = Watch::where('id', $id)->delete();
+    $drop = TAGSYNC::where('urls_id', $id)->delete();
+    $drop = CLICK::where('urls_id', $id)->delete();
+    $drop = WATCH::where('id', $id)->delete();
 
     return response()->json(['status' => (bool) $drop]);
   }
 
 
-  #############################################################################
+  ##############################################################################
   # Helpers Scope.
   public function verifyHref($href) {
-    $query = Watch::where('href', $href);
+    $query = WATCH::where('href', $href);
     return $query->count()
       ? $query->first(['key'])
       : false;
@@ -206,23 +200,25 @@ class WatchController extends Controller {
 
 
   public function fetchTags($urls_id, $tags) {
-    # destroyed all tags connected.
-    $destroyed = Taggable::where('urls_id', $urls_id)->delete();
+    # destroyed all tagsync.
+    TAGSYNC::where('urls_id', $urls_id)->delete();
+
+    if (!count($tags)) return null;
 
     foreach ($tags as $value) $tagger[] = array(
       'urls_id' => $urls_id,
       'tags_id' => (int) $value,
     );
 
-    # insert all tags end.
-    $inserted = Taggable::insert($tagger);
-
-    return $tagger;
+    # insert all tagsync.
+    TAGSYNC::insert($tagger);
   }
 
 
-  public function fetchTake() {
-    return Watch::leftJoin('clicks', 'urls.id', '=', 'clicks.urls_id')
+  public function queries() {
+    return WATCH::leftJoin('clicks', 'urls.id', '=', 'clicks.urls_id')
+      ->leftJoin('url_has_tags AS sync', 'urls.id', '=', 'sync.urls_id')
+      ->leftJoin('tags', 'tags.id', '=', 'sync.tags_id')
       ->select(
         'urls.id',
         'key',
@@ -230,21 +226,21 @@ class WatchController extends Controller {
         'title',
         'expiry',
         'enable',
-        'created_at',
-        DB::raw('count(clicks.urls_id) click')
+        'urls.created_at',
+        DB::raw('count(clicks.urls_id) click'),
+        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags')
       )
       ->orderBy('created_at', 'desc')
-      ->groupBy('urls.id')
-      ->take(10);
+      ->groupBy('urls.id');
   }
 
 
   public function usync($uid) {
-    return User::where('id', $uid)->first(['name']);
+    return USER::where('id', $uid)->first(['name']);
   }
 
 
   public function uclick($uid) {
-    return Click::where('urls_id', $uid)->count();
+    return CLICK::where('urls_id', $uid)->count();
   }
 }

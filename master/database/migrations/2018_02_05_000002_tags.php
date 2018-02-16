@@ -13,9 +13,11 @@ class Tags extends Migration {
   public function up() {
 
     Schema::create('tags', function (Blueprint $table) {
+
       $table->increments('id');
       $table->char('name', 100);
       $table->timestamp('created_at')->useCurrent();
+
     });
 
   }
@@ -26,6 +28,6 @@ class Tags extends Migration {
   * @return void
   **/
   public function down() {
-    Schema::dropIfExists('tags');
+    Schema::drop('tags');
   }
 }

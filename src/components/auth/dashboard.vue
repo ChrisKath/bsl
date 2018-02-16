@@ -21,12 +21,25 @@
             </Col>
           </Row>
 
-          <div class="li size-14 size-w400 pd-t5 pd-b5">{{ item.href }}</div>
+          <div class="col-href size-14 size-w400 pd-t5 pd-b5">
+            {{ item.href }}
+          </div>
 
           <Row type="flex" align="middle" justify="space-between"
             class-name="size-14 size-w600">
-            <Col class="col-short primary">
-              {{ $uri }}<b v-text="item.key"/>
+            <Col class="col-key primary">
+              <span class="min-w125">
+                {{ $uri }}<b v-text="item.key"/>
+              </span>
+
+              <span class="mg-l20" v-if="item.tags">
+                <Tag class="mg-r5"
+                  v-for="(tag, key) in item.tags.split(',')"
+                  :key="tag.id">
+
+                  {{ tag }}
+                </Tag>
+              </span>
             </Col>
 
             <Col class="col-click size-14">
