@@ -100,8 +100,8 @@ export default {
     }
   },
 
-  async created () {
-    await this.call()
+  created () {
+    this.call()
   },
 
   computed: mapGetters({

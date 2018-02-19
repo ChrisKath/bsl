@@ -25,9 +25,10 @@ Route::prefix('v1')->group(function () {
     # Router Needed Authentication.
     Route::middleware('auth:api')->group(function () {
 
-      Route::resource('watch',  'WatchController');
-      Route::post('watch/fly',  'WatchController@fly');
-      Route::post('watch/take', 'WatchController@showly');
+      Route::resource('watch',    'WatchController');
+      Route::post('watch/fly',    'WatchController@fly');
+      Route::post('watch/take',   'WatchController@showly');
+      Route::post('watch/search', 'WatchController@search');
 
       Route::resource('tags',  'TagController');
 

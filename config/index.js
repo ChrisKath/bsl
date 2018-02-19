@@ -45,8 +45,7 @@ module.exports = {
   },
 
   build: {
-    // api: '//de1.us/api/v1',
-    api: '//tap.co/api/v1',
+    api: '//de1.us/api/v1',
 
     // Template for index.html
     index: path.resolve(__dirname, '../master/public/index.html'),

@@ -1,17 +1,19 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
-    <NoData v-if="!items.length"/>
+    <NoData v-if="!board"/>
 
     <div class="ivu-list" v-else>
-      <div class="ivu-list-li" v-for="(item, key) in items">
+      <div class="ivu-list-li" v-for="(item, key) in board">
         <router-link :to="{name: 'auth.watch', params: {key: item.key}}">
 
           <Icon type="ios-play-outline" :size="40"/>
 
           <Row class="txt-up" type="flex" align="middle" justify="space-between">
-            <Col class="col-title size-16 size-w800">
-              {{ item.title }}
-            </Col>
+            <Col class="col-title size-16 size-w800"
+              v-html="pack(item.title)"
+            />
+
+
             <Col class="col-date size-11 size-w600 flexed">
               {{ `
                 ${$moment(item.created_at).format('ll')}
@@ -21,20 +23,20 @@
             </Col>
           </Row>
 
-          <div class="col-href size-14 size-w400 pd-t5 pd-b5">
-            {{ item.href }}
-          </div>
+          <div class="col-href size-14 size-w400 pd-t5 pd-b5"
+            v-html="pack(item.href)"
+          />
 
           <Row type="flex" align="middle" justify="space-between"
             class-name="size-14 size-w600">
             <Col class="col-key primary">
               <span class="min-w125">
-                {{ $uri }}<b v-text="item.key"/>
+                {{ $uri }}<b v-html="pack(item.key)"/>
               </span>
 
               <span class="mg-l20" v-if="item.tags">
                 <Tag class="mg-r5"
-                  v-for="(tag, key) in item.tags.split(',')"
+                  v-for="(tag, key) in $lodash.orderBy(item.tags.split(','), [], ['asc'])"
                   :key="tag.id">
 
                   {{ tag }}
@@ -61,60 +63,72 @@
       </div>
     </div>
 
-    <div class="ivu-load-more txt-c mg-b30" v-if="items.length">
+    <div class="ivu-load-more txt-c mg-b30" v-if="board">
       <Button type="ghost" class="txt-up size-w600 min-w200"
         :loading="i.loading"
-        @click="takeMore">
+        @click="load">
 
         <span v-if="!i.loading">load more</span>
         <span v-else>{{ $t('i.select.loading') }}...</span>
-    </Button>
+      </Button>
     </div>
   </Row>
 </template>
 
 <script>
 import NoData from '~/components/layout/noDataText'
-import { HTTP } from '~/store/http'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
-      items: [],
       i: { loading: false }
     }
   },
 
   methods: {
-    async takeMore () {
+    ...mapActions({
+      call: 'manage.watch/call',
+      take: 'manage.watch/take',
+      clean: 'manage.watch/search'
+    }),
+
+    load () {
       this.i.loading = true
 
       // observe items id.
-      const items = []
-      this.items.forEach((item, key) => {
-        items.push(item.id)
-      })
+      let arr = []
+      this.board.forEach((item, key) => arr.push(item.id))
+
+      const params = { ids: arr }
+
+      if (this.search) params.search = this.search
 
       // call more items setp-10
-      await setTimeout(async callback => {
-        const { data } = await HTTP.post('/watch/take', {'items': items})
-
-        data.forEach((item, key) => {
-          this.items.push(item)
-        })
-
+      setTimeout(async h => {
+        await this.take(params)
         this.i.loading = false
-      }, 1280)
+      }, 999)
     },
 
-    async call () {
-      const { data } = await HTTP.get('/watch')
-      this.items = data
+    pack (message) {
+      return message.replace(new RegExp(this.search, 'gi'), match => {
+        return `<pack>${match}</pack>`
+      })
     }
   },
 
-  async created () {
-    await this.call()
+  computed: mapGetters({
+    board: 'manage.watch/board',
+    search: 'manage.watch/search'
+  }),
+
+  created () {
+    if (!this.search) this.call()
+  },
+
+  destroyed () {
+    this.clean({search: ''})
   },
 
   components: {

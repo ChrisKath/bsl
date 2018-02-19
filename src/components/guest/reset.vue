@@ -77,7 +77,7 @@ export default {
         timestamp: Date.now()
       },
       rule: {
-        username: [verify.fill, verify.default],
+        username: [verify.fill, verify.string],
         email: [verify.fill, verify.email]
       }
     }

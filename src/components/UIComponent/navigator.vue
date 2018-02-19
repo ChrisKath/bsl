@@ -1,10 +1,17 @@
 <template lang="html">
   <div class="ivu-nav">
-    <Form class="ivu-form-search" autocomplete="on">
-      <Input :placeholder="$t('i.form.search')">
-        <Button slot="append" icon="ios-search" size="large" class="size-18"/>
+    <Col class="ivu-form-search">
+      <Input :placeholder="$t('i.form.search')"
+        v-model="form.search"
+        @keyup.tab.native="touch"
+        @keyup.enter.native="touched">
+
+        <Button slot="append" icon="ios-search" size="large" class="size-18"
+          @click="touched"
+        />
+
       </Input>
-    </Form>
+    </Col>
 
     <Button type="primary" shape="circle" size="large"
       class="size-w700 min-w200"
@@ -81,14 +88,50 @@ import { mapGetters, mapActions } from 'vuex'
 import Complex from '~/components/UIComponent/Other/complex'
 
 export default {
+  data () {
+    return {
+      form: {
+        search: ''
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      signout: 'authen/signout'
+      signout: 'authen/signout',
+      search: 'manage.watch/search',
+      call: 'manage.watch/call'
     }),
 
     logout () {
       this.$loading.start()
       this.signout()
+    },
+
+    touch () {
+      this.search({
+        hook: false,
+        search: this.form.search
+      })
+
+      this.$router.push({ name: 'auth.main' })
+    },
+
+    async touched () {
+      if (this.form.search) {
+        this.$loading.start()
+
+        await this.search({
+          hook: true,
+          search: this.form.search
+        })
+
+        this.$loading.finish()
+        this.$router.push({ name: 'auth.main' })
+      } else {
+        this.call()
+        this.search({search: ''})
+      }
     }
   },
 

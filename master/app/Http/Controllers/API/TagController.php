@@ -10,10 +10,6 @@ use App\Taggable as TAGSYNC;
 
 class TagController extends Controller {
 
-  public function __construct() {
-    if (!$this->me()->isAdmin) exit();
-  }
-
   /**
   * Display a listing of the resource.
   *
@@ -43,6 +39,8 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function store(Request $req) {
+    if (!$this->me()->isAdmin) exit();
+
     if ($this->haved($req->name)) return response()->json([
       'status' => false
     ]);
@@ -100,6 +98,8 @@ class TagController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function destroy($id) {
+    if (!$this->me()->isAdmin) exit();
+
     $drop = TAGSYNC::where('tags_id', $id)->delete();
     $drop = TAGS::where('id', $id)->delete();
 

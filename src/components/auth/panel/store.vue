@@ -134,8 +134,8 @@ function FormData () {
       isAdmin:  [verify.fill],
       name:     [verify.fill],
       email:    [verify.fill, verify.email],
-      username: [verify.fill, verify.default],
-      password: [verify.fill, verify.default]
+      username: [verify.fill, verify.string],
+      password: [verify.fill, verify.string]
     }
   }
 }

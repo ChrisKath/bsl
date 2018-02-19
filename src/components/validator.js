@@ -4,7 +4,7 @@ export default {
     required: true,
     message: 'Please fill is required'
   },
-  default: {
+  string: {
     type: 'string',
     pattern: /^[a-z*A-Z*0-9*]+$/,
     message: 'Please fill is (English or Number) only'

@@ -53,6 +53,8 @@
 
             <Input slot="input" type="text"
               v-model="form.key"
+              :maxlength="8"
+              :disabled="!i.type.edit"
             />
 
           </InputGroup>
@@ -170,7 +172,7 @@ function FormData () {
       tags:   []
     },
     rule: {
-      key:    [verify.fill],
+      key:    [verify.fill, verify.string],
       href:   [verify.fill, verify.url],
       redir:  [verify.fill, verify.url]
     }
@@ -204,6 +206,14 @@ export default {
             this.$t('i.notice.warning')
           )
         } else {
+          if (this.i.type.edit && !this.form.key) {
+            this.$notice.error({
+              title: 'Critical Wrong!!',
+              desc:  'Short KEY is required.'
+            })
+            return false
+          }
+
           this.i.loading = true
 
           const normal = {

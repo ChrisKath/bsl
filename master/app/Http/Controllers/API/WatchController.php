@@ -93,15 +93,36 @@ class WatchController extends Controller {
 
 
   /**
-  * Display the specified resource.
+  * Display the specified showly.
   *
   * @param  \Illuminate\Http\Request  $req
   * @return \Illuminate\Http\Response
   **/
   public function showly(Request $req) {
-    $watch = $this->queries();
+    $watch = ($req->search)
+      ? $this->ulike($req->search)
+      : $this->queries();
+
     $watch->whereNotIn(
-      'urls.id', $req->items
+      'urls.id', $req->ids
+    )
+    ->take(10);
+
+    return response()->json(
+      $watch->get()
+    );
+  }
+
+
+  /**
+  * Display the specified searching.
+  *
+  * @param  \Illuminate\Http\Request  $req
+  * @return \Illuminate\Http\Response
+  **/
+  public function search(Request $req) {
+    $watch = $this->ulike(
+      $req->search
     )->take(10);
 
     return response()->json(
@@ -232,6 +253,18 @@ class WatchController extends Controller {
       )
       ->orderBy('created_at', 'desc')
       ->groupBy('urls.id');
+  }
+
+
+  public function ulike($search) {
+    $query = $this->queries()
+      ->where(function ($query) use ($search) {
+        return $query->where('title',  'LIKE', '%'. $search .'%')
+          ->orWhere('key',  'LIKE', '%'. $search .'%')
+          ->orWhere('href', 'LIKE', '%'. $search .'%');
+      });
+
+    return $query;
   }
 
 

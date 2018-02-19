@@ -3,17 +3,31 @@ import router from '~/router'
 
 // state
 export const state = {
-  watch: []
+  board: true,
+  watch: [],
+  search: ''
 }
 
 // getters
 export const getters = {
+  board: state => state.board,
   watch: state => state.watch,
-  check: state => Object.keys(state.watch).length
+  check: state => Object.keys(state.watch).length,
+  search: state => state.search
 }
 
 // mutations
 export const mutations = {
+  CALL_DATA (state, payload) {
+    state.board = payload.length
+      ? payload
+      : null
+  },
+
+  TAKE_DATA (state, payload) {
+    payload.forEach((item, key) => state.board.push(item))
+  },
+
   MOCK_DATA (state, payload) {
     state.watch = payload
   },
@@ -21,11 +35,25 @@ export const mutations = {
   FLYING (state, payload) {
     state.watch.updated_by = payload.name
     state.watch.updated_at = Date.now()
+  },
+
+  SEARCHING (state, payload) {
+    state.search = payload
   }
 }
 
 // actions
 export const actions = {
+  async call ({ commit }, params) {
+    const { data } = await HTTP.get('/watch')
+    commit('CALL_DATA', data)
+  },
+
+  async take ({ commit }, params) {
+    const { data } = await HTTP.post('/watch/take', params)
+    commit('TAKE_DATA', data)
+  },
+
   async mock ({ commit }, params) {
     const { data } = await HTTP.get(`/watch/${params}`)
     data === false
@@ -75,5 +103,13 @@ export const actions = {
       desc: `<b>[${key}]</b> This Short Key is already exist.`,
       duration: 6.4
     })
+  },
+
+  async search ({ commit }, params) {
+    if (params.hook) {
+      const { data } = await HTTP.post('/watch/search', {search: params.search})
+      commit('CALL_DATA', data)
+    }
+    commit('SEARCHING', params.search)
   }
 }
