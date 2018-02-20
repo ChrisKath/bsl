@@ -1,5 +1,5 @@
 import { HTTP } from '../http'
-import router from '~/router'
+import core from '~/router'
 
 // state
 export const state = {
@@ -51,27 +51,27 @@ export const actions = {
   },
 
   isCreated () {
-    window.app.$loading.start()
-    window.app.$notice.success({
+    core.app.$loading.start()
+    core.app.$notice.success({
       duration: 2.4,
       title: 'Successful',
       desc: 'New account has been created.'
     })
-    setTimeout(h => router.push({name: 'auth.panel'}), 512)
+    setTimeout(h => core.push({name: 'auth.panel'}), 512)
   },
 
   isUpdated ({ commit }, name) {
-    window.app.$loading.start()
-    window.app.$notice.success({
+    core.app.$loading.start()
+    core.app.$notice.success({
       duration: 2,
       title: 'Successful',
       desc: `<b>${name}</b>, has been updated.`
     })
-    setTimeout(h => router.push({name: 'auth.panel'}), 512)
+    setTimeout(h => core.push({name: 'auth.panel'}), 512)
   },
 
   isError ({ commit }, errInfo) {
-    window.app.$notice.error({
+    core.app.$notice.error({
       duration: 10,
       title: 'Wrong!!',
       desc: errInfo[2]

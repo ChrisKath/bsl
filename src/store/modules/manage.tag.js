@@ -1,4 +1,5 @@
 import { HTTP } from '../http'
+import core from '~/router'
 
 // state
 export const state = {
@@ -21,7 +22,7 @@ export const mutations = {
   },
 
   REMOVE_AN_TAG (state, payload) {
-    state.tags = window.app.$lodash.reject(state.tags, {
+    state.tags = core.app.$lodash.reject(state.tags, {
       id: payload
     })
   }
@@ -37,13 +38,13 @@ export const actions = {
   async add ({ commit }, params) {
     const { data } = await HTTP.post('/tags', {name: params})
     if (!data.status) {
-      window.app.$notice.error({
+      core.app.$notice.error({
         title: 'Oops!!',
         desc: 'This name has already been used.'
       })
     } else {
       await commit('FETCH_NEW_TAG', data.item)
-      window.app.$notice.success({
+      core.app.$notice.success({
         title: 'Good job!!',
         desc: `<b>(${data.item.name})</b>, New Tag has been added.`
       })
@@ -56,7 +57,7 @@ export const actions = {
     const { data } = await HTTP.delete(`/tags/${params.id}`)
     if (data.status) {
       commit('REMOVE_AN_TAG', params.id)
-      window.app.$notice.warning({
+      core.app.$notice.warning({
         title: 'Removed!',
         desc: `<b>(${params.name})</b>, Tag has been removed.`
       })

@@ -1,5 +1,5 @@
 import { HTTP } from '../http'
-import router from '~/router'
+import core from '~/router'
 
 // state
 export const state = {
@@ -57,14 +57,14 @@ export const actions = {
   async mock ({ commit }, params) {
     const { data } = await HTTP.get(`/watch/${params}`)
     data === false
-      ? router.push({name: 'auth.main'})
+      ? core.push({name: 'auth.main'})
       : commit('MOCK_DATA', data)
   },
 
   async add ({ commit }, params) {
     const { data } = await HTTP.post('/watch', params)
 
-    router.push({
+    core.push({
       name: 'auth.watch',
       params: { key: data.key }
     })
@@ -76,7 +76,7 @@ export const actions = {
       dispatch(/** notice-error **/ 'keyExist', params.form.key)
       return false
     } else {
-      router.push({
+      core.push({
         name: 'auth.watch',
         params: {key: params.form.key}
       })
@@ -91,14 +91,14 @@ export const actions = {
   async remove ({ commit }, params) {
     const { data } = await HTTP.delete(`/watch/${params}`)
     if (data.status) {
-      router.push({
+      core.push({
         name: 'auth.main'
       })
     }
   },
 
   keyExist ({ commit }, key) {
-    router.app.$notice.error({
+    core.app.$notice.error({
       title: 'Error exist key',
       desc: `<b>[${key}]</b> This Short Key is already exist.`,
       duration: 6.4

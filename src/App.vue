@@ -1,10 +1,12 @@
 <template lang="html">
-  <Layout aria-core="Core Program" id="app-wrap">
+  <Layout id="app-wrap" aria-core="Core Program">
+
     <Nav :auth="authen"/>
 
     <Content class="layout-content">
       <router-view/>
     </Content>
+
   </Layout>
 </template>
 

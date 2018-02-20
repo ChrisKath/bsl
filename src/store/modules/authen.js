@@ -1,5 +1,5 @@
 import { HTTP } from '../http'
-import router from '~/router'
+import core from '~/router'
 import cookieStorage from 'vue-cookie'
 
 var typeA = 'TYPE.Authentication'
@@ -26,7 +26,7 @@ export const mutations = {
     HTTP.defaults.headers.common['Authorization'] = ''
     state.voice = 0
     cookieStorage.delete(typeA)
-    router.push({name: 'guest.login'})
+    core.push({name: 'guest.login'})
   },
 
   HTTP_HEADERS (state, payload) {
@@ -48,7 +48,7 @@ export const actions = {
       await commit('HTTP_HEADERS', data.access_token)
       await dispatch('fetchAuth')
       await dispatch('verifyCookies')
-      router.push({name: 'auth.main'})
+      core.push({name: 'auth.main'})
     }
   },
 
@@ -68,7 +68,7 @@ export const actions = {
   },
 
   verifyCookies ({ state, dispatch }) {
-    router.app.$notice.destroy()
+    core.app.$notice.destroy()
 
     if (localStorage.getItem('TYPE.Remember') === 'false') {
       window.addEventListener('click', events => {
@@ -89,18 +89,18 @@ export const actions = {
   },
 
   authFailed () {
-    router.app.$notice.error({
-      title: router.app.$t('i.notice.authFailed.title'),
-      desc:  router.app.$t('i.notice.authFailed.desc'),
+    core.app.$notice.error({
+      title: core.app.$t('i.notice.authFailed.title'),
+      desc:  core.app.$t('i.notice.authFailed.desc'),
       duration: 10
     })
-    router.app.$loading.error()
+    core.app.$loading.error()
   },
 
   authDenied () {
-    router.app.$notice.warning({
-      title: router.app.$t('i.notice.authDenied.title'),
-      desc:  router.app.$t('i.notice.authDenied.desc'),
+    core.app.$notice.warning({
+      title: core.app.$t('i.notice.authDenied.title'),
+      desc:  core.app.$t('i.notice.authDenied.desc'),
       duration: 0
     })
   }

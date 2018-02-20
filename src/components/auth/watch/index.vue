@@ -124,7 +124,7 @@
 
               <p class>
                 <span class>
-                  {{ $moment(watch.clicked_at).format('ll') }}
+                  {{ $moment(click.clicked_at).format('ll') }}
                 </span>
                 &nbsp;|&nbsp;
                 <span>
