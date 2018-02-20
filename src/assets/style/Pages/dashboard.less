@@ -1,6 +1,12 @@
 .@{css-prefix}dashboard {
+  border: none !important;
+  background-color: transparent !important;
+
   .@{css-prefix}list {
     overflow: hidden;
+    border-radius: @btn-border-radius-large;
+    border: solid 1px lighten(@border-color-base, 8%);
+    background-color: @body-background;
 
     &-li {
       &:not(:last-child) {
@@ -60,9 +66,7 @@
 
 
 
-  .@{css-prefix}load-more {
-    position: absolute;
-    padding: 20px 0 0;
+  .@{css-prefix}more {
     width: 100%;
 
     .@{css-prefix}btn {

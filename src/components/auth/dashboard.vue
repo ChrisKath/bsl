@@ -1,8 +1,9 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
-    <NoData v-if="!board"/>
 
-    <div class="ivu-list" v-else>
+    <Firuta v-if="board"/>
+
+    <div class="ivu-list" v-if="board">
       <div class="ivu-list-li" v-for="(item, key) in board">
         <router-link :to="{name: 'auth.watch', params: {key: item.key}}">
 
@@ -63,7 +64,7 @@
       </div>
     </div>
 
-    <div class="ivu-load-more txt-c mg-b30" v-if="board">
+    <div class="ivu-more txt-c pd-t40" v-if="board">
       <Button type="ghost" class="txt-up size-w600 min-w200"
         :loading="i.loading"
         @click="load">
@@ -72,10 +73,13 @@
         <span v-else>{{ $t('i.select.loading') }}...</span>
       </Button>
     </div>
+
+    <NoData v-if="!board"/>
   </Row>
 </template>
 
 <script>
+import Firuta from '~/components/UIComponent/firuta'
 import NoData from '~/components/layout/noDataText'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -132,7 +136,8 @@ export default {
   },
 
   components: {
-    'NoData': NoData
+    NoData: NoData,
+    Firuta: Firuta
   }
 }
 </script>

@@ -41,6 +41,7 @@ import {
   Radio,
   Scroll,
   Select,
+  Slider,
   Spin,
   Switch,
   Tag,
@@ -78,6 +79,7 @@ const components = {
   Spin,
   Select,
   Scroll,
+  Slider,
   Tag,
   Timeline,
   TimelineItem: Timeline.Item,
@@ -103,7 +105,7 @@ Vue.prototype.$uri      = process.env.NODE_ENV === 'production'
   ? 'de1.us/'
   : 'tap.co/'
 
-Vue.config.devtools = false
+Vue.config.devtools = true
 Vue.config.productionTip = false
 
 window.app = new Vue({

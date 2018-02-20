@@ -1,0 +1,103 @@
+.@{css-prefix} {
+  &firuta {
+    font-size: 12px;
+    padding: 15px;
+    margin: 0 0 20px;
+    background-color: @body-background;
+    border-radius: @border-radius-base;
+    border: solid 1px tint(@primary-color, 50%);
+
+    .@{css-prefix} {
+      &date-picker {
+        display: block;
+
+        .@{css-prefix} {
+          &input {
+            padding: 0 15px 0 10px;
+            
+            &-icon {
+              color: @btn-disable-color;
+            }
+
+            &:hover {
+              border-color: @border-color-split;
+            }
+          }
+        }
+      }
+
+      &select {
+        &-selection {
+          cursor: text;
+          min-height: auto;
+          border-color: @border-color-split;
+
+          .@{css-prefix}tag {
+            padding: 1px 5px;
+            margin: 0 4px 0 0;
+            font-size: 11px;
+            text-transform: capitalize;
+            background-color: transparent;
+            border: dashed 1px tint(@primary-color, 64%);
+          }
+        }
+
+        &-dropdown {
+          margin: 0;
+          border-radius: 0;
+          border: solid 1px tint(@primary-color, 40%);
+
+          .@{css-prefix} {
+            &select-item {
+              display: block;
+              padding: 7px 10px;
+              text-transform: capitalize;
+
+              &:after {
+                line-height: .7;
+              }
+            }
+          }
+        }
+
+        &-input {
+          height: 28px;
+          line-height: normal;
+          .placeholder({font-size: 12px});
+        }
+
+        &-arrow {
+          color: @btn-disable-color;
+        }
+      }
+
+      &click {
+        width: ~'calc(100% - 200px)';
+        justify-content: space-between;
+      }
+
+      &slider {
+        width: ~'calc(100% - 140px)';
+        margin-top: 2px;
+        margin-left: 10px;
+
+        &-wrap {
+          margin: 0;
+        }
+
+        &-button-wrap {
+          top: -5px;
+        }
+      }
+
+      &checkbox {
+        padding-right: 2px;
+
+        &-wrapper {
+          width: 100%;
+          display: block;
+        }
+      }
+    }
+  }
+}
