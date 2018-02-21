@@ -79,11 +79,12 @@ export default {
   },
 
   computed: mapGetters({
-    users: 'manage.account/users'
+    users: 'manage.account/users',
+    check: 'manage.account/check'
   }),
 
-  async created () {
-    await this.call()
+  created () {
+    if (!this.check) this.call()
   }
 }
 </script>

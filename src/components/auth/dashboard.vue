@@ -1,7 +1,7 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
 
-    <Firuta v-if="board"/>
+    <Firuta v-if="board" @on-emit="firuta"/>
 
     <div class="ivu-list" v-if="board">
       <div class="ivu-list-li" v-for="(item, key) in board">
@@ -13,7 +13,6 @@
             <Col class="col-title size-16 size-w800"
               v-html="pack(item.title)"
             />
-
 
             <Col class="col-date size-11 size-w600 flexed">
               {{ `
@@ -79,14 +78,15 @@
 </template>
 
 <script>
-import Firuta from '~/components/UIComponent/firuta'
-import NoData from '~/components/layout/noDataText'
 import { mapGetters, mapActions } from 'vuex'
+import Firuta from '~/components/layout/firuta'
+import NoData from '~/components/layout/noDataText'
 
 export default {
   data () {
     return {
-      i: { loading: false }
+      i: { loading: false },
+      v: {}
     }
   },
 
@@ -107,6 +107,7 @@ export default {
       const params = { ids: arr }
 
       if (this.search) params.search = this.search
+      if (Object.keys(this.v).length) params.firuta = this.v
 
       // call more items setp-10
       setTimeout(async h => {
@@ -119,6 +120,10 @@ export default {
       return message.replace(new RegExp(this.search, 'gi'), match => {
         return `<pack>${match}</pack>`
       })
+    },
+
+    firuta (valve) {
+      this.v = valve
     }
   },
 
@@ -132,6 +137,7 @@ export default {
   },
 
   destroyed () {
+    this.v = {}
     this.clean({search: ''})
   },
 

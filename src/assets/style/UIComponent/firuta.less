@@ -14,29 +14,27 @@
         .@{css-prefix} {
           &input {
             padding: 0 15px 0 10px;
-            
+            border-color: @border-color-split;
+
             &-icon {
               color: @btn-disable-color;
-            }
-
-            &:hover {
-              border-color: @border-color-split;
             }
           }
         }
       }
 
+
       &select {
         &-selection {
           cursor: text;
           min-height: auto;
+          text-transform: capitalize;
           border-color: @border-color-split;
 
           .@{css-prefix}tag {
             padding: 1px 5px;
             margin: 0 4px 0 0;
             font-size: 11px;
-            text-transform: capitalize;
             background-color: transparent;
             border: dashed 1px tint(@primary-color, 64%);
           }
@@ -49,12 +47,17 @@
 
           .@{css-prefix} {
             &select-item {
+              text-transform: capitalize;
               display: block;
               padding: 7px 10px;
-              text-transform: capitalize;
+              transition: padding-left 200ms ease-in-out;
 
               &:after {
                 line-height: .7;
+              }
+
+              &:hover {
+                padding-left: 15px;
               }
             }
           }
@@ -63,7 +66,8 @@
         &-input {
           height: 28px;
           line-height: normal;
-          .placeholder({font-size: 12px});
+
+          .placeholder({ font-size: 12px });
         }
 
         &-arrow {
@@ -71,13 +75,13 @@
         }
       }
 
+
       &click {
         width: ~'calc(100% - 200px)';
         justify-content: space-between;
       }
-
       &slider {
-        width: ~'calc(100% - 140px)';
+        width: ~'calc(100% - 120px)';
         margin-top: 2px;
         margin-left: 10px;
 
