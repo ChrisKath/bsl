@@ -62,7 +62,7 @@ export default [
     },
     {
       name: 'guest.reset',
-      path: '/password/reset',
+      path: '/password/reset/:passive',
       component: reset
     }
   ])

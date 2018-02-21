@@ -21,6 +21,8 @@ Route::prefix('v1')->group(function () {
     Route::get('i18n', 'I18nController@index');
     Route::get('i18n/{locale}', 'I18nController@show');
 
+    Route::patch('pwd/reset', 'PassiveController@index');
+
     ############################################################################
     # Router Needed Authentication.
     Route::middleware('auth:api')->group(function () {
@@ -32,7 +34,8 @@ Route::prefix('v1')->group(function () {
 
       Route::resource('tags',  'TagController');
 
-      Route::resource('panel',  'PanelController');
+      Route::resource('panel', 'PanelController');
+      Route::post('panel/pwd/reset', 'PanelController@passive');
 
     });
 

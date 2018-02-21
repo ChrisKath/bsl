@@ -58,7 +58,12 @@
           </router-link>
 
           <Button icon="refresh"
+            :disabled="!user.passive"
             :type="user.id===1 ? 'error' : 'primary'"
+            @click="touch({
+              id: user.id,
+              username: user.username
+            })"
           />
         </ButtonGroup>
       </Col>
@@ -70,21 +75,39 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { HTTP } from '~/store/http'
 
 export default {
   methods: {
     ...mapActions({
       call: 'manage.account/call'
-    })
+    }),
+
+    touch (valve) {
+      this.$modal.confirm({
+        onOk: () => this.reset(valve),
+        okText: this.$t('i.form.button.confirm'),
+        cancelText: this.$t('i.form.button.cancel'),
+        content: `<b class=txt-up>${valve.username}</b>, will be reset password?`
+      })
+    },
+
+    async reset (params) {
+      await HTTP.post('/panel/pwd/reset', params)
+      this.$notice.success({
+        title: 'Successful',
+        desc: `<b class=txt-up>${params.username}</b>, has been reset password.`
+      })
+    }
   },
 
   computed: mapGetters({
-    users: 'manage.account/users',
-    check: 'manage.account/check'
+    me: 'authen/voice',
+    users: 'manage.account/users'
   }),
 
   created () {
-    if (!this.check) this.call()
+    this.call()
   }
 }
 </script>

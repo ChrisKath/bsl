@@ -67,6 +67,25 @@ class PanelController extends Controller {
 
 
   /**
+  * Store a newly created resource in storage.
+  *
+  * @param  \Illuminate\Http\Request  $req
+  * @return \Illuminate\Http\Response
+  **/
+  public function passive(Request $req) {
+    $user = USER::where('id', $req->id)
+      ->where('username', $req->username)
+      ->update([
+        'passive' => 0
+      ]);
+
+    return response()->json([
+      'status' => (bool) $user
+    ]);
+  }
+
+
+  /**
   * Display the specified resource.
   *
   * @param  int  $id

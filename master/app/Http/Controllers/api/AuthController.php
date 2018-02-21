@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\User as USER;
 
 class AuthController extends Controller {
 
@@ -25,9 +26,16 @@ class AuthController extends Controller {
   * @return \Illuminate\Http\JsonResponse
   **/
   public function login(Request $req) {
-    $credentials = request(['username', 'password']);
+    # Status to reset password.
+    $passive = USER::where('username', $req->username)
+      ->where('passive', 0);
 
-    if (!$token = Auth::attempt($credentials)) {
+    if ($passive->count()) return response()->json([
+      'passive' => $passive->first()
+    ]);
+
+    $credentials = request(['username', 'password']);
+    if (!$token = Auth::setTTL(21600)->attempt($credentials)) {
       return response()->json([
         'error' => 'Unauthorized'
       ]);

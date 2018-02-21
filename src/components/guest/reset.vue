@@ -8,34 +8,38 @@
       />
     </div>
 
-    <Form ref="reset"
+    <Form :ref="i.name"
       :model="form"
       :rules="rule"
-      @keyup.enter.native="visible('reset')">
+      @keyup.enter.native="touch">
 
       <FormItem class="mg-b10">
-        <Alert show-icon type="error">{{ $t('i.form.note.zero') }}</Alert>
-        <Alert show-icon>{{ $t('i.form.note.one') }}</Alert>
-        <Alert show-icon>{{ $t('i.form.note.two') }}</Alert>
+        <Alert show-icon>
+          {{ `Username: ${username}` }}
+        </Alert>
+
+        <Alert show-icon>
+          Please enter your new password in both input fields.
+        </Alert>
       </FormItem>
 
-      <FormItem prop="username" class="mg-b20">
-        <InputGroup :placeholder="$t('i.form.user')" icon="ios-person-outline">
+      <FormItem prop="passwd1" class="mg-b20">
+        <InputGroup placeholder="new passowrd" icon="ios-locked-outline">
 
-          <Input slot="input" type="text"
-            :maxlength="64"
-            v-model="form.username"
+          <Input slot="input" type="password"
+            :maxlength="16"
+            v-model="form.passwd1"
           />
 
         </InputGroup>
       </FormItem>
 
-      <FormItem prop="email" class="mg-b20">
-        <InputGroup :placeholder="$t('i.form.registeredEmail')" icon="ios-email-outline">
+      <FormItem prop="passwd2" class="mg-b20">
+        <InputGroup placeholder="Confirm new password" icon="ios-locked-outline">
 
-          <Input slot="input" type="text"
-            :maxlength="64"
-            v-model="form.email"
+          <Input slot="input" type="password"
+            :maxlength="16"
+            v-model="form.passwd2"
           />
 
         </InputGroup>
@@ -45,8 +49,9 @@
         <Button type="primary" size="large"
           class="txt-up min-w150"
           :loading="i.loading"
-          @click="visible('reset')">
-          <span v-if="!i.loading">{{ $t('i.form.button.confirm') }}</span>
+          @click="touch">
+
+          <span v-if="!i.loading">{{ $t('i.form.button.save') }}</span>
           <span v-else>{{ $t('i.select.loading') }}...</span>
         </Button>
 
@@ -66,37 +71,78 @@
 
 <script>
 import verify from '~/components/validator'
+import { HTTP } from '~/store/http'
 
 export default {
   data () {
     return {
-      i: {loading: false},
+      i: {
+        name: 'reset',
+        loading: false
+      },
       form: {
-        username: null,
-        email: null,
-        timestamp: Date.now()
+        passwd1: null,
+        passwd2: null
       },
       rule: {
-        username: [verify.fill, verify.string],
-        email: [verify.fill, verify.email]
+        passwd1: [verify.fill, verify.string],
+        passwd2: [verify.fill, verify.string]
       }
     }
   },
+
   methods: {
-    visible (name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.$message.success(
-            this.$t('i.notice.success')
-          )
-          this.i.loading = true
+    touch () {
+      this.$refs[this.i.name].validate(h => {
+        if (h) {
+          if (this.form.passwd2 !== this.form.passwd1) {
+            this.$notice.warning({
+              duration: 7.2,
+              title: 'Warning',
+              desc: 'Password doesn\'t match.'
+            })
+          } else {
+            this.i.loading = true
+            const user = this.$route.params.passive.split('.')
+
+            setTimeout(async h => {
+              await this.passive({
+                id: user[0],
+                username: user[1],
+                password: this.form.passwd1
+              })
+            }, 512)
+          }
         } else {
           this.$message.warning(
             this.$t('i.notice.warning')
           )
         }
       })
-      setTimeout(() => { this.i.loading = false }, 2000)
+    },
+
+    async passive (params) {
+      const { data } = await HTTP.patch('/pwd/reset', params)
+      this.i.loading = false
+
+      if (!data.status) {
+        this.$notice.error({
+          title: 'Critical Error',
+          desc: 'Something was wrong!!'
+        })
+      } else {
+        this.$notice.success({
+          title: 'Successful',
+          desc: 'Your password was changed. Please login agin.'
+        })
+        this.$router.push({name: 'auth.main'})
+      }
+    }
+  },
+
+  computed: {
+    username () {
+      return this.$route.params.passive.split('.')[1].toUpperCase()
     }
   }
 }

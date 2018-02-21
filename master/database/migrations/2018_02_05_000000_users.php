@@ -19,6 +19,7 @@ class Users extends Migration {
       $table->string('email')->unique();
       $table->string('username')->unique();
       $table->string('password');
+      $table->integer('passive')->default(1);
       $table->integer('isAdmin')->default(0);
       $table->rememberToken();
       $table->integer('created_by')->unsigned();

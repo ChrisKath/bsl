@@ -39,6 +39,15 @@ export const actions = {
   async signin ({ commit, dispatch }, params) {
     const { data } = await HTTP.post('/auth/login', params)
 
+    if (data.passive) {
+      return core.push({
+        name: 'guest.reset',
+        params: {
+          passive: `${data.passive.id}.${data.passive.username}`
+        }
+      })
+    }
+
     if (data.error || !data) dispatch(/** notice-error **/ 'authFailed')
     else {
       localStorage.setItem('TYPE.Remember', params.remember)

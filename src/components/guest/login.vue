@@ -40,7 +40,7 @@
       </FormItem>
 
       <FormItem class="mg-b10">
-        <Row type="flex" justify="space-between">
+        <Row type="flex" justify="start">
 
           <Checkbox class="ivu-chkbox-keep"
             size="large"
@@ -48,9 +48,9 @@
             {{ $t('i.form.logged') }}
           </Checkbox>
 
-          <router-link :to="{name: 'guest.reset'}"
+          <!-- <router-link :to="{name: 'guest.reset', params: {passive: 'null'}}"
             v-text="$t('i.form.forgot')"
-          />
+          /> -->
 
         </Row>
       </FormItem>
