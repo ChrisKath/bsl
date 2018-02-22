@@ -2,12 +2,20 @@
   &firuta {
     font-size: 12px;
     padding: 15px;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
     background-color: @body-background;
     border-radius: @border-radius-base;
     border: solid 1px tint(@primary-color, 50%);
 
     .@{css-prefix} {
+      &btn {
+        font-size: 15px;
+        line-height: 0;
+        padding: 7px 0;
+        border: none;
+        border-radius: @border-radius-small;
+      }
+
       &date-picker {
         display: block;
 

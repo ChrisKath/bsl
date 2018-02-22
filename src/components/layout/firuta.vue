@@ -3,7 +3,15 @@
 
     <Row type="flex" justify="space-between" align="middle"
       class-name="mg-b15">
-      <Col :span="7">
+      <Col :span="1">
+        <Button long type="primary"
+          icon="refresh"
+          title="Firuta Reset"
+          @click="reset"
+        />
+      </Col>
+
+      <Col :span="6">
         <DatePicker type="daterange"
           :options="daterange"
           v-model="v.daterange"
@@ -90,7 +98,7 @@ function FirutaData () {
       created_by: null,
       enable:     true,
       expired:    false,
-      clicked:    [0, 20],
+      clicked:    [0, 0],
       tags:       []
     }
   }
@@ -142,6 +150,13 @@ export default {
 
     pack (v) {
       this.$emit('on-emit', this.v)
+    },
+
+    reset () {
+      setTimeout(h => {
+        this.v = new FirutaData().v
+      }, 512)
+      this.$emit('on-reset', true)
     }
   },
 

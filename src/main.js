@@ -21,6 +21,7 @@ import RowHead    from '~/components/layout/row-head'
 import {
   Alert,
   Avatar,
+  BackTop,
   Badge,
   Button,
   Checkbox,
@@ -52,6 +53,7 @@ import {
 const components = {
   Alert,
   Avatar,
+  BackTop,
   Badge,
   Button,
   ButtonGroup: Button.Group,
