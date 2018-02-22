@@ -130,6 +130,26 @@ class WatchController extends Controller {
     );
   }
 
+  public function filter(Request $req) {
+      // return $req->daterange[0];
+      $date_begin =date('Y-m-d',strtotime($req->daterange[0]));
+      $date_end = date('Y-m-d',strtotime($req->daterange[1]));
+      // return $req;
+      $query = $this->queries();
+      if($req->clicked[0]) $query->having('click','>=',$req->clicked[0]);
+      if($req->clicked[1]) $query->having('click','<=',$req->clicked[1]);
+      // if($req->clicked[1]) $query->havingBetweet('click',[$req->clicked[0],$req->clicked[1]]);
+
+      if($req->created_by)$query->where('created_by', $req->created_by);
+      if($req->daterange)$query->whereBetween('urls.created_at',[$date_begin,$date_end]);
+      if($req->enable)$query->where('enable', $req->enable);
+      if($req->expired)$query->where('expiry', '<>', NULL);
+      $query->whereIn('tags.id', $req->tags);
+
+      return response()->json($query->get());
+
+  }
+
 
   /**
   * Show the form for editing the specified resource.
@@ -237,6 +257,7 @@ class WatchController extends Controller {
 
 
   public function queries() {
+
     return WATCH::leftJoin('clicks', 'urls.id', '=', 'clicks.urls_id')
       ->leftJoin('url_has_tags AS sync', 'urls.id', '=', 'sync.urls_id')
       ->leftJoin('tags', 'tags.id', '=', 'sync.tags_id')
@@ -247,9 +268,12 @@ class WatchController extends Controller {
         'title',
         'expiry',
         'enable',
+        'created_by',
         'urls.created_at',
-        DB::raw('count(clicks.urls_id) click'),
-        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags')
+        DB::raw('count(clicks.urls_id) as click' ),
+        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags'),
+        DB::raw('GROUP_CONCAT(DISTINCT tags.id SEPARATOR \',\') AS tags_id')
+
       )
       ->orderBy('created_at', 'desc')
       ->groupBy('urls.id');

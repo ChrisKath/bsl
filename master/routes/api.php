@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
       Route::post('watch/fly',    'WatchController@fly');
       Route::post('watch/take',   'WatchController@showly');
       Route::post('watch/search', 'WatchController@search');
+      Route::post('watch/filter', 'WatchController@filter');
 
       Route::resource('tags',  'TagController');
 
