@@ -46,7 +46,7 @@
 
             <Col class="col-click size-14">
               <code v-if="$moment(item.expiry).isBefore(Date.now())"
-                class="warning" title="Expiry">
+                class="error" title="Expiry">
                 <Icon type="ios-alarm"/>
               </code>
 

@@ -14,6 +14,7 @@
         <Input slot="input" type="textarea"
           v-model="form.domain"
           :autosize="{ minRows: 2 }"
+          @keyup.enter.native="spaced"
         />
 
       </InputGroup>
@@ -160,12 +161,19 @@ export default {
       }
 
       this.i.building = `
-        ${this.form.domain}${builder.cron}utm_source=${this.form.source}${builder.medium}${builder.name}${builder.term}${builder.content}
-      `
+        ${this.form.domain}
+        ${builder.cron}utm_source=${this.form.source}
+        ${builder.medium}
+        ${builder.name}
+        ${builder.term}
+        ${builder.content}
+      `.replace(/\s/g, '')
 
-      if (this.i.building.trim()) {
-        this.$emit('on-emit', this.i.building)
-      }
+      this.$emit('on-emit', this.i.building.trim())
+    },
+
+    spaced () {
+      this.form.domain = this.form.domain.replace(/\s/g, '')
     }
   }
 }
