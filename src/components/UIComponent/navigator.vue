@@ -3,7 +3,7 @@
     <Col class="ivu-form-search">
       <Input :placeholder="$t('i.form.search')"
         v-model="form.search"
-        @keyup.tab.native="touch"
+        @keyup.native="touch"
         @keyup.enter.native="touched">
 
         <Button slot="append" icon="ios-search" size="large" class="size-18"

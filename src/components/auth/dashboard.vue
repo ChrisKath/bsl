@@ -1,7 +1,12 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
 
-    <Firuta v-if="board" @on-emit="firuta"/>
+    <Firuta v-if="board" @on-emit="firuta" @on-reset="reset"/>
+
+    <div class="mg-b10 txt-r txt-cap size-13" v-if="board">
+      <strong>Results:</strong>
+      <span>{{ board.length }}</span>
+    </div>
 
     <div class="ivu-list" v-if="board">
       <div class="ivu-list-li" v-for="(item, key) in board">
@@ -124,6 +129,16 @@ export default {
 
     firuta (valve) {
       this.v = valve
+    },
+
+    reset (valve) {
+      this.$loading.start()
+      setTimeout(async h => {
+        this.v = {}
+        this.call()
+        this.clean({search: ''})
+        this.$loading.finish()
+      }, 512)
     }
   },
 
