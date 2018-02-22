@@ -45,7 +45,6 @@ export const mutations = {
 // actions
 export const actions = {
   async call ({ commit }, params) {
-
     const { data } = await HTTP.get('/watch')
     commit('CALL_DATA', data)
   },
@@ -112,13 +111,10 @@ export const actions = {
       commit('CALL_DATA', data)
     }
     commit('SEARCHING', params.search)
-    },
+  },
 
-    async filter ({ commit }, params) {
-        console.log(params)
-        const { data } = await HTTP.post('/watch/filter', params)
-        commit('CALL_DATA', data)
+  async firuta ({ commit }, params) {
+    const { data } = await HTTP.post('/watch/firuta', params)
+    commit('CALL_DATA', data)
   }
-
-
 }
