@@ -138,13 +138,14 @@ class WatchController extends Controller {
       $query = $this->queries();
       if($req->clicked[0]) $query->having('click','>=',$req->clicked[0]);
       if($req->clicked[1]) $query->having('click','<=',$req->clicked[1]);
-      // if($req->clicked[1]) $query->havingBetweet('click',[$req->clicked[0],$req->clicked[1]]);
 
       if($req->created_by)$query->where('created_by', $req->created_by);
-      if($req->daterange)$query->whereBetween('urls.created_at',[$date_begin,$date_end]);
+      // if($req->daterange)$query->whereBetween('urls.created_at',[$date_begin,$date_end]);
+      if($req->daterange)$query->whereDate('urls.created_at','>=',$date_begin);
+      if($req->daterange)$query->whereDate('urls.created_at','<=',$date_end);
       if($req->enable)$query->where('enable', $req->enable);
-      if($req->expired)$query->where('expiry', '<>', NULL);
-      $query->whereIn('tags.id', $req->tags);
+      // if($req->expired)$query->where('expiry', '<>', NULL);
+      // $query->whereIn('tags.id', $req->tags);
 
       return response()->json($query->get());
 

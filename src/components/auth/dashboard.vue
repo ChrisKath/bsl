@@ -1,7 +1,7 @@
 <template lang="html">
   <Row class-name="ivu-dashboard">
 
-    <Firuta v-if="board" @on-emit="firuta" @on-reset="reset"/>
+    <Firuta  @on-emit="firuta" @on-reset="reset"/>
 
     <div class="mg-b10 txt-r txt-cap size-13" v-if="board">
       <strong>Results:</strong>
@@ -99,7 +99,8 @@ export default {
     ...mapActions({
       call: 'manage.watch/call',
       take: 'manage.watch/take',
-      clean: 'manage.watch/search'
+      clean: 'manage.watch/search',
+      filter: 'manage.watch/filter'
     }),
 
     load () {
@@ -129,6 +130,7 @@ export default {
 
     firuta (valve) {
       this.v = valve
+      this.filter(this.v)
     },
 
     reset (valve) {
