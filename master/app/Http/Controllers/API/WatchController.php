@@ -12,6 +12,8 @@ use App\Taggable as TAGSYNC;
 
 class WatchController extends Controller {
 
+  const LIMIT = 10;
+
   /**
   * Display a listing of the resource.
   *
@@ -19,7 +21,7 @@ class WatchController extends Controller {
   **/
   public function index() {
     return response()->json(
-      $this->queries()->take(10)->get()
+      $this->queries()->take(static::LIMIT)->get()
     );
   }
 
@@ -78,7 +80,7 @@ class WatchController extends Controller {
       ->get(['tags.id', 'tags.name']);
 
     # gathering clicked timeline log.
-    $timeline = CLICK::where('urls_id', $watch->id)->take(15)
+    $timeline = CLICK::where('urls_id', $watch->id)
       ->orderBy('clicked_at', 'desc')
       ->get(['user_ip', 'clicked_at']);
 
@@ -99,18 +101,34 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function showly(Request $req) {
-    $watch = ($req->search)
-      ? $this->ulike($req->search)
-      : $this->queries();
+    $watch = $this->queries();
+    $type  = 0;
 
-    $watch->whereNotIn(
-      'urls.id', $req->ids
-    )
-    ->take(10);
+    if ($req->search) {
+      $watch = $this->ulike(
+        $req->search
+      );
+    }
 
-    return response()->json(
-      $watch->get()
-    );
+    if ($req->firuta) {
+      $watch = $this->filter(
+        (object) $req->firuta
+      );
+    }
+
+    if ($req->ids) {
+      $type  = 1;
+      $watch->whereNotIn(
+        'urls.id', $req->ids
+      );
+    }
+
+    $watch->take(static::LIMIT);
+
+    return response()->json([
+      'type'  => $type,
+      'valve' => $watch->get()
+    ]);
   }
 
 
@@ -123,36 +141,10 @@ class WatchController extends Controller {
   public function search(Request $req) {
     $watch = $this->ulike(
       $req->search
-    )->take(10);
+    )->take(static::LIMIT);
 
     return response()->json(
       $watch->get()
-    );
-  }
-
-
-  /**
-  * Display the specified Filters.
-  *
-  * @param  \Illuminate\Http\Request  $req
-  * @return \Illuminate\Http\Response
-  **/
-  public function firuta(Request $req) {
-    $date_begin = date('Y-m-d', strtotime($req->daterange[0]));
-    $date_end   = date('Y-m-d', strtotime($req->daterange[1]));
-
-    $query = $this->queries();
-    if ($req->clicked[0]) $query->having('click', '>=', $req->clicked[0]);
-    if ($req->clicked[1]) $query->having('click', '<=', $req->clicked[1]);
-    if ($req->created_by) $query->where('created_by', $req->created_by);
-    if ($req->daterange)  $query->whereDate('urls.created_at', '>=', $date_begin);
-    if ($req->daterange)  $query->whereDate('urls.created_at', '<=', $date_end);
-    if ($req->enable)     $query->where('enable', $req->enable);
-    if ($req->expired)    $query->where('expiry', '<>', NULL);
-    $query->whereIn('tags.id', $req->tags);
-
-    return response()->json(
-      $query->take(10)->get()
     );
   }
 
@@ -277,9 +269,7 @@ class WatchController extends Controller {
         'created_by',
         'urls.created_at',
         DB::raw('count(clicks.urls_id) as click' ),
-        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags'),
-        DB::raw('GROUP_CONCAT(DISTINCT tags.id SEPARATOR \',\') AS tags_id')
-
+        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags')
       )
       ->orderBy('created_at', 'desc')
       ->groupBy('urls.id');
@@ -295,6 +285,47 @@ class WatchController extends Controller {
       });
 
     return $query;
+  }
+
+
+  public function filter($params) {
+    $query = $this->queries()
+      ->where('enable', (int) $params->enable);
+
+    if ($params->clicked[1]) {
+      $query
+        ->having('click', '>=', (int) $params->clicked[0])
+        ->having('click', '<=', (int) $params->clicked[1]);
+    }
+
+    if ((bool) $params->tags)
+      $query->whereIn('tags.id', $params->tags);
+
+    if ((bool) $params->created_by)
+      $query->where('created_by', $params->created_by);
+
+    if ((bool) $params->expired) {
+      $query->whereDate('expiry', '<=', date('Y-m-d'));
+    } else {
+      $query->where(function ($query) {
+        return $query->whereDate('expiry',  '>=', date('Y-m-d'))
+          ->orWhere('expiry',  null);
+      });
+    }
+
+    if ($this->dsync($params)) {
+      $query
+        ->whereDate('urls.created_at', '>=', $params->daterange[0])
+        ->whereDate('urls.created_at', '<=', $params->daterange[1]);
+    }
+
+    return $query;
+  }
+
+
+  public function dsync($date) {
+    return (strtotime($date->daterange[0]) && strtotime($date->daterange[1]))
+      ? 1 : 0;
   }
 
 

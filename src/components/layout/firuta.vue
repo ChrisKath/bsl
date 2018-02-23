@@ -93,8 +93,9 @@ import { mapGetters, mapActions } from 'vuex'
 
 function FirutaData () {
   return {
+    bool: false,
     v: {
-      daterange:  null,
+      daterange:  ['', ''],
       created_by: null,
       enable:     true,
       expired:    false,
@@ -148,11 +149,20 @@ export default {
       callUsers: 'manage.account/call'
     }),
 
-    pack (v) {
-      this.$emit('on-emit', this.v)
+    pack (valve) {
+      if (this.bool) {
+        this.bool = false
+      } else {
+        if (typeof valve[0] === 'string') {
+          this.v.daterange[0] = valve[0]
+          this.v.daterange[1] = valve[1]
+        }
+        this.$emit('on-emit', this.v)
+      }
     },
 
     reset () {
+      this.bool = true
       setTimeout(h => {
         this.v = new FirutaData().v
       }, 512)

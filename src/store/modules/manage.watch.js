@@ -51,7 +51,11 @@ export const actions = {
 
   async take ({ commit }, params) {
     const { data } = await HTTP.post('/watch/take', params)
-    commit('TAKE_DATA', data)
+    if (data.type) {
+      commit('TAKE_DATA', data.valve)
+    } else {
+      commit('CALL_DATA', data.valve)
+    }
   },
 
   async mock ({ commit }, params) {
@@ -111,10 +115,5 @@ export const actions = {
       commit('CALL_DATA', data)
     }
     commit('SEARCHING', params.search)
-  },
-
-  async firuta ({ commit }, params) {
-    const { data } = await HTTP.post('/watch/firuta', params)
-    commit('CALL_DATA', data)
   }
 }

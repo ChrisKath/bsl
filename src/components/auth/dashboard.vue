@@ -99,8 +99,7 @@ export default {
     ...mapActions({
       call: 'manage.watch/call',
       take: 'manage.watch/take',
-      clean: 'manage.watch/search',
-      firuta: 'manage.watch/firuta'
+      clean: 'manage.watch/search'
     }),
 
     load () {
@@ -128,9 +127,16 @@ export default {
       })
     },
 
+    async firuta (valve) {
+      await this.take({
+        firuta: valve
+      })
+      this.v = valve
+    },
+
     reset (valve) {
       this.$loading.start()
-      setTimeout(async h => {
+      setTimeout(h => {
         this.v = {}
         this.call()
         this.clean({search: ''})
