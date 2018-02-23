@@ -134,6 +134,7 @@ class WatchController extends Controller {
       // return $req->daterange[0];
       $date_begin =date('Y-m-d',strtotime($req->daterange[0]));
       $date_end = date('Y-m-d',strtotime($req->daterange[1]));
+      $date = date('Y-m-d');
       // return $req;
       $query = $this->queries();
       if($req->clicked[0]) $query->having('click','>=',$req->clicked[0]);
@@ -144,6 +145,7 @@ class WatchController extends Controller {
       if($req->daterange)$query->whereDate('urls.created_at','>=',$date_begin);
       if($req->daterange)$query->whereDate('urls.created_at','<=',$date_end);
       if($req->enable)$query->where('enable', $req->enable);
+      if($req->expired)$query->whereDate('expiry', '<=', $date);
       // if($req->expired)$query->where('expiry', '<>', NULL);
       // $query->whereIn('tags.id', $req->tags);
 
