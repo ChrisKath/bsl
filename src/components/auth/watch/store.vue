@@ -5,8 +5,7 @@
     <Row class-name="ivu-row-body">
       <Form :ref="i.name"
         :model="form"
-        :rules="rule"
-        @keyup.enter.native="touch">
+        :rules="rule">
 
         <FormItem class="mg-b10">
           <Alert show-icon>
@@ -71,6 +70,7 @@
               type="textarea"
               :autosize="{ minRows: 2 }"
               :readonly="Boolean(i.type.advanced)"
+              @keyup.enter.native="spaced"
             />
 
           </InputGroup>
@@ -270,6 +270,10 @@ export default {
           params: {key: this.$route.params.key}
         })
       }
+    },
+
+    spaced () {
+      this.form.href = this.form.href.replace(/\s/g, '')
     }
   },
 

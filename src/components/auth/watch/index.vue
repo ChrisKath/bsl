@@ -54,7 +54,7 @@
               <i v-if="watch.expiry === null">Immortal</i>
               <i v-else class="txt-up">
                 {{ $moment(watch.expiry).format('ll') }}
-                <span v-if="expiry" class="warning">(Expired)</span>
+                <span v-if="expiry" class="error size-w800">(Expired)</span>
               </i>
             </h5>
 
