@@ -139,7 +139,6 @@ export default {
       setTimeout(h => {
         this.v = {}
         this.call()
-        this.clean({search: ''})
         this.$loading.finish()
       }, 512)
     }

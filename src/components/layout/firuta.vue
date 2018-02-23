@@ -5,8 +5,8 @@
       class-name="mg-b15">
       <Col :span="1">
         <Button long type="primary"
-          icon="refresh"
-          title="Firuta Reset"
+          icon="close"
+          title="RESET"
           @click="reset"
         />
       </Col>
