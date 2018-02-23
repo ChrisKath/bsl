@@ -130,27 +130,30 @@ class WatchController extends Controller {
     );
   }
 
-  public function filter(Request $req) {
-      // return $req->daterange[0];
-      $date_begin =date('Y-m-d',strtotime($req->daterange[0]));
-      $date_end = date('Y-m-d',strtotime($req->daterange[1]));
-      $date = date('Y-m-d');
-      // return $req;
-      $query = $this->queries();
-      if($req->clicked[0]) $query->having('click','>=',$req->clicked[0]);
-      if($req->clicked[1]) $query->having('click','<=',$req->clicked[1]);
 
-      if($req->created_by)$query->where('created_by', $req->created_by);
-      // if($req->daterange)$query->whereBetween('urls.created_at',[$date_begin,$date_end]);
-      if($req->daterange)$query->whereDate('urls.created_at','>=',$date_begin);
-      if($req->daterange)$query->whereDate('urls.created_at','<=',$date_end);
-      if($req->enable)$query->where('enable', $req->enable);
-      if($req->expired)$query->whereDate('expiry', '<=', $date);
-      // if($req->expired)$query->where('expiry', '<>', NULL);
-      // $query->whereIn('tags.id', $req->tags);
+  /**
+  * Display the specified Filters.
+  *
+  * @param  \Illuminate\Http\Request  $req
+  * @return \Illuminate\Http\Response
+  **/
+  public function firuta(Request $req) {
+    $date_begin = date('Y-m-d', strtotime($req->daterange[0]));
+    $date_end   = date('Y-m-d', strtotime($req->daterange[1]));
+    $date_now  = date('Y-m-d');
+    $query = $this->queries();
+    if ($req->clicked[0]) $query->having('click', '>=', $req->clicked[0]);
+    if ($req->clicked[1]) $query->having('click', '<=', $req->clicked[1]);
+    if ($req->created_by) $query->where('created_by', $req->created_by);
+    if ($req->daterange)  $query->whereDate('urls.created_at', '>=', $date_begin);
+    if ($req->daterange)  $query->whereDate('urls.created_at', '<=', $date_end);
+    if ($req->enable)     $query->where('enable', $req->enable);
+    if ($req->expired)    $query->whereDate('expiry', '<=', $date_now );
+    if($req->tags)$query->whereIn('tags.id', $req->tags);
 
-      return response()->json($query->get());
-
+    return response()->json(
+      $query->take(10)->get()
+    );
   }
 
 

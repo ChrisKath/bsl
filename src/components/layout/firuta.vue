@@ -98,7 +98,7 @@ function FirutaData () {
       created_by: null,
       enable:     true,
       expired:    false,
-      clicked:    [0, 0],
+      clicked:    [0, 60],
       tags:       []
     }
   }
