@@ -20,8 +20,17 @@ class WatchController extends Controller {
   * @return \Illuminate\Http\Response
   **/
   public function index() {
+    $query = $this->queries()
+      ->where(function ($query) {
+        return $query
+          ->whereDate('expiry',  '>=', date('Y-m-d'))
+          ->orWhere('expiry',  null);
+      })
+      ->where('enable', 1)
+      ->take(static::LIMIT);
+
     return response()->json(
-      $this->queries()->take(static::LIMIT)->get()
+      $query->get()
     );
   }
 
@@ -255,10 +264,18 @@ class WatchController extends Controller {
 
 
   public function queries() {
+    $tags = TAGSYNC::join('tags', 'tags.id', '=', 'url_has_tags.tags_id')
+      ->select(
+        'urls_id',
+        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags')
+      )
+      ->groupBy('url_has_tags.urls_id');
 
     return WATCH::leftJoin('clicks', 'urls.id', '=', 'clicks.urls_id')
-      ->leftJoin('url_has_tags AS sync', 'urls.id', '=', 'sync.urls_id')
-      ->leftJoin('tags', 'tags.id', '=', 'sync.tags_id')
+      ->leftJoin(
+        DB::raw('('. $tags->toSql() .') AS sync'),
+        'urls.id', '=', 'sync.urls_id'
+      )
       ->select(
         'urls.id',
         'key',
@@ -268,8 +285,8 @@ class WatchController extends Controller {
         'enable',
         'created_by',
         'urls.created_at',
-        DB::raw('count(clicks.urls_id) as click' ),
-        DB::raw('GROUP_CONCAT(DISTINCT tags.name SEPARATOR \',\') AS tags')
+        'sync.tags',
+        DB::raw('count(clicks.urls_id) AS click')
       )
       ->orderBy('created_at', 'desc')
       ->groupBy('urls.id');
@@ -290,41 +307,50 @@ class WatchController extends Controller {
 
   public function filter($params) {
     $query = $this->queries()
-      ->where('enable', (int) $params->enable);
-
-    if ($params->clicked[1]) {
-      $query
-        ->having('click', '>=', (int) $params->clicked[0])
-        ->having('click', '<=', (int) $params->clicked[1]);
-    }
-
-    if ((bool) $params->tags)
-      $query->whereIn('tags.id', $params->tags);
-
-    if ((bool) $params->created_by)
-      $query->where('created_by', $params->created_by);
-
-    if ((bool) $params->expired) {
-      $query->whereDate('expiry', '<=', date('Y-m-d'));
-    } else {
-      $query->where(function ($query) {
-        return $query->whereDate('expiry',  '>=', date('Y-m-d'))
-          ->orWhere('expiry',  null);
+      ->where('enable', (int) $params->enable)
+      # Finter by Clicked count...
+      ->when($params->clicked[1], function($query) use ($params) {
+        $query
+          ->having('click', '>=', (int) $params->clicked[0])
+          ->having('click', '<=', (int) $params->clicked[1]);
+      })
+      # Finter by Create By...
+      ->when((bool) $params->created_by, function($query) use ($params) {
+        $query->where('created_by', $params->created_by);
+      })
+      # Finter by Expiries Date...
+      ->when((bool) $params->expired, function($query) use ($params) {
+        $query->whereDate('expiry', '<=', date('Y-m-d'));
+      }, function ($query) {
+        $query->where(function ($query) {
+          return $query
+            ->whereDate('expiry', '>=', date('Y-m-d'))
+            ->orWhere('expiry',  null);
+        });
+      })
+      # Finter by DateRange Created...
+      ->when($this->dsync($params->daterange), function($query) use ($params) {
+        $query
+          ->whereDate('urls.created_at', '>=', $params->daterange[0])
+          ->whereDate('urls.created_at', '<=', $params->daterange[1]);
+      })
+      # Finter by tags...
+      ->when((bool) $params->tags, function($query) use ($params) {
+          $query->whereIn('urls.id', function($query) use ($params) {
+            $query
+              ->select('url_has_tags.urls_id')
+              ->from('url_has_tags')
+              ->join('tags', 'tags.id', '=', 'url_has_tags.tags_id')
+              ->whereIn('url_has_tags.tags_id', $params->tags);
+          });
       });
-    }
-
-    if ($this->dsync($params)) {
-      $query
-        ->whereDate('urls.created_at', '>=', $params->daterange[0])
-        ->whereDate('urls.created_at', '<=', $params->daterange[1]);
-    }
 
     return $query;
   }
 
 
   public function dsync($date) {
-    return (strtotime($date->daterange[0]) && strtotime($date->daterange[1]))
+    return (strtotime($date[0]) && strtotime($date[1]))
       ? 1 : 0;
   }
 

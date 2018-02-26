@@ -181,6 +181,12 @@ export default {
     if (!this.checkUsers) this.callUsers()
   },
 
+  mounted () {
+    this.$nextTick(() => {
+      this.$emit('on-emit', this.v)
+    })
+  },
+
   destroyed () {
     this.v = new FirutaData().v
   }

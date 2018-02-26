@@ -113,6 +113,7 @@ export default {
 
       if (this.search) params.search = this.search
       if (Object.keys(this.v).length) params.firuta = this.v
+      console.log(Firuta)
 
       // call more items setp-10
       setTimeout(async h => {

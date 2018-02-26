@@ -16,6 +16,13 @@ export const getters = {
 export const mutations = {
   FETCH_DATA (state, payload) {
     state.users = payload
+  },
+
+  RESETO (state, payload) {
+    const user = core.app.$lodash.find(state.users, [
+      'id', payload.id
+    ])
+    user.passive = 0
   }
 }
 
@@ -48,6 +55,15 @@ export const actions = {
     }
 
     return data.status
+  },
+
+  async reset ({ commit }, params) {
+    await HTTP.post('/panel/pwd/reset', params)
+    await commit('RESETO', params)
+    core.app.$notice.success({
+      title: 'Successful',
+      desc: `<b class=txt-up>${params.username}</b>, has been reset password.`
+    })
   },
 
   isCreated () {

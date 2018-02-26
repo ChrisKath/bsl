@@ -4,7 +4,7 @@
     <Row type="flex" align="middle" justify="start"
       class-name="ivu-row-head">
       <Col>
-        <router-link :to="{name: 'auth.panel.add', params: {type: 'add'}}">
+        <router-link :to="{name: 'auth.panel.store', params: {type: 'add'}}">
 
           <Button class="ivu-btn-add txt-up size-14 size-w600 flexed"
             type="primary"
@@ -75,12 +75,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { HTTP } from '~/store/http'
 
 export default {
   methods: {
     ...mapActions({
-      call: 'manage.account/call'
+      call: 'manage.account/call',
+      reset: 'manage.account/reset'
     }),
 
     touch (valve) {
@@ -89,14 +89,6 @@ export default {
         okText: this.$t('i.form.button.confirm'),
         cancelText: this.$t('i.form.button.cancel'),
         content: `<b class=txt-up>${valve.username}</b>, will be reset password?`
-      })
-    },
-
-    async reset (params) {
-      await HTTP.post('/panel/pwd/reset', params)
-      this.$notice.success({
-        title: 'Successful',
-        desc: `<b class=txt-up>${params.username}</b>, has been reset password.`
       })
     }
   },

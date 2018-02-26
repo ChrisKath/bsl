@@ -1,15 +1,12 @@
-const login     = () => import('~/components/guest/login')
-const reset     = () => import('~/components/guest/reset')
+const login = () => import('~/components/guest/login')
+const reset = () => import('~/components/guest/reset')
 
-const dashboard = () => import('~/components/auth/dashboard')
-
-const watch     = () => import('~/components/auth/watch/index')
-const add       = () => import('~/components/auth/watch/store')
-
-const tag       = () => import('~/components/auth/tag')
-
-const panel     = () => import('~/components/auth/panel/index')
-const store     = () => import('~/components/auth/panel/store')
+const dashboard   = () => import('~/components/auth/dashboard')
+const watchShow   = () => import('~/components/auth/watch/index')
+const watchStore  = () => import('~/components/auth/watch/store')
+const panel       = () => import('~/components/auth/panel/index')
+const panelStore  = () => import('~/components/auth/panel/store')
+const tag         = () => import('~/components/auth/tag')
 
 export default [
   {path: '*', redirect: '/'},
@@ -24,12 +21,12 @@ export default [
     {
       name: 'auth.watch',
       path: '/watch/:key',
-      component: watch
+      component: watchShow
     },
     {
       name: 'auth.watch.store',
       path: '/watch/:key/:type',
-      component: add
+      component: watchStore
     },
     {
       name: 'auth.tag',
@@ -42,14 +39,14 @@ export default [
       component: panel
     },
     {
-      name: 'auth.panel.add',
+      name: 'auth.panel.store',
       path: '/manage/account/:type',
-      component: store
+      component: panelStore
     },
     {
       name: 'auth.panel.edit',
       path: '/manage/account/:key/:type',
-      component: store
+      component: panelStore
     },
     {name: 'auth.logout', path: '/logout'}
   ]),
