@@ -23,8 +23,8 @@ class WatchController extends Controller {
     $query = $this->queries()
       ->where(function ($query) {
         return $query
-          ->whereDate('expiry',  '>=', date('Y-m-d'))
-          ->orWhere('expiry',  null);
+          ->whereDate('expiry', '>=', date('Y-m-d'))
+          ->orWhere('expiry', null);
       })
       ->where('enable', 1)
       ->take(static::LIMIT);

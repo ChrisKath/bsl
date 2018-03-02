@@ -109,17 +109,21 @@ export default {
       let arr = []
       this.board.forEach((item, key) => arr.push(item.id))
 
-      const params = { ids: arr }
+      this.v.daterange[0] = this.date(this.v.daterange[0])
+      this.v.daterange[1] = this.date(this.v.daterange[1])
+
+      const params = {
+        ids: arr,
+        firuta: this.v
+      }
 
       if (this.search) params.search = this.search
-      if (Object.keys(this.v).length) params.firuta = this.v
-      console.log(Firuta)
 
       // call more items setp-10
       setTimeout(async h => {
         await this.take(params)
         this.i.loading = false
-      }, 999)
+      }, 512)
     },
 
     pack (message) {
@@ -138,10 +142,15 @@ export default {
     reset (valve) {
       this.$loading.start()
       setTimeout(h => {
-        this.v = {}
         this.call()
         this.$loading.finish()
       }, 512)
+    },
+
+    date (valve) {
+      return valve
+        ? this.$moment(valve).format('YYYY-MM-DD')
+        : ''
     }
   },
 
@@ -149,10 +158,6 @@ export default {
     board: 'manage.watch/board',
     search: 'manage.watch/search'
   }),
-
-  created () {
-    if (!this.search) this.call()
-  },
 
   destroyed () {
     this.v = {}

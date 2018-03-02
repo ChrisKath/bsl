@@ -163,9 +163,8 @@ export default {
 
     reset () {
       this.bool = true
-      setTimeout(h => {
-        this.v = new FirutaData().v
-      }, 512)
+      this.v = new FirutaData().v
+      this.$emit('on-emit', this.v)
       this.$emit('on-reset', true)
     }
   },

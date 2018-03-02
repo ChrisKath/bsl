@@ -29,7 +29,7 @@ export default {
     top: 50%;
     left: 0;
     right: 0;
-    transform: translateY(-50%);
+    transform: translateY(-25%);
 
     .ivu-icon {
       line-height: .1;
