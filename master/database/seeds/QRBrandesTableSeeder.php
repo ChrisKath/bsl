@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class QRBrandesTableSeeder extends Seeder {
   /**
@@ -11,33 +12,38 @@ class QRBrandesTableSeeder extends Seeder {
   public function run() {
 
     DB::table('qr_brandes')->insert([
-      'name' => 'line',
-      'symbol' => 'line.png',
-      'url_scheme' => 'line://',
-    ]);
-
-    DB::table('qr_brandes')->insert([
       'name' => 'facebook',
-      'symbol' => 'facebook.png',
-      'url_scheme' => 'fb://',
+      'image' => 'facebook.png'
     ]);
-
-    DB::table('qr_brandes')->insert([
-      'name' => 'twitter',
-      'symbol' => 'twitter.png',
-      'url_scheme' => 'twitter://',
-    ]);
-
+      
     DB::table('qr_brandes')->insert([
       'name' => 'instagram',
-      'symbol' => 'instagram.png',
-      'url_scheme' => 'instagram://',
+      'image' => 'instagram.jpg'
+    ]);
+
+    DB::table('qr_brandes')->insert([
+      'name' => 'line',
+      'image' => 'line.png'
     ]);
 
     DB::table('qr_brandes')->insert([
       'name' => 'wechat',
-      'symbol' => 'wechat.png',
-      'url_scheme' => 'weixin://',
+      'image' => 'wechat.png'
+    ]);
+
+    DB::table('qr_brandes')->insert([
+      'name' => 'twitter',
+      'image' => 'twitter.png'
+    ]);
+
+    DB::table('qr_brandes')->insert([
+      'name' => 'maps',
+      'image' => 'google.png'
+    ]);
+
+    DB::table('qr_brandes')->insert([
+      'name' => 'baidu',
+      'image' => 'baidu.png'
     ]);
 
   }

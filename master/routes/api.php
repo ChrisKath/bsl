@@ -37,6 +37,8 @@ Route::prefix('v1')->group(function () {
       Route::resource('panel', 'PanelController');
       Route::post('panel/pwd/reset', 'PanelController@passive');
 
+      Route::get('qr/brands', 'QrBrandController@index');
+
     });
 
     ############################################################################

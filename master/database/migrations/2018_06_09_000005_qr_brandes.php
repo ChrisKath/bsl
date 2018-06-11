@@ -16,9 +16,8 @@ class QrBrandes extends Migration {
 
       $table->increments('id');
       $table->char('name', 24);
-      $table->char('symbol', 128)->nullable();
-      $table->text('url_scheme')->nullable();
-      $table->timestamp('clicked_at')->useCurrent();
+      $table->char('image', 128)->nullable();
+      $table->timestamp('created_at')->useCurrent();
 
     });
 

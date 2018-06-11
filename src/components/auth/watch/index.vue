@@ -108,15 +108,7 @@
               </Tag>
             </Row>
 
-            <Row class-name="ivu-chart pd-t15 mg-t25">
-              <Qrcode text="geo:37.7708221,-122.406815"
-                :logoSrc="require('~/assets/img/map.png')"
-                :logoCornerRadius="0"
-                :logoScale=".22"
-                :size="400"
-                :margin="0"
-              />
-            </Row>
+            <QrCode />
           </Col>
         </Row>
       </Col>
@@ -153,7 +145,7 @@
 </template>
 
 <script>
-import Qrcode from 'vue-qr'
+import QrCode from '~/components/UIComponent/qrcode'
 import NoData from '~/components/layout/noDataText'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -214,7 +206,7 @@ export default {
 
   components: {
     NoData,
-    Qrcode
+    QrCode
   }
 }
 </script>
