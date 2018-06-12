@@ -1,32 +1,48 @@
 <template lang="html">
-  <Row type="flex" align="top" justify="start"
-    class-name="ivu-qrcode pd-t15 mg-t25">
+  <Modal class-name="ivu-qrcode" width="auto"
+    v-model="visible"
+    :closable="false" :scrollable="true">
 
     <Qrcode class="vue-qrcode"
       :text="`${$uri}${watch.key}`"
       :logoCornerRadius="0"
       :logoMargin="5"
       :logoSrc="logoSrc"
+      :size="200"
+      :margin="0"
+    />
+
+    <Alert show-icon>Demo size 200x200 pixel</Alert>
+
+    <Checkbox v-model="branded" class="mg-b10">Use Branded Logo</Checkbox>
+
+    <Select placeholder="Size"
+      v-model="size.valve"
+      placement="bottom">
+
+      <Option v-for="(obj, key) in size.option"
+        :key="key"
+        :value="obj.value"
+        :label="obj.label"
+      />
+    </Select>
+
+    <a :href="`${dl.data}`" :download="`${dl.name}.png`"
+      class="ivu-btn-dl mg-t10 size-w900 ivu-btn ivu-btn-primary">
+      <Icon type="ios-download-outline" class="mg-r5"/>
+      {{ $t('i.form.button.download') }}
+    </a>
+
+    <Qrcode :text="`${$uri}${watch.key}`"
+      :logoCornerRadius="0"
+      :logoMargin="5"
+      :logoSrc="logoSrc"
       :size="size.valve"
       :margin="0"
       :callback="callback"
+      style="display: none"
     />
-
-    <div class="ivu-qr-form mg-l25">
-      <Select placeholder="Size"
-        v-model="size.valve"
-        slot="input"
-        placement="bottom">
-
-        <Option v-for="(obj, key) in size.option"
-          :key="key"
-          :value="obj.value"
-          :label="obj.label"
-        />
-      </Select>
-    </div>
-
-  </Row>
+  </Modal>
 </template>
 
 <script>
@@ -38,8 +54,10 @@ export default {
 
   data () {
     return {
+      visible: false,
+      branded: true,
       size: {
-        valve: 150,
+        valve: 200,
         option: [
           {
             key: 1,
@@ -48,23 +66,23 @@ export default {
           },
           {
             key: 2,
-            value: 150,
-            label: '150x150 pixel'
+            value: 100,
+            label: '100x100 pixel'
           },
           {
             key: 3,
-            value: 250,
-            label: '250x250 pixel'
+            value: 200,
+            label: '200x200 pixel'
           },
           {
             key: 4,
-            value: 350,
-            label: '350x350 pixel'
+            value: 300,
+            label: '300x300 pixel'
           },
           {
             key: 5,
-            value: 450,
-            label: '450x450 pixel'
+            value: 400,
+            label: '400x400 pixel'
           },
           {
             key: 6,
@@ -72,6 +90,10 @@ export default {
             label: '512x512 pixel'
           }
         ]
+      },
+      dl: {
+        data: null,
+        name: null
       }
     }
   },
@@ -85,8 +107,15 @@ export default {
       call: 'manage.qr/call'
     }),
 
-    callback (e) {
-      console.log(e)      
+    open (bool = true) {
+      this.visible = bool
+    },
+
+    callback (data) {
+      const watch = this.$store.getters['manage.watch/watch']
+
+      this.dl.data = data
+      this.dl.name = `${this.$moment().format('YYYY-MM-DD')}_${watch.title}`
     }
   },
 
@@ -98,14 +127,18 @@ export default {
 
     logoSrc () {
       const watch = this.$store.getters['manage.watch/watch']
+
+      if (!Object.keys(watch).length) return null
+
       const brand = this.$store.getters['manage.qr/brands'].find(h => {
-        return String(watch.href).match(h.name)
+        let domain = new URL(watch.href)
+        return String(`${domain.hostname}`).match(h.name)
           ? h
           : undefined
       })
       
-      return undefined !== brand
-        ? require(`~/assets/img/brands/${brand.image}`)
+      return undefined !== brand && this.branded
+        ? require(`~/../static/img/brands/${brand.image}`)
         : null
     }
   },

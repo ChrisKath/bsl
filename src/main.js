@@ -107,7 +107,7 @@ Vue.prototype.$uri      = process.env.NODE_ENV === 'production'
   ? 'de1.us/'
   : 'tap.co/'
 
-Vue.config.devtools = true
+Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = false
 
 window.app = new Vue({

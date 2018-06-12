@@ -147,7 +147,9 @@ const lang = {
         off: 'オフ',
         edit: '編集する',
         remove: '除去する',
-        copy: 'コピーする'
+        copy: 'コピーする',
+        qrcode: '取得する QR',
+        download: 'ダウンロード'
       }
     },
     title: {

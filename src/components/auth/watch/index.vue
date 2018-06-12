@@ -76,6 +76,12 @@
               <Col :span="19">
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up"
+                  v-text="$t('i.form.button.qrcode')"
+                  @click="$refs.qr.open()"
+                />
+
+                <Button type="ghost" size="small"
+                  class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.copy')"
                   v-clipboard:copy="`${$uri}${watch.key}`"
                   v-clipboard:success="clipboard"
@@ -108,7 +114,7 @@
               </Tag>
             </Row>
 
-            <QrCode />
+            <Row class-name="ivu-chart pd-t15 mg-t25"/>
           </Col>
         </Row>
       </Col>
@@ -141,6 +147,8 @@
         </Scroll>
       </Col>
     </Row>
+
+    <QrCode ref="qr"/>
   </Row>
 </template>
 
@@ -162,7 +170,8 @@ export default {
     ...mapActions({
       mock: 'manage.watch/mock',
       witch: 'manage.watch/fly',
-      remove: 'manage.watch/remove'
+      remove: 'manage.watch/remove',
+      destroy: 'manage.watch/destroy'
     }),
 
     clipboard () {
@@ -200,8 +209,12 @@ export default {
     watch: 'manage.watch/watch'
   }),
 
-  async created () {
-    await this.call()
+  // destroyed () {
+  //   this.destroy()
+  // },
+
+  created () {
+    this.call()
   },
 
   components: {

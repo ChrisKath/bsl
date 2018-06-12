@@ -1,37 +1,60 @@
-.@{css-prefix} {
-  &qrcode {
+.@{css-prefix}qrcode {
+  .vue-qrcode {
+    display: block;
+  }
 
-    .vue-qrcode {
-      display: inline-block;
+  .@{css-prefix} {
+    &select {
+      &-selection {
+        min-height: auto;
+        font-size: 13px;
+      }
+
+      &-selected-value {
+        height: auto !important;
+        padding-left: 12px !important;
+      }
+
+      &-dropdown {
+        margin: 0;
+      }
+
+      &-item {
+        padding: 5px 10px;
+      }
     }
 
-    .@{css-prefix} {
-      &select {
-        min-width: 210px;
+    &modal {
+      max-width: 320px;
+      top: 64px;
 
-        &-selection {
-          min-height: auto;
-          font-size: 13px;
-        }
-
-        &-selected-value {
-          height: auto;
-        }
-
-        &-dropdown {
-          margin: 0;
-        }
-
-        &-item {
-          padding: 5px 10px;
-        }
+      &-body {
+        position: relative;
+        padding: 50px 60px;
       }
+
+      &-footer { display: none }
+    }
+
+    &btn-dl {
+      text-align: center;
+      padding: 12px 0;
+      display: block;
+      text-transform: uppercase;
+
+      border-radius: @btn-border-radius;
+      color: @tooltip-color;
+      background-color: @primary-color;
     }
   }
 
-  &qr- {
-    &form {
+  .ivu-alert.ivu-alert-with-icon {
+    padding: 8px;
+    padding-left: 30px;
 
+    .ivu-alert-icon {
+      top: 8px;
+      left: 10px;
     }
   }
 }

@@ -1,7 +1,7 @@
 <template lang="html">
   <Modal class-name="ivu-complex" width="auto"
     v-model="visible"
-    :closable="false" :scrollable="true">
+    :closable="true" :scrollable="true">
 
     <Row type="flex" align="top" justify="space-between">
       <div class="ivu-col-span-11 ivu-added" @click="open(false)">

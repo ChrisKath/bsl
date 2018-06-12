@@ -4,7 +4,7 @@ import core from '~/router'
 // state
 export const state = {
   board: true,
-  watch: [],
+  watch: {},
   search: ''
 }
 
@@ -39,6 +39,10 @@ export const mutations = {
 
   SEARCHING (state, payload) {
     state.search = payload
+  },
+
+  DESTROY_DATA (state) {
+    state.watch = {}
   }
 }
 
@@ -99,6 +103,10 @@ export const actions = {
         name: 'auth.main'
       })
     }
+  },
+
+  destroy ({ commit }) {
+    commit('DESTROY_DATA')
   },
 
   keyExist ({ commit }, key) {

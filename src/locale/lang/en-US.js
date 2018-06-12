@@ -147,7 +147,9 @@ const lang = {
         off: 'OFF',
         edit: 'Edit',
         remove: 'Remove',
-        copy: 'Copy'
+        copy: 'Copy',
+        qrcode: 'Get QR',
+        download: 'download'
       }
     },
     title: {
