@@ -62,3 +62,7 @@ Step : 4 Generate JWT Token
 php artisan jwt:secret
 
 ```
+
+### Packages
+- Browser Detection by hisorange https://github.com/hisorange/browser-detect
+- JSON Web Token Authentication for Laravel & Lumen http://jwt-auth.com

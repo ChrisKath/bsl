@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Browser;
 use Illuminate\Http\Request;
 use App\Url as WATCH;
 use App\Click as CLICK;
@@ -22,7 +22,8 @@ class MainController extends Controller {
     ) return view('root');
 
     return $this->state($key)
-      ? redirect()->away($this->href)
+      // ? redirect()->away($this->href)
+      ? "<a href='".$this->href."'>".$this->href."</a>"
       : view('404');
   }
 
@@ -36,7 +37,6 @@ class MainController extends Controller {
     $query = WATCH::where('key', $key);
 
     if (!$query->count()) return (bool) $query->count();
-
     $query = (object) $query->first([
       'id',
       'href',
@@ -49,6 +49,10 @@ class MainController extends Controller {
     $this->href = (!is_null($query->expiry) && $query->expiry <= date('Y-m-d'))
       ? $query->redirect
       : $query->href;
+    
+    if($this->FB($this->href) && Browser::isDesktop()){
+      $this->href = $this->genFB($this->href);
+    }
 
     return (bool) $query->enable;
   }
@@ -64,5 +68,20 @@ class MainController extends Controller {
     $click->user_ip      = \Request::ip();
     $click->description  = \Request::header('User-Agent');
     $click->save();
+  }
+
+  /**
+  * detect facebook
+  *
+  * @param String $this->href
+  **/
+  public function FB ($url) {    
+    return preg_match_all('/facebook.com/i', $url);
+  }
+
+  public function genFB ($url) {    
+    // if(Browser::platformName())
+    dd(Browser::detect());
+    return Browser::platformFamily();
   }
 }
