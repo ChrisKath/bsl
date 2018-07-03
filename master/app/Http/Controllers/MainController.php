@@ -69,19 +69,4 @@ class MainController extends Controller {
     $click->description  = \Request::header('User-Agent');
     $click->save();
   }
-
-  /**
-  * detect facebook
-  *
-  * @param String $this->href
-  **/
-  public function FB ($url) {    
-    return preg_match_all('/facebook.com/i', $url);
-  }
-
-  public function genFB ($url) {    
-    // if(Browser::platformName())
-    dd(Browser::detect());
-    return Browser::platformFamily();
-  }
 }
