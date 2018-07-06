@@ -48,4 +48,22 @@ class Controller extends BaseController
     if (!(bool) $query) return $key;
     else $this->runKey();
   }
+  public function deeplink($item,$device){
+    $dl = null;
+    if(preg_match('/android/i',$device)){
+      $dl ='intent://';
+      if(isset($item['host']))    $dl .= $item['host'];
+      $dl .='#Intent;';
+      $dl .= 'package='.$item['package'].';';
+      if(isset($item['action']))    $dl .= 'action='.$item['action'].';';
+      if(isset($item['category']))  $dl .= 'category='.$item['category'].';';
+      if(isset($item['component'])) $dl .= 'component='.$item['component'].';';
+      if(isset($item['scheme']))    $dl .= 'scheme='.$item['scheme'].';';
+      $dl .= 'end;';
+    }else if(preg_match('/iphone|ipad/i',$device)){
+      $dl = $item['scheme'].'://';
+      if(isset($item['path']))    $dl .= $item['path'];        
+    }
+    return $dl;  
+  }
 }

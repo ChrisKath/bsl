@@ -5,10 +5,12 @@ use Browser;
 use Illuminate\Http\Request;
 use App\Url as WATCH;
 use App\Click as CLICK;
+use App\FB;
 
 class MainController extends Controller {
 
   protected $href = null;
+  protected $fb = null;
 
   /**
   * Display a listing of the resource.
@@ -20,11 +22,13 @@ class MainController extends Controller {
     if (
       in_array($this->cute($key), $this->ignoreVueRoute)
     ) return view('root');
-
-    return $this->state($key)
-      // ? redirect()->away($this->href)
-      ? "<a href='".$this->href."'>".$this->href."</a>"
-      : view('404');
+    
+    
+    return $this->state($key) ? 
+                $this->detectFB($this->href) ? $this->fb 
+                  :$this->href
+                 // redirect()->away($this->href) ? 
+                 : view('404');
   }
 
   /**
@@ -50,10 +54,6 @@ class MainController extends Controller {
       ? $query->redirect
       : $query->href;
     
-    if($this->FB($this->href) && Browser::isDesktop()){
-      $this->href = $this->genFB($this->href);
-    }
-
     return (bool) $query->enable;
   }
 
@@ -68,5 +68,53 @@ class MainController extends Controller {
     $click->user_ip      = \Request::ip();
     $click->description  = \Request::header('User-Agent');
     $click->save();
+  }
+
+  public function detectFB($url){
+    // $user_agent = \Request::header('User-Agent');
+    $user_agent = 'iPad';
+    $regex_fb = "/(?:https?:\/\/)?(?:(?:www\.|m\.|touch\.)?(?:facebook|fb)\.(?:com|me)\/)(.*)/i";
+    if(!preg_match('/iPad|iPhone|android/i',$user_agent,$device)) return false;
+    if(!preg_match_all($regex_fb,$url,$m)) return false; // 0 : match , 1 : match string , 2 : after match
+   
+    $item = array(
+      'package'=>'com.facebook.katana', // android
+      'scheme' => 'fb' // ios
+    );
+    switch (1) {
+      case preg_match_all('/(?:events\/)(\d*)(\/.*)/i',$m[1][0],$s):   
+        $item['host'] = 'event/'.$s[1][0];
+        $item['path'] = 'event?id='.$s[1][0];        
+        break;
+      case preg_match_all('/(?:groups\/)(\d*)(\/.*)/i',$m[1][0],$s):
+        $item['host'] = 'group/'.$s[1][0];
+        $item['path'] = 'group?id='.$s[1][0];
+        break;
+      case preg_match_all('/(?:profile\.php\?id=)(\d*)(\/.*)/i',$m[1][0],$s): 
+        $item['host'] = 'profile/'.$s[1][0];
+        $item['path'] = 'profile/'.$s[1][0];
+        break;
+      case preg_match_all('/(?:pages\/|pg\/).*\-(\d*)(\/.*)/i',$m[1][0],$s):
+        $item['host'] = 'page/'.$s[1][0];        
+        $item['path'] = 'profile/'.$s[1][0];   
+        break; 
+      case preg_match_all('/(.*)(?:\/)(.*)/i',$m[1][0],$s):
+        $fb = FB::where('name',$s[1][0])->first();
+        if($fb->count()){
+          $item['host'] = 'page/'.$fb->id;        
+          $item['path'] = 'profile/'.$fb->id;   
+        }else{
+          return false;
+        }
+        break;
+      default:        
+        return false;
+    }
+    if(isset($s[2][0]) && $s[2][0] != '/'){
+      $item['host'].= $s[2][0];
+      $item['path'].='&'.substr($s[2][0],1);
+    }
+    $this->fb = $this->deeplink($item,$device[0]); 
+    return true;
   }
 }
