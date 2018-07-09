@@ -59,6 +59,7 @@ class Controller extends BaseController
       if(isset($item['category']))  $dl .= 'category='.$item['category'].';';
       if(isset($item['component'])) $dl .= 'component='.$item['component'].';';
       if(isset($item['scheme']))    $dl .= 'scheme='.$item['scheme'].';';
+      if(isset($item['fallback'])) $dl .= 'S.browser_fallback_url='.urlencode($item['fallback']).';';
       $dl .= 'end;';
     }else if(preg_match('/iphone|ipad/i',$device)){
       $dl = $item['scheme'].'://';

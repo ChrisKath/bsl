@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Url as WATCH;
 use App\Click as CLICK;
@@ -10,6 +11,7 @@ class MainController extends Controller {
 
   protected $href = null;
   protected $fb = null;
+  protected $device = null;
 
   /**
   * Display a listing of the resource.
@@ -22,10 +24,11 @@ class MainController extends Controller {
       in_array($this->cute($key), $this->ignoreVueRoute)
     ) return view('root');
     
-    
     return $this->state($key) ? 
             $this->detectFB($this->href) ? 
-              view('app', ['href' => $this->href , 'fb' => $this->fb])
+            preg_match('/android/i',$this->device) ? 
+              redirect()->away($this->fb) 
+                : view('app', ['href' => $this->href , 'fb' => $this->fb])
                 : redirect()->away($this->href)
                   : view('404');
   }
@@ -40,6 +43,7 @@ class MainController extends Controller {
     $query = WATCH::where('key', $key);
 
     if (!$query->count()) return (bool) $query->count();
+
     $query = (object) $query->first([
       'id',
       'href',
@@ -69,34 +73,16 @@ class MainController extends Controller {
     $click->save();
   }
 
-  /**
-  * Display a listing of the resource.
-  *
-  * @param String $key
-  * @return ViewPoint,Redirect
-  **/
-  public function test ($key) {
-    if (
-      in_array($this->cute($key), $this->ignoreVueRoute)
-    ) return view('root');
-    
-    
-    return $this->state($key) ? 
-            $this->detectFB($this->href) ? 
-              view('app', ['href' => $this->href , 'fb' => $this->fb])
-                : redirect()->away($this->href)
-                  : view('404');
-  }
   public function detectFB($url){
     $user_agent = \Request::header('User-Agent');
-    // $user_agent = 'ipad';
     $regex_fb = "/(?:https?:\/\/)?(?:(?:www\.|m\.|touch\.)?(?:facebook|fb)\.(?:com|me)\/)(.*)/i";
     if(!preg_match('/iPad|iPhone|android/i',$user_agent,$device)) return false;
-    if(!preg_match_all($regex_fb,$url,$m)) return false; // 0 : match , 1 : match string , 2 : after match
-   
+    if(!preg_match_all($regex_fb,$url,$m)) return false;
+    $this->device = $device[0];
     $item = array(
-      'package'=>'com.facebook.katana', // android
-      'scheme' => 'fb'
+      'package'=>'com.facebook.katana', // android package
+      'scheme'   => 'fb',
+      'fallback' => $this->href,
     );     
     switch (1) {
       case preg_match_all('/(?:events\/)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):   
@@ -125,7 +111,7 @@ class MainController extends Controller {
       default: 
         return false;
     }
-    $this->fb = $this->deeplink($item,$device[0]); 
+    $this->fb = $this->deeplink($item,$this->device); 
     return true;
   }
 }
