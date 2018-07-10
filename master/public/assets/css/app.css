@@ -1,0 +1,115 @@
+body {
+  background: linear-gradient(135deg, #55efcb 0%, #1e5799 0%, #55efcb 0%, #5bcaff 100%);
+  color: #f7f7f7;
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  background-image: url('/assets/img/8ff67f.jpg');
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.button {
+  /* flex: 1 1 auto;*/
+  width: 50vh;
+  margin: 10px;
+  padding: 20px;
+  border: 2px solid #f7f7f7;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.button:after {
+  position: absolute;
+  transition: 0.3s;
+  content: "";
+  width: 0;
+  left: 50%;
+  bottom: 0;
+  height: 3px;
+  background: #f7f7f7;
+}
+a.button{  
+  text-decoration: none;
+  color: #f7f7f7;
+}
+a.button img{
+  width: 1.5rem;  
+  padding: 0 5px;
+}
+.button.under-lrl:after {
+  left: 0;
+}
+.button.under-lrr:after {
+  right: 0;
+  left: auto;
+}
+.button.tbt:after {
+  left: 0;
+  bottom: auto;
+  top: -3px;
+  width: 100%;
+}
+.button.slr:after {
+  height: 120%;
+  left: -10%;
+  -webkit-transform: skewX(15deg);
+          transform: skewX(15deg);
+  z-index: -1;
+}
+.button:hover {
+  cursor: pointer;
+}
+.button:hover:after {
+  width: 100%;
+  left: 0;
+}
+.button.tbt:hover:after {
+  top: calc(100% - 3px);
+}
+.button.slr:hover {
+  color: #5bcaff;
+}
+.button.slr:hover:after {
+  left: -10%;
+  width: 120%;
+}
+
+.tap-temp {
+  text-transform: uppercase;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3vh;
+  margin: 0 auto;
+  padding: 20px 10px;
+  line-height: 18px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: hsla(0,0%,100%,.091);
+  font-size: 0.75rem;
+}
+.tap-temp a {
+  text-decoration: none;
+  color: #f7f7f7;
+}
