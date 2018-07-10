@@ -72,6 +72,14 @@ export const actions = {
   async add ({ commit }, params) {
     const { data } = await HTTP.post('/watch', params)
 
+    if (data.msg) {
+      core.app.$notice.info({
+        title: 'Facebook Notice.',
+        desc: data.msg || 'This notification does not automatically close, and you need to click the close button to close.',
+        duration: 0
+      })
+    }
+
     core.push({
       name: 'auth.watch',
       params: { key: data.key }
@@ -84,6 +92,14 @@ export const actions = {
       dispatch(/** notice-error **/ 'keyExist', params.form.key)
       return false
     } else {
+      if (data.msg) {
+        core.app.$notice.info({
+          title: 'Facebook Notice.',
+          desc: data.msg || 'This notification does not automatically close, and you need to click the close button to close.',
+          duration: 0
+        })
+      }
+      
       core.push({
         name: 'auth.watch',
         params: {key: params.form.key}
