@@ -9,10 +9,12 @@ use App\Url as WATCH;
 use App\User as USER;
 use App\Click as CLICK;
 use App\Taggable as TAGSYNC;
+use App\FB;
 
 class WatchController extends Controller {
 
   const LIMIT = 10;
+  protected $FBGUIDE = "This facebook page didn't register in our system, please contact programmer team.";
 
   /**
   * Display a listing of the resource.
@@ -66,7 +68,8 @@ class WatchController extends Controller {
 
     return response()->json([
       'id'  => $watch->id,
-      'key' => $watch->key
+      'key' => $watch->key,
+      'msg' => !$this->detectFacebook($req->href) ? $this->FBGUIDE : false
     ]);
   }
 
@@ -198,7 +201,9 @@ class WatchController extends Controller {
     # insert tags.
     $this->fetchTags($urls['id'], $req->tags);
 
-    return response()->json(['status' => true]);
+    return response()->json(['status' => true,
+                             'msg' => !$this->detectFacebook($req->href) ? $this->FBGUIDE : false
+                            ]);
   }
 
 
@@ -362,5 +367,13 @@ class WatchController extends Controller {
 
   public function uclick($uid) {
     return CLICK::where('urls_id', $uid)->count();
+  }
+
+  public function detectFacebook($uri){
+    $regex = '/((?:https?:\/\/)?(?:(?:www\.|m\.|touch\.)?(?:facebook|fb)\.(?:com|me)\/))(?!profile\.php|events|groups|pg|pages)([a-z0-9\.]+)(?:\/|\?|$)(?=.*)/i';
+    // Group 1 : url facebook , Group 2 : Page name ,  Group 3 : other parameter 
+    if(preg_match_all($regex,$uri,$mg))
+      if(FB::whereRaw('LOWER(name)=\''.strtolower($mg[2][0]).'\'')->first()) return true;  
+    return false;
   }
 }
