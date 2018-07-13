@@ -101,7 +101,7 @@ class MainController extends Controller {
         $item['host'] = 'page/'.$s[1][0];        
         $item['path'] = 'profile/'.$s[1][0];   
         break; 
-      case preg_match_all('/(\w*)(?:\/|\?)?(.*)/i',$m[1][0],$s) > 0:
+      case preg_match_all('/([\w\.]+)(?:\/|\?)?(.*)/i',$m[1][0],$s) > 0:
         $fb = FB::whereRaw('LOWER(name)=\''.strtolower($s[1][0]).'\'')->first();
         if($fb){
           $item['host'] = 'page/'.$fb->id;        
