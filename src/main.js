@@ -104,8 +104,8 @@ Vue.prototype.$message  = Message
 Vue.prototype.$modal    = Modal
 Vue.prototype.$notice   = Notice
 Vue.prototype.$uri      = process.env.NODE_ENV === 'production'
-  ? 'de1.us/'
-  : 'tap.co/'
+  ? `${window.location.protocol}//de1.us/`
+  : `${window.location.protocol}//tap.co/`
 
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = false

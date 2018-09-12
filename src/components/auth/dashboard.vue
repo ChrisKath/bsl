@@ -35,9 +35,7 @@
           <Row type="flex" align="middle" justify="space-between"
             class-name="size-14 size-w600">
             <Col class="col-key primary">
-              <span class="min-w125">
-                {{ $uri }}<b v-html="pack(item.key)"/>
-              </span>
+              <span class="min-w125" v-html="pack(`${$uri}${item.key}`)"></span>
 
               <span class="mg-l20" v-if="item.tags">
                 <Tag class="mg-r5"
@@ -127,9 +125,13 @@ export default {
     },
 
     pack (message) {
-      return message.replace(new RegExp(this.search, 'gi'), match => {
-        return `<pack>${match}</pack>`
-      })
+      if (this.search) {
+        return String(message).replace(new RegExp(this.search, 'gi'), match => {
+          return `<pack>${match}</pack>`
+        })
+      } else {
+        return message
+      }
     },
 
     async firuta (valve) {
