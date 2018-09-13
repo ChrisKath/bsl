@@ -68,7 +68,7 @@
               class-name="mg-t20">
               <Col :span="5">
                 <a class="size-14 primary" target="_blank"
-                  :href="`//${$uri}${watch.key}`">
+                  :href="`${$uri}${watch.key}`">
                   {{ $uri }}<strong>{{ watch.key }}</strong>
                 </a>
               </Col>

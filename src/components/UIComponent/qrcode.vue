@@ -5,8 +5,8 @@
 
     <Qrcode class="vue-qrcode"
       :text="`${$uri}${watch.key}`"
-      :logoCornerRadius="0"
-      :logoMargin="5"
+      :logoCornerRadius="5"
+      :logoMargin="3"
       :logoSrc="logoSrc"
       :size="200"
       :margin="0"
@@ -34,8 +34,8 @@
     </a>
 
     <Qrcode :text="`${$uri}${watch.key}`"
-      :logoCornerRadius="0"
-      :logoMargin="5"
+      :logoCornerRadius="5"
+      :logoMargin="3"
       :logoSrc="logoSrc"
       :size="size.valve"
       :margin="0"
