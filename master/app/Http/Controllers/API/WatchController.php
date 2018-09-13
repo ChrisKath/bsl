@@ -371,9 +371,9 @@ class WatchController extends Controller {
 
   public function detectFacebook($uri){
     $regex = '/((?:https?:\/\/)?(?:(?:www\.|m\.|touch\.)?(?:facebook|fb)\.(?:com|me)\/))(?!profile\.php|events|groups|pg|pages)([a-z0-9\.]+)(?:\/|\?|$)(?=.*)/i';
-    // Group 1 : url facebook , Group 2 : Page name ,  Group 3 : other parameter 
+    // Group 1 : url facebook , Group 2 : Page name ,  Group 3 : other parameter
     if(preg_match_all($regex,$uri,$mg))
-      if(FB::whereRaw('LOWER(name)=\''.strtolower($mg[2][0]).'\'')->first()) return true;  
-    return false;
+      if($mg[2][0] && !FB::whereRaw('LOWER(name)=\''.strtolower($mg[2][0]).'\'')->count()) return false;
+    return true;
   }
 }
