@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.jwt' => \App\Http\Middleware\authJWT::class,
         'cors' => \App\Http\Middleware\CorAccess::class,
+        'sms' => \App\Http\Middleware\SMSCore::class,
     ];
 }

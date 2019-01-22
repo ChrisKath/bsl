@@ -55,3 +55,11 @@ Route::prefix('v1')->group(function () {
 
   });
 });
+
+Route::group([
+  'middleware' => 'sms',
+  'prefix' => 'bsl',
+], function () {
+  Route::post('create'      , 'APIController@create');
+  Route::post('create/multiple'      , 'APIController@createMultiple');
+});

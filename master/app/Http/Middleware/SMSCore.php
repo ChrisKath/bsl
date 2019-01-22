@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CorsAccess
+class SMSCore
 {
     /**
      * Handle an incoming request.
@@ -16,23 +16,17 @@ class CorsAccess
     public function handle($request, Closure $next)
     {
       $domains = [
-        'http://localhost:2018',
-        'http://api.tap.co',
-        'http://tap.co',
-        'http://de1.us',
-        'http://bsl.tap10.net',
-        'http://www.de1.us'
+        'sms.spaprogram.localhost',
+        'sms.tap10.net',
+        'oasis.spaprogram.net',
       ];
 
       if (isset($request->server()['HTTP_ORIGIN'])) {
         $origin = $request->server()['HTTP_ORIGIN'];
         if (in_array($origin, $domains)) {
-          header('Access-Control-Allow-Origin: ' . $origin);
-          header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization');
-          header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE');
+          return $next($request);
         }
       }
-
-      return $next($request);
+      return response()->json(["err"=>"Something is wrong"],401);
     }
 }
