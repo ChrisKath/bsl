@@ -18,6 +18,7 @@ class SMSCore
       $domains = [
         'sms.spaprogram.localhost',
         'sms.tap10.net',
+        'labs.co',
         'oasis.spaprogram.net',
       ];
 

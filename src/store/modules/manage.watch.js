@@ -70,7 +70,12 @@ export const actions = {
   },
 
   async add ({ commit }, params) {
-    const { data } = await HTTP.post('/watch', params)
+    const exp = core.app.$moment(params.expiry).format('YYYY-MM-DD')
+    delete params.expiry
+    const { data } = await HTTP.post('/watch', {
+      ...params,
+      expiry: exp
+    })
 
     if (data.msg) {
       core.app.$notice.info({

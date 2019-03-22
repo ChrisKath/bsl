@@ -83,7 +83,7 @@
                 <Button type="ghost" size="small"
                   class="size-11 size-w600 txt-up mg-l5"
                   v-text="$t('i.form.button.copy')"
-                  v-clipboard:copy="`${$uri}${watch.key}`"
+                  v-clipboard:copy="`${shortLink}`"
                   v-clipboard:success="clipboard"
                 />
 
@@ -176,7 +176,7 @@ export default {
 
     clipboard () {
       this.$message.success(
-        `${this.$t('i.notice.success')} [${this.$uri}${this.watch.key}]`
+        `${this.$t('i.notice.success')} [${this.shortLink}]`
       )
     },
 
@@ -205,9 +205,15 @@ export default {
     }
   },
 
-  computed: mapGetters({
-    watch: 'manage.watch/watch'
-  }),
+  computed: {
+    ...mapGetters({
+      watch: 'manage.watch/watch'
+    }),
+
+    shortLink () {
+      return `${location.hostname}/${this.watch.key}`
+    }
+  },
 
   // destroyed () {
   //   this.destroy()
