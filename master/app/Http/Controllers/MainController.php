@@ -23,11 +23,11 @@ class MainController extends Controller {
     if (
       in_array($this->cute($key), $this->ignoreVueRoute)
     ) return view('root');
-    
-    return $this->state($key) ? 
-            $this->detectFB($this->href) ? 
-            preg_match('/android/i',$this->device) ? 
-              redirect()->away($this->fb) 
+
+    return $this->state($key) ?
+            $this->detectFB($this->href) ?
+            preg_match('/android/i',$this->device) ?
+              redirect()->away($this->fb)
                 : view('app', ['href' => $this->href , 'fb' => $this->fb])
                 : redirect()->away($this->href)
                   : view('404');
@@ -56,7 +56,7 @@ class MainController extends Controller {
     $this->href = (!is_null($query->expiry) && $query->expiry <= date('Y-m-d'))
       ? $query->redirect
       : $query->href;
-    
+
     return (bool) $query->enable;
   }
 
@@ -83,35 +83,39 @@ class MainController extends Controller {
       'package'=>'com.facebook.katana', // android package
       'scheme'   => 'fb',
       'fallback' => $this->href,
-    );     
+    );
     switch (1) {
-      case preg_match_all('/(?:events\/)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):   
+      case preg_match_all('/(?:photos\/)(?:.*)\/(\d*)\/(?:\/|\?.*)?/i',$m[1][0],$s):
+        $item['host'] = 'photo/'.$s[1][0];
+        $item['path'] = 'photo?id='.$s[1][0];
+        break;
+      case preg_match_all('/(?:events\/)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):
         $item['host'] = 'event/'.$s[1][0];
-        $item['path'] = 'event?id='.$s[1][0];        
+        $item['path'] = 'event?id='.$s[1][0];
         break;
       case preg_match_all('/(?:groups\/)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):
         $item['host'] = 'group/'.$s[1][0];
         $item['path'] = 'group?id='.$s[1][0];
         break;
-      case preg_match_all('/(?:profile\.php\?id=)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s): 
+      case preg_match_all('/(?:profile\.php\?id=)(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):
         $item['host'] = 'profile/'.$s[1][0];
         $item['path'] = 'profile/'.$s[1][0];
         break;
       case preg_match_all('/(?:pages\/|pg\/).*\-(\d*)(?:\/|\?)?(.*)/i',$m[1][0],$s):
-        $item['host'] = 'page/'.$s[1][0];        
-        $item['path'] = 'profile/'.$s[1][0];   
-        break; 
+        $item['host'] = 'page/'.$s[1][0];
+        $item['path'] = 'profile/'.$s[1][0];
+        break;
       case preg_match_all('/([\w\.]+)(?:\/|\?)?(.*)/i',$m[1][0],$s) > 0:
         $fb = FB::whereRaw('LOWER(name)=\''.strtolower($s[1][0]).'\'')->first();
         if($fb){
-          $item['host'] = 'page/'.$fb->id;        
-          $item['path'] = 'profile/'.$fb->id;   
-        }else return false;        
+          $item['host'] = 'page/'.$fb->id;
+          $item['path'] = 'profile/'.$fb->id;
+        }else return false;
         break;
-      default: 
+      default:
         return false;
     }
-    $this->fb = $this->deeplink($item,$this->device); 
+    $this->fb = $this->deeplink($item,$this->device);
     return true;
   }
 }
