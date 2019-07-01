@@ -6,7 +6,7 @@ const path = require('path')
 
 module.exports = {
   dev: {
-    api: '//tap.co/api/v1',
+    api: '//web.bsl.local/api/v1',
 
     // Paths
     assetsSubDirectory: 'static',
@@ -45,8 +45,8 @@ module.exports = {
   },
 
   build: {
-    // api: '//tap.co/api/v1',
-    api: '//de1.us/api/v1',
+    api: '//web.bsl.local/api/v1',
+    // api: '//de1.us/api/v1',
 
     // Template for index.html
     index: path.resolve(__dirname, '../master/public/index.html'),

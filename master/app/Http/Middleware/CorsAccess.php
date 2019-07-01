@@ -17,8 +17,7 @@ class CorsAccess
     {
       $domains = [
         'http://localhost:2018',
-        'http://api.tap.co',
-        'http://tap.co',
+        'http://web.bsl.local',
         'http://de1.us',
         'http://bsl.tap10.net',
         'http://www.de1.us'

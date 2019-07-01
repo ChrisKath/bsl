@@ -70,12 +70,13 @@ export const actions = {
   },
 
   async add ({ commit }, params) {
-    const exp = core.app.$moment(params.expiry).format('YYYY-MM-DD')
-    delete params.expiry
-    const { data } = await HTTP.post('/watch', {
-      ...params,
-      expiry: exp
-    })
+    if (params.hasOwnProperty('expiry')) {
+      const expiry = core.app.$moment(params.expiry).format('YYYY-MM-DD')
+      delete params.expiry
+      params['expiry'] = expiry
+    }
+    
+    const { data } = await HTTP.post('/watch', params)
 
     if (data.msg) {
       core.app.$notice.info({
@@ -92,7 +93,14 @@ export const actions = {
   },
 
   async update ({ commit, dispatch }, params) {
+    if (params.form.hasOwnProperty('expiry') && params.form.expiry) {
+      const expiry = core.app.$moment(params.form.expiry).format('YYYY-MM-DD')
+      delete params.form.expiry
+      params.form['expiry'] = expiry
+    }
+    
     const { data } = await HTTP.patch(`/watch/${params.id}`, params.form)
+
     if (!data.status) {
       dispatch(/** notice-error **/ 'keyExist', params.form.key)
       return false
