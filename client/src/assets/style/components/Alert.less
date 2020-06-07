@@ -1,0 +1,67 @@
+.ui--alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 130;
+  padding: 20px;
+  background-color: rgba(@bunker-gray, 0.6);
+
+  &:not(.show) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &-container {
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+    max-width: 360px;
+    color: @shsak-gray;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 10px 20px rgba(@bunker-gray, 0.4);
+    transition: all 0.2s ease;
+
+    &.slide-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &.slide-enter {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  &-title {
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 46px;
+    border-bottom: solid 1px #EDF3F3;
+  }
+
+  &-content {
+    position: relative;
+    padding: 20px;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    border-top: solid 1px #EDF3F3;
+
+    .btn {
+      margin: 0 0 0 15px;
+      width: 90px;
+      height: 26px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: capitalize;
+    }
+  }
+}

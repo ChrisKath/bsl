@@ -1,0 +1,73 @@
+.ui--input {
+  position: relative;
+
+  &-label {
+    color: @yellow-color;
+    line-height: 1;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    &[required] {
+      &::after {
+        content: ' *';
+        color: @error-color;
+      }
+    }
+  }
+
+  &-container {
+    position: relative;
+    margin: 5px 0 0;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    margin: 10px 0;
+    font-size: 24px;
+    line-height: 25px;
+    width: 55px;
+    text-align: center;
+    border-right: solid 1px tint(@primary-color, 15%);
+  }
+
+  &-default {
+    position: relative;
+    display: block;
+
+    padding: 6px 12px;
+    min-height: 45px;
+
+    color: @text-color;
+    background-color: transparent;
+
+    border-radius: 4px;
+    border: solid 1px @gray-color;
+
+    &.has-icon {
+      padding-left: 62px;
+    }
+
+    &:focus {
+      background-color: tint(@primary-color, 5%);
+    }
+
+    &:disabled {
+      opacity: 0.9;
+      cursor: not-allowed;
+      user-select: none;
+    }
+  }
+
+  &-errors {
+    color: @error-color;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  &.ltr { text-align: right }
+  &.ctr { text-align: center}
+}

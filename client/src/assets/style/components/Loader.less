@@ -1,0 +1,77 @@
+.ui--loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 128;
+  padding: 20px;
+  display: grid;
+  transition: all 0.2s @cubic-bezier;
+
+  &-container {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    padding: 5px;
+    margin: 0 auto;
+    border-radius: 100%;
+
+    background-color: @text-color;
+    box-shadow: 0 5px 15px rgba(@warning-color, 0.25);
+
+    transition: all .2s ease;
+  }
+
+  .circle {
+    animation: rotate 2s linear infinite;
+    transform-origin: center center;
+    width: 35px;
+    height: 35px;
+  }
+
+  .path {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke: @warning-color;
+    animation: dash 1.5s ease infinite;
+    stroke-linecap: round;
+  }
+
+  &.loader-enter-active,
+  &.loader-leave-active {
+    [class$="-container"] {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  &.loader-enter,
+  &.loader-leave-to {
+    [class$="-container"] {
+      opacity: 0;
+      transform: translate(0, -10px);
+    }
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+    }
+  }  
+}

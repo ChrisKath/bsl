@@ -1,68 +1,24 @@
-# BrandShortLink - Project
+# Brand Short Link Project | Private Web App (Remastered)
 
-> Brand Short Link by TAP Technology Company Limited.
+## Back-End - Structure of RESTFul API with Express
 
-## Build Setup
+#### Requires
+[node.js](https://nodejs.org/en/) and [express.js](https://expressjs.com/)
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:2018
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+#### Directory Structure
+```
+index.js          # App entry point
+└─ configs        # Configuration related stuff
+└─ controllers    # Controllers for all the endpoints 
+└─ helpers        # Utility function
+└─ models         # Object Models
+└─ public         # Static file
+└─ routes         # Routes for all the endpoints
+└─ services       # Business logic
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+##### Install dependencies
+`npm install` or `yarn install`
 
-## Laravel Backend
-
-#### SETTING JWT TOKEN
-
-Step : 1 Install tymon/jwt-auth package in your laravel application
-
-```bash
-
-composer require tymon/jwt-auth:dev-develop --prefer-source
-
-```
-
-Step : 2 Make some changes in config/app.php file
-
-```php
-
-'providers' => [
-	....
-	Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-],
-'aliases' => [
-	....
-	'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-],
-
-```
-
-Step : 3 Generate configuration file
-
-```bash
-
-php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
-
-```
-
-Step : 4 Generate JWT Token
-
-```bash
-
-php artisan jwt:secret
-
-```
-
-### Packages
-- Browser Detection by hisorange https://github.com/hisorange/browser-detect
-- JSON Web Token Authentication for Laravel & Lumen http://jwt-auth.com
+##### Start app
+`npm run serve` or `yarn run serve`
