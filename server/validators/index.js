@@ -2,7 +2,6 @@ const { validationResult } = require('express-validator')
 
 // Import Validators
 const validators = {
-  user: require('./user'),
   auth: require('./auth')
 }
 

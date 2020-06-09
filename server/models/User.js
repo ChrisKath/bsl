@@ -2,7 +2,7 @@ const { sequelize } = require('../configs/databases')
 const { DataTypes } = require('sequelize')
 const bcrypt = require('bcrypt')
 
-const Users = sequelize.define('Users', {
+module.exports = sequelize.define('Users', {
   id: {
     type: DataTypes.INTEGER,
     field: 'id',
@@ -32,17 +32,12 @@ const Users = sequelize.define('Users', {
   passive: {
     type: DataTypes.BOOLEAN,
     field: 'passive',
-    defaultValue: 1
+    defaultValue: true
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
     field: 'isAdmin',
-    defaultValue: 0
-  },
-  rememberToken: {
-    type: DataTypes.STRING(100),
-    field: 'remember_token',
-    allowNull: true
+    defaultValue: false
   },
   createdBy: {
     type: DataTypes.INTEGER(10),
@@ -66,5 +61,3 @@ const Users = sequelize.define('Users', {
   tableName: 'users',
   timestamps: true
 })
-
-module.exports = Users

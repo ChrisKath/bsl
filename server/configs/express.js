@@ -1,15 +1,16 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-// const passport = require('passport')
 const path = require('path')
 
 module.exports = async (app) => {
-  // Connect MongoDB
-  require('../configs/databases')
-
   // CORS
-  app.use(cors())
+  app.use(cors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+    maxAge: 3600
+  }))
 
   // Parser Body
   app.use(express.json())
@@ -19,7 +20,7 @@ module.exports = async (app) => {
   app.use(morgan('dev'))
 
   // Passport
-  // require('../configs/passport')
+  require('../configs/passport')
 
   // Static file
   app.use('/static', express.static(path.join(__dirname, '../public')))

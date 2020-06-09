@@ -14,6 +14,4 @@ app.use(require('./routes'))
 require('./configs/errorHandler')(config.isProduction, app)
 
 // Start Server.
-app.listen(config.port, () => {
-  console.log(`🚀 Server is running on port: ${config.port}`)
-})
+app.listen(config.port)
