@@ -1,7 +1,13 @@
 const Users = require('../models/User')
 
-const methods = {
-  async all (req, res) {
+module.exports = {
+  /**
+   * Display a listing of the resource.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  index: async (req, res) => {
     try {
       const result = await Users.findAll({
         attributes: { exclude: ['password'] }
@@ -11,6 +17,4 @@ const methods = {
       res.error(error.message, error.status)
     }
   }
-} 
-
-module.exports = { ...methods }
+}

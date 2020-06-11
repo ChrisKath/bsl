@@ -98,14 +98,4 @@ Users.hasMany(Urls, {
   foreignKey: 'created_by'
 })
 
-// Urls.belongsTo(Users, {
-//   as: 'creater',
-//   foreignKey: 'created_by'
-// })
-
-// Urls.belongsTo(Users, {
-//   as: 'updater',
-//   foreignKey: 'updated_by'
-// })
-
 module.exports = Urls

@@ -1,17 +1,17 @@
-const config = require('./configs/app')
+const { isProduction, port } = require('./configs/app')
 const app = require('express')()
 
-// Express Configs.
+// Express Configs
 require('./configs/express')(app)
 
-// Middleware.
+// Middleware
 require('./configs/middleware')
 
-// Routes.
+// Routes
 app.use(require('./routes'))
 
-// Error handler.
-require('./configs/errorHandler')(config.isProduction, app)
+// Error handler
+require('./configs/errorHandler')(isProduction, app)
 
-// Start Server.
-app.listen(config.port)
+// Start Server
+app.listen(port)
