@@ -29,9 +29,9 @@ module.exports = sequelize.define('Users', {
       this.setDataValue('password', hash.replace(/^\$2b/, '$2y'))
     }
   },
-  passive: {
+  enabled: {
     type: DataTypes.BOOLEAN,
-    field: 'passive',
+    field: 'enabled',
     defaultValue: true
   },
   isAdmin: {

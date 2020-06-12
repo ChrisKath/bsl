@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt')
 const { Op } = require('sequelize')
-const { signToken } = require('../helpers')
+const bcrypt = require('bcrypt')
+const { createToken } = require('../helpers/token.helper')
 const Users = require('../models/User')
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
         })
       }
 
-      res.status(200).json(signToken(user))
+      res.status(200).json(createToken(user))
     } catch (error) {
       res.error(error.message, error.status)
     }

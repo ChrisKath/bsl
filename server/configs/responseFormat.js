@@ -1,10 +1,6 @@
-module.exports = (request, response, next) => {
-  response.success = (data = '', statusCode = 200) => {
-    response.status(statusCode || 200).send(data)
-  }
-
-  response.error = (errorMsg = '', statusCode = 500) => {
-    response.status(statusCode || 500).send({
+module.exports = (req, res, next) => {
+  res.error = (errorMsg = '', statusCode = 500) => {
+    res.status(statusCode || 500).json({
       status: statusCode,
       message: errorMsg
     })

@@ -7,6 +7,7 @@ module.exports = {
   apiVersion    : process.env.API_VERSION || 1,
   tokenExpiry   : process.env.JWT_TTL || '1d',
   secretKey     : process.env.JWT_SECRET || '',
+  keyLength     : process.env.KEY_LENGTH || 6,
   
   dialect       : process.env.DB_DIALECT || 'mysql',
   hostname      : process.env.DB_HOST || 'localhost',

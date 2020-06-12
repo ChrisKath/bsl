@@ -10,7 +10,7 @@ module.exports = sequelize.define('Clicks', {
   },
   urlId: {
     type: DataTypes.INTEGER,
-    field: 'urls_id'
+    field: 'url_id'
   },
   userIp: {
     type: DataTypes.TEXT,

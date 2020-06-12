@@ -1,7 +1,6 @@
 const { sequelize } = require('../configs/databases')
 const { DataTypes } = require('sequelize')
 const Clicks = require('./Click')
-const Users = require('./User')
 const Tags = require('./Tag')
 
 const Urls = sequelize.define('Urls', {
@@ -32,17 +31,21 @@ const Urls = sequelize.define('Urls', {
     type: DataTypes.DATE,
     field: 'expiry',
     allowNull: true,
-    defaultValue: null
+    set (value) {
+      this.setDataValue('expiry', value || null)
+    }
   },
   redirect: {
     type: DataTypes.TEXT,
     field: 'redirect',
     allowNull: true,
-    defaultValue: null
+    set (value) {
+      this.setDataValue('redirect', value || null)
+    }
   },
-  enable: {
+  enabled: {
     type: DataTypes.BOOLEAN,
-    field: 'enable',
+    field: 'enabled',
     defaultValue: true
   },
   createdBy: {
@@ -91,11 +94,6 @@ Tags.belongsToMany(Urls, {
 Urls.hasMany(Clicks, {
   foreignKey: 'urls_id',
   timestamps: false
-})
-
-Users.hasMany(Urls, {
-  as: 'creater',
-  foreignKey: 'created_by'
 })
 
 module.exports = Urls
