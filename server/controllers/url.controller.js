@@ -1,9 +1,5 @@
-const Sequelize = require('sequelize')
+const { Sequelize, users, urls, tags, tagging, clicks } = require('../configs/databases')
 const service = require('../services/url.service')
-const Urls = require('../models/Url')
-const Tags = require('../models/Tag')
-const Clicks = require('../models/Click')
-const Tagging = require('../models/Tagging')
 
 module.exports = {
   /**
@@ -14,21 +10,17 @@ module.exports = {
    */
   index: async (req, res) => {
     try {
-      const result = await Urls.findAll({
-        include: [
-          { model: Tags, attributes: ['id', 'name'] },
-          { model: Clicks, attributes: [] }
-        ],
-        attributes: {
-          include: [
-            [Sequelize.fn('COUNT',
-              Sequelize.fn('DISTINCT', Sequelize.col('Clicks.id'))
-            ), 'clicks']
-          ]
-        },
-        group: ['Tags.id'],
+      const result = await urls.findAll({
+        where: { enabled: true },
+        include: [{
+          model: tags,
+          attributes: ['id', 'name'],
+          group: 'id',
+          through: { attributes: [] },
+        }],
         order: [['createdAt', 'DESC']],
-        limit: 25
+        limit: 25,
+        benchmark: true
       })
 
       res.json(result)
@@ -59,7 +51,7 @@ module.exports = {
 
     try {
       // store a newly.
-      const store = await Urls.create({
+      const store = await urls.create({
         key       : keyCode,
         href      : req.body.href,
         title     : req.body.title || url.hostname,
@@ -72,7 +64,7 @@ module.exports = {
       // insert tags.
       service.insertTags(store.id, req.body.tags)
 
-      res.status(200).json({
+      res.json({
         status: true,
         data: store,
         message: 'Create success.'
@@ -90,23 +82,22 @@ module.exports = {
    */
   show: async (req, res) => {
     try {
-      const query = await Urls.findOne({
-        where: { id: req.params.id },
-        include: [
-          { model: Tags, attributes: ['id', 'name'] },
-          { model: Clicks, attributes: [] }
-        ],
+      const result = await urls.findByPk(req.params.id, {
         attributes: {
-          include: [
-            [Sequelize.fn('COUNT',
-              Sequelize.fn('DISTINCT', Sequelize.col('Clicks.id'))
-            ), 'clicks']
-          ]
+          include: [[Sequelize.fn('COUNT', Sequelize.col('clicks.id')), 'totalClicks']],
+          exclude: ['createdBy', 'updatedBy']
         },
-        group: ['Tags.id']
+        include: [
+          { model: users, as: 'creater', attributes: ['id', 'name'] },
+          { model: users, as: 'updater', attributes: ['id', 'name'] },
+          { model: tags, attributes: ['id', 'name'], through: { attributes: [] } },
+          { model: clicks, attributes: [] }
+        ],
+        group: 'tags.id',
+        benchmark: true
       })
-      
-      res.status(200).json(query)
+
+      res.json(result)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -144,7 +135,7 @@ module.exports = {
 
     try {
       // Update storage.
-      await Urls.update({
+      await urls.update({
         key       : keyCode,
         href      : req.body.href,
         title     : req.body.title,
@@ -158,7 +149,7 @@ module.exports = {
       // insert tags.
       service.insertTags(req.params.id, req.body.tags)
       
-      res.status(200).json({
+      res.json({
         status: true,
         message: 'Update success.'
       })
@@ -177,11 +168,11 @@ module.exports = {
     const id = req.params.id
 
     try {
-      await Tagging.destroy({ where: { urlId: id } })
-      await Urls.destroy({ where: { id } })
-      await Clicks.destroy({ where: { id } })
+      await tagging.destroy({ where: { urlId: id } })
+      await urls.destroy({ where: { id } })
+      await clicks.destroy({ where: { id } })
       
-      res.status(200).json({
+      res.json({
         status: true,
         message: 'Remove success.'
       })

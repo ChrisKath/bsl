@@ -1,21 +1,41 @@
-const { sequelize } = require('../configs/databases')
-const { DataTypes } = require('sequelize')
+module.exports = (sequelize, DataTypes) => {
+  const model = sequelize.define('tagging', {
+    id: {
+      type: DataTypes.INTEGER,
+      field: 'id',
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    urlId: {
+      type: DataTypes.INTEGER,
+      field: 'url_id'
+    },
+    tagId: {
+      type: DataTypes.INTEGER,
+      field: 'tag_id'
+    }
+  }, {
+    tableName: 'tagging',
+    timestamps: false,
+    indexes: [{
+      fields: ['url_id', 'tag_id'],
+      unique: false
+    }]
+  })
 
-const Tagging = sequelize.define('Tagging', {
-  urlId: {
-    type: DataTypes.INTEGER,
-    field: 'url_id'
-  },
-  tagId: {
-    type: DataTypes.INTEGER,
-    field: 'tag_id'
+  // Alias of relationship
+  model.associate = (models) => {
+    model.belongsTo(models.urls, {
+      targetKey: 'id',
+      foreignKey: 'urlId'
+    })
+
+    model.belongsTo(models.tags, {
+      targetKey: 'id',
+      foreignKey: 'tagId'
+    })
   }
-}, {
-  tableName: 'tagging',
-  timestamps: false,
-  freezeTableName: true
-})
 
-Tagging.removeAttribute('id')
-
-module.exports = Tagging
+  return model
+}

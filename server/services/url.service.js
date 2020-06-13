@@ -1,6 +1,5 @@
+const { urls, tagging } = require('../configs/databases')
 const { createKeyCode } = require('../helpers/token.helper')
-const Urls = require('../models/Url')
-const Tagging = require('../models/Tagging')
 
 const methods = {
   /**
@@ -10,8 +9,7 @@ const methods = {
    */
   runKeyCode: () => {
     const keyCode = createKeyCode()
-    const check = methods.hasKeyCode(keyCode)
-    if (check > 0) {
+    if (methods.hasKeyCode(keyCode) > 0) {
       methods.runKeyCode()
     } else {
       return keyCode
@@ -25,12 +23,10 @@ const methods = {
    * @returns {boolean}
    */
   hasKeyCode: async (keyCode) => {
-    const query = await Urls.count({
-      where: {
-        key: keyCode
-      }
+    const result = await urls.count({
+      where: { key: keyCode }
     })
-    return query
+    return result
   },
 
   /**
@@ -40,12 +36,10 @@ const methods = {
    * @returns {boolean}
    */
   hasOriginUrl: async (originUrl) => {
-    const query = await Urls.count({
-      where: {
-        href: originUrl
-      }
+    const result = await urls.count({
+      where: { href: originUrl }
     })
-    return query
+    return result
   },
 
   /**
@@ -56,7 +50,7 @@ const methods = {
    */
   insertTags: async (id, tags) => {
     // Delete all rows match.
-    await Tagging.destroy({ where: { urlId: id } })
+    await tagging.destroy({ where: { urlId: id } })
 
     if (tags.length) {
       // map tagging.
@@ -66,7 +60,7 @@ const methods = {
       }))
       
       // Insert newly tags.
-      Tagging.bulkCreate(rows)
+      tagging.bulkCreate(rows)
     }
   }
 }

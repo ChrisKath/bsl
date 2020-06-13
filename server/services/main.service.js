@@ -1,4 +1,4 @@
-const Clicks = require('../models/Click')
+const { clicks } = require('../configs/databases')
 const moment = require('moment')
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
    * @param {Request} req
    */
   clickLog: (id, req) => {
-    Clicks.create({
+    clicks.create({
       urlId: id,
       userIp: req.ip,
       description: req.get('User-Agent')

@@ -1,5 +1,5 @@
+const { urls } = require('../configs/databases')
 const service = require('../services/main.service')
-const Urls = require('../models/Url')
 const path = require('path')
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 
     if (keyCode) {
       try {
-        const query = await Urls.findOne({
+        const query = await urls.findOne({
           attributes: ['id', 'href', 'expiry', 'redirect'],
           where: { key: keyCode, enable: true  }
         })

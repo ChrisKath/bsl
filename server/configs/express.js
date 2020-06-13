@@ -7,7 +7,7 @@ module.exports = async (app) => {
   // CORS
   app.use(cors({
     origin: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true,
     maxAge: 3600
   }))

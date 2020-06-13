@@ -1,99 +1,97 @@
-const { sequelize } = require('../configs/databases')
-const { DataTypes } = require('sequelize')
-const Clicks = require('./Click')
-const Tags = require('./Tag')
+module.exports = (sequelize, DataTypes) => {
+  const model = sequelize.define('urls', {
+    id: {
+      type: DataTypes.INTEGER,
+      field: 'id',
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    key: {
+      type: DataTypes.STRING(12),
+      field: 'key'
+    },
+    href: {
+      type: DataTypes.TEXT,
+      field: 'href'
+    },
+    title: {
+      type: DataTypes.STRING,
+      field: 'title'
+    },
+    type: {
+      type: DataTypes.INTEGER,
+      field: 'type',
+      defaultValue: 1
+    },
+    expiry: {
+      type: DataTypes.DATE,
+      field: 'expiry',
+      allowNull: true,
+      set (value) {
+        this.setDataValue('expiry', value || null)
+      }
+    },
+    redirect: {
+      type: DataTypes.TEXT,
+      field: 'redirect',
+      allowNull: true,
+      set (value) {
+        this.setDataValue('redirect', value || null)
+      }
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
+      field: 'enabled',
+      defaultValue: true
+    },
+    createdBy: {
+      type: DataTypes.INTEGER(10),
+      field: 'created_by'
+    },
+    updatedBy: {
+      type: DataTypes.INTEGER(10),
+      field: 'updated_by'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at',
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at',
+      defaultValue: DataTypes.NOW
+    }
+  }, {
+    tableName: 'urls',
+    timestamps: true,
+    indexes: [{
+      fields: ['created_by', 'updated_by'],
+      unique: false
+    }]
+  })
 
-const Urls = sequelize.define('Urls', {
-  id: {
-    type: DataTypes.INTEGER,
-    field: 'id',
-    primaryKey: true,
-    autoIncrement: true
-  },
-  key: {
-    type: DataTypes.STRING(16),
-    field: 'key'
-  },
-  href: {
-    type: DataTypes.TEXT,
-    field: 'href'
-  },
-  title: {
-    type: DataTypes.STRING,
-    field: 'title'
-  },
-  type: {
-    type: DataTypes.INTEGER,
-    field: 'type',
-    defaultValue: 1
-  },
-  expiry: {
-    type: DataTypes.DATE,
-    field: 'expiry',
-    allowNull: true,
-    set (value) {
-      this.setDataValue('expiry', value || null)
-    }
-  },
-  redirect: {
-    type: DataTypes.TEXT,
-    field: 'redirect',
-    allowNull: true,
-    set (value) {
-      this.setDataValue('redirect', value || null)
-    }
-  },
-  enabled: {
-    type: DataTypes.BOOLEAN,
-    field: 'enabled',
-    defaultValue: true
-  },
-  createdBy: {
-    type: DataTypes.INTEGER(10),
-    field: 'created_by',
-    references: {
-      model: 'users',
-      key: 'id',
-    }
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER(10),
-    field: 'updated_by',
-    references: {
-      model: 'users',
-      key: 'id',
-    }
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    field: 'created_at',
-    defaultValue: DataTypes.NOW
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    field: 'updated_at',
-    defaultValue: DataTypes.NOW
+  // Alias of relationship
+  model.associate = (models) => {
+    model.belongsToMany(models.tags, {
+      through: models.tagging,
+      foreignKey: 'urlId',
+      otherKey: 'tagId'
+    })
+
+    model.belongsTo(models.users, {
+      as: 'creater',
+      foreignKey: 'createdBy'
+    })
+
+    model.belongsTo(models.users, {
+      as: 'updater',
+      foreignKey: 'updatedBy'
+    })
+
+    model.hasMany(models.clicks, { foreignKey: 'urlId' })
   }
-}, {
-  tableName: 'urls',
-  timestamps: true
-})
 
-Urls.belongsToMany(Tags, {
-  through: 'url_has_tags',
-  foreignKey: 'urls_id',
-  timestamps: false
-})
-
-Tags.belongsToMany(Urls, {
-  through: 'url_has_tags',
-  foreignKey: 'tags_id',
-  timestamps: false
-})
-
-Urls.hasMany(Clicks, {
-  foreignKey: 'urls_id',
-  timestamps: false
-})
-
-module.exports = Urls
+  return model
+}

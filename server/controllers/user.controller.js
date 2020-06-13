@@ -1,4 +1,4 @@
-const Users = require('../models/User')
+const { users } = require('../configs/databases')
 
 module.exports = {
   /**
@@ -9,10 +9,10 @@ module.exports = {
    */
   index: async (req, res) => {
     try {
-      const result = await Users.findAll({
+      const query = await users.findAll({
         attributes: { exclude: ['password'] }
       })
-      res.json(result)
+      res.json(query)
     } catch (error) {
       res.error(error.message, error.status)
     }
