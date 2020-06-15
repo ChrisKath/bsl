@@ -1,7 +1,10 @@
 const router = require('express').Router()
+const passport = require('passport')
 const controllers = require('../../controllers/auth.controller')
-const validator = require('../../validators')
+const Auth = passport.authenticate('jwt', {session:false})
 
-router.post('/login', [validator.auth.post, validator.check], controllers.login)
+router.post('/login', controllers.login)
+router.get('/me', Auth, controllers.me)
+router.get('/refreshToken', Auth, controllers.refresh)
 
 module.exports = router

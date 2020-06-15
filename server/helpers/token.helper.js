@@ -17,7 +17,8 @@ module.exports = {
     return {
       status: Boolean(token),
       accessToken: token,
-      expired: moment().add(Number(tokenExpiry[0]), tokenExpiry[1]).format()
+      type: 'Bearer',
+      expires: moment().add(Number(tokenExpiry[0]), tokenExpiry[1]).toISOString()
     }
   },
 
