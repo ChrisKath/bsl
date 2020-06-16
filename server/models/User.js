@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         if (value) this.setDataValue('password', bcrypt.hashSync(value, 10))
       }
     },
+    avatar: {
+      type: DataTypes.STRING(128),
+      field: 'avatar',
+      allowNull: true
+    },
     enabled: {
       type: DataTypes.BOOLEAN,
       field: 'enabled',

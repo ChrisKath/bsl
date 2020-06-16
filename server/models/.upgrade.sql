@@ -2,6 +2,7 @@ RENAME TABLE `qr_brandes` TO `social_media`;
 RENAME TABLE `url_has_tags` TO `tagging`;
 
 ALTER TABLE `users` CHANGE `passive` `enabled` TINYINT NULL DEFAULT '1';
+ALTER TABLE `users` ADD `avatar` VARCHAR(128) NULL DEFAULT NULL AFTER `password`;
 ALTER TABLE `users` DROP `remember_token`;
 UPDATE `users` SET `password` = '';
 

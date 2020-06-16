@@ -81,7 +81,28 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  profile: (req, res) => {
-    res.send(req.body)
+  profile: async (req, res) => {
+    const userId = req.user.id
+    const avatar = req.file.filename
+
+    try {
+      // Update storage.
+      await users.update({ avatar }, {
+        where: { id: userId }
+      })
+
+      // get response data after updated.
+      const result = await users.findByPk(userId, {
+        attributes: { exclude: ['password'] }
+      })
+      
+      res.json({
+        status: true,
+        data: result,
+        message: 'Update success.'
+      })
+    } catch (error) {
+      res.error(error.message, error.status)
+    }
   }
 }

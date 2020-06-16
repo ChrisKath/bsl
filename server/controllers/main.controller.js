@@ -1,6 +1,8 @@
+const { keyLength } = require('../configs/app')
 const { urls } = require('../configs/databases')
 const service = require('../services/main.service')
 const path = require('path')
+const fs = require('fs')
 
 module.exports = {
   /**
@@ -12,11 +14,11 @@ module.exports = {
   index: async (req, res) => {
     const keyCode = service.getKeyCode(req.path)
 
-    if (keyCode) {
+    if (keyCode && keyCode.length <= keyLength) {
       try {
         const query = await urls.findOne({
           attributes: ['id', 'href', 'expiry', 'redirect'],
-          where: { key: keyCode, enable: true  }
+          where: { key: keyCode, enabled: true  }
         })
 
         // save clicked-log
@@ -39,6 +41,25 @@ module.exports = {
     } else {
       // response to console panel.
       res.sendFile(path.join(__dirname, '../public/index.html'))
+    }
+  },
+
+  /**
+   * Gatter storage file.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  file: (req, res) => {
+    try {
+      const pathFile = path.join(__dirname, `../storage/${req.params.dest}/${req.params.name}`)
+      const encode = fs.readFileSync(pathFile).toString('base64')
+      const buffer = Buffer.from(encode, 'base64')
+      
+      res.contentType('image/jpeg')
+      res.send(buffer)
+    } catch (error) {
+      res.error(error.message, error.status)
     }
   }
 }
