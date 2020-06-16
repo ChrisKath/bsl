@@ -73,5 +73,15 @@ module.exports = {
    */
   refresh: (req, res) => {
     res.json(createToken(req.user))
+  },
+
+  /**
+   * Update user profile.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  profile: (req, res) => {
+    res.send(req.body)
   }
 }

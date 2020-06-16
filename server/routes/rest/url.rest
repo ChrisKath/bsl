@@ -1,12 +1,11 @@
-GET http://localhost:3000/api/v2/urls
+GET http://localhost:3000/api/v2/url
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 
 ###
 
-POST http://localhost:3000/api/v2/urls/create
+POST http://localhost:3000/api/v2/url/create
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 content-type: application/json
-
 {
   "href": "http://expressjs.com/",
   "title": "",
@@ -17,12 +16,12 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3000/api/v2/urls/33364
+GET http://localhost:3000/api/v2/url/33364
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 
 ###
 
-PATCH http://localhost:3000/api/v2/urls/33379
+PATCH http://localhost:3000/api/v2/url/33379
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 content-type: application/json
 
@@ -37,7 +36,7 @@ content-type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/v2/urls/33379
+DELETE http://localhost:3000/api/v2/url/33379
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 
 ###
