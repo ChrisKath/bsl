@@ -1,5 +1,6 @@
 const { Sequelize, users, urls, tags, tagging, clicks } = require('../configs/databases')
 const service = require('../services/url.service')
+const click = require('../models/click')
 
 module.exports = {
   /**
@@ -12,6 +13,9 @@ module.exports = {
     try {
       const result = await urls.findAll({
         where: { enabled: true },
+        attributes: {
+          exclude: ['type', 'redirect']
+        },
         include: [{
           model: tags,
           attributes: ['id', 'name'],

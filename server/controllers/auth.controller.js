@@ -53,7 +53,7 @@ module.exports = {
    */
   me: async (req, res) => {
     try {
-      const result = await urls.findByPk(req.user.id, {
+      const result = await users.findByPk(req.user.id, {
         attributes: {
           exclude: ['password']
         }

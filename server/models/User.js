@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       field: 'password',
       set (value) {
-        this.setDataValue('password', bcrypt.hashSync(value, 10))
+        if (value) this.setDataValue('password', bcrypt.hashSync(value, 10))
       }
     },
     enabled: {

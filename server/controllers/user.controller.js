@@ -10,7 +10,8 @@ module.exports = {
   index: async (req, res) => {
     try {
       const query = await users.findAll({
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['password'] },
+        benchmark: true
       })
       res.json(query)
     } catch (error) {
@@ -24,7 +25,28 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  create: (req, res) => {},
+  create: async (req, res) => {
+    try {
+      // store a newly.
+      const store = await urls.create({
+        name      : req.body.name || req.body.username,
+        email     : req.body.email,
+        username  : req.body.username,
+        password  : req.body.password,
+        isAdmin   : req.body.isAdmin,
+        createdBy : req.user.id,
+        updatedBy : req.user.id
+      })
+
+      res.json({
+        status: true,
+        data: store,
+        message: 'Create success.'
+      })
+    } catch (error) {
+      res.error(error.message, error.status)
+    }
+  },
 
   /**
    * Display the specified resource.
@@ -32,15 +54,7 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  show: (req, res) => {},
-
-  /**
-   * Show the form for editing the specified resource.
-   * 
-   * @param {Request} req
-   * @param {Response} res
-   */
-  edit: (req, res) => {},
+  show: async (req, res) => {},
 
   /**
    * Update the specified resource in storage.
@@ -48,7 +62,26 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  update: (req, res) => {},
+  update: async (req, res) => {
+    try {
+      // Update storage.
+      await urls.update({
+        name      : req.body.name,
+        email     : req.body.email,
+        isAdmin   : req.body.isAdmin,
+        updatedBy : req.user.id
+      }, {
+        where: { id: req.params.id }
+      })
+      
+      res.json({
+        status: true,
+        message: 'Update success.'
+      })
+    } catch (error) {
+      res.error(error.message, error.status)
+    }
+  },
 
   /**
    * Remove the specified resource from storage.
@@ -56,5 +89,5 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  destroy: (req, res) => {}
+  destroy: async (req, res) => {}
 }

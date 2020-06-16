@@ -4,7 +4,7 @@
   "license": "GNU",
   "description": "Back-End - Structure of RESTFul API with Express on NodeJS",
   "keywords": [],
-  "author": "",
+  "author": "Got't Patiphat",
   "main": "index.js",
   "scripts": {
     "serve": "nodemon .",
