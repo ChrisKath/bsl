@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const path = require('path')
 
-module.exports = async (app) => {
+module.exports = (app) => {
   // CORS
   app.use(cors({
     origin: true,
@@ -20,11 +20,11 @@ module.exports = async (app) => {
   app.use(morgan('dev'))
 
   // Passport
-  require('../configs/passport')
+  require('./passport')
 
   // Static file
-  app.use('/static', express.static(path.join(__dirname, '../public')))
+  app.use('/', express.static(path.join(__dirname, '../public')))
 
   // Custom Response Format
-  app.use(require('../configs/responseFormat'))
+  app.use(require('./responseFormat'))
 }

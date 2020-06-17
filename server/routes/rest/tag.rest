@@ -1,43 +1,34 @@
-GET http://localhost:3000/api/v2/url
+GET http://localhost:3000/api/v2/tag
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 
 ###
 
-POST http://localhost:3000/api/v2/url/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
-content-type: application/json
-
-{
-  "href": "http://expressjs.com/",
-  "title": "",
-  "expiry": "",
-  "redirect": "",
-  "tags": [9, 10]
-}
-
-###
-
-GET http://localhost:3000/api/v2/url/33364
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
-
-###
-
-PATCH http://localhost:3000/api/v2/url/33379
+POST http://localhost:3000/api/v2/tag/create
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 content-type: application/json
 
 {
-  "key": "expr3s",
-  "href": "http://expressjs.com/en",
-  "title": "expressjs",
-  "expiry": "",
-  "redirect": "",
-  "tags": [13, 17]
+  "name": "expressjs"
 }
 
 ###
 
-DELETE http://localhost:3000/api/v2/url/33379
+GET http://localhost:3000/api/v2/tag/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
+
+###
+
+PATCH http://localhost:3000/api/v2/tag/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
+content-type: application/json
+
+{
+  "name": "expressjs"
+}
+
+###
+
+DELETE http://localhost:3000/api/v2/tag/20
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInN1YiI6MSwiaWF0IjoxNTkxNjA2MjMwLCJleHAiOjE2MjMxNjM4MzB9.WoLAK1p2xCSmAUyqqd9NAuwrfT7quDsfM15pHWqxC_s
 
 ###

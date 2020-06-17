@@ -24,8 +24,11 @@ const methods = {
    */
   hasKeyCode: async (keyCode) => {
     const result = await urls.count({
-      where: { key: keyCode }
+      where: {
+        key: keyCode
+      }
     })
+
     return result
   },
 
@@ -37,8 +40,11 @@ const methods = {
    */
   hasOriginUrl: async (originUrl) => {
     const result = await urls.count({
-      where: { href: originUrl }
+      where: {
+        href: originUrl
+      }
     })
+
     return result
   },
 

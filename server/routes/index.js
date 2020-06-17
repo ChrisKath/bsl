@@ -8,7 +8,7 @@ router.use(`/api/v${apiVersion}`, require('./api/index'))
 // Gatter storage file
 router.get('/f/:dest/:name', controllers.file)
 
-// Any url endpoint.
+// Any url endpoint
 router.get('*', controllers.index)
 
 module.exports = router

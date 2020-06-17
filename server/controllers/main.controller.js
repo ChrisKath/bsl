@@ -1,4 +1,3 @@
-const { keyLength } = require('../configs/app')
 const { urls } = require('../configs/databases')
 const service = require('../services/main.service')
 const path = require('path')
@@ -14,12 +13,20 @@ module.exports = {
   index: async (req, res) => {
     const keyCode = service.getKeyCode(req.path)
 
-    if (keyCode && keyCode.length <= keyLength) {
+    if (keyCode) {
       try {
         const query = await urls.findOne({
           attributes: ['id', 'href', 'expiry', 'redirect'],
-          where: { key: keyCode, enabled: true  }
+          where: {
+            key: keyCode,
+            enabled: true
+          }
         })
+
+        // if {keyCode} not match
+        if (!query) {
+          return res.sendFile(path.join(__dirname, '../public/404.html'))
+        }
 
         // save clicked-log
         service.clickLog(query.id, req)
@@ -27,9 +34,9 @@ module.exports = {
         // if this Url is expired, redirect to setting value
         if (query.expiry && service.isExpired(query.expiry)) {
           if (query.redirect) {
-            res.redirect(query.redirect)
+            return res.redirect(query.redirect)
           } else {
-            res.sendFile(path.join(__dirname, '../public/404.html'))
+            return res.sendFile(path.join(__dirname, '../public/404.html'))
           }
         }
 
