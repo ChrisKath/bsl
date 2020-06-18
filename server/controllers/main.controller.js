@@ -58,15 +58,16 @@ module.exports = {
    * @param {Response} res
    */
   file: (req, res) => {
-    try {
-      const pathFile = path.join(__dirname, `../storage/${req.params.dest}/${req.params.name}`)
-      const encode = fs.readFileSync(pathFile).toString('base64')
-      const buffer = Buffer.from(encode, 'base64')
-      
-      res.contentType('image/jpeg')
-      res.send(buffer)
-    } catch (error) {
-      res.error(error.message, error.status)
-    }
+    const pathFile = path.join(__dirname, `../storage/${req.params.dest}/${req.params.name}`)
+    const readStream = fs.createReadStream(pathFile)
+
+    readStream.on('error', () => {
+      res.status(404).end()
+    })
+
+    readStream.on('open', () => {
+      res.set('Content-Type', 'image/jpeg')
+      readStream.pipe(res)
+    })
   }
 }

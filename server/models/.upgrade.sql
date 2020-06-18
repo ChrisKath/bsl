@@ -14,3 +14,4 @@ ALTER TABLE `tags` ADD `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 ALTER TABLE `clicks` CHANGE `urls_id` `url_id` INT(10) UNSIGNED NOT NULL;
 ALTER TABLE `urls` CHANGE `enable` `enabled` TINYINT NULL DEFAULT '1';
+ALTER TABLE `urls` ADD UNIQUE `urls_keyCode_foreign` (`key`);
