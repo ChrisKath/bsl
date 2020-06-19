@@ -25,13 +25,6 @@ module.exports = (app) => {
   // Static file
   app.use('/', express.static(path.join(__dirname, '../public')))
 
-  // Secure protocol
-  app.use((req, res, next) => {
-    const hostName = req.get('host')
-    if (req.protocol === 'https') next()
-    else res.redirect(301, `https://${hostName}${req.originalUrl}`)
-  })
-
   // Custom Response Format
   app.use(require('./responseFormat'))
 }

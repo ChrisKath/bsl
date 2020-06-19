@@ -1,7 +1,6 @@
-const { isProd, port } = require('./configs/app')
+const { isProduction, port } = require('./configs/app')
 const app = require('express')()
 const https = require('https')
-const http = require('http')
 const fs = require('fs')
 
 // Express Configs
@@ -14,14 +13,14 @@ require('./configs/middleware')
 app.use(require('./routes'))
 
 // Error handler
-require('./configs/errorHandler')(isProd, app)
+require('./configs/errorHandler')(isProduction, app)
 
 // Start Server
-http.createServer(app).listen(isProd ? 80 : port)
-https
-  .createServer({
+if (isProduction) {
+  https.createServer({
     key : fs.readFileSync('./helpers/key.pem', 'utf8'),
-    cert: fs.readFileSync('./helpers/cert.pem', 'utf8'),
-    passphrase: ''
-  }, app)
-  .listen(isProd ? 443 : 3001)
+    cert: fs.readFileSync('./helpers/cert.pem', 'utf8')
+  }, app).listen(port)
+} else {
+  app.listen(port)
+}

@@ -2,8 +2,8 @@ require('dotenv').config()
 
 module.exports = {
   appName       : process.env.APP_NAME || 'project_bsl',
-  port          : process.env.PORT || 3000,
-  isProd        : process.env.NODE_ENV === 'production',
+  port          : process.env.NODE_ENV === 'production' ? 443 : 3000,
+  isProduction  : process.env.NODE_ENV === 'production',
   apiVersion    : process.env.API_VERSION || 1,
   tokenExpiry   : process.env.JWT_TTL || '1d',
   secretKey     : process.env.JWT_SECRET || '',
