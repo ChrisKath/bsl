@@ -1,6 +1,5 @@
 const { Sequelize, users, urls, tags, tagging, clicks } = require('../configs/databases')
 const service = require('../services/url.service')
-const click = require('../models/click')
 
 module.exports = {
   /**
@@ -11,7 +10,7 @@ module.exports = {
    */
   index: async (req, res) => {
     try {
-      const result = await urls.findAll({
+      const results = await urls.findAll({
         where: { enabled: true },
         attributes: {
           exclude: ['type', 'redirect']
@@ -27,7 +26,7 @@ module.exports = {
         benchmark: true
       })
 
-      res.json(result)
+      res.json(results)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -43,10 +42,7 @@ module.exports = {
     // Check URL already exists.
     const existHref = await service.hasOriginUrl(req.body.href)
     if (existHref > 0) {
-      return res.status(409).json({
-        status: false,
-        message: 'This URL already exists.'
-      })
+      return res.error('This URL already exists.', 409)
     }
 
     // getters variable.
@@ -69,7 +65,6 @@ module.exports = {
       service.insertTags(store.id, req.body.tags)
 
       res.json({
-        status: true,
         data: store,
         message: 'Create success.'
       })
@@ -86,7 +81,7 @@ module.exports = {
    */
   show: async (req, res) => {
     try {
-      const result = await urls.findByPk(req.params.id, {
+      const url = await urls.findByPk(req.params.id, {
         attributes: {
           include: [[Sequelize.fn('COUNT', Sequelize.col('clicks.id')), 'totalClicks']],
           exclude: ['createdBy', 'updatedBy']
@@ -101,7 +96,7 @@ module.exports = {
         benchmark: true
       })
 
-      res.json(result)
+      res.json(url)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -118,20 +113,14 @@ module.exports = {
     if (req.body.key) {
       const existKey = await service.hasKeyCode(req.body.key)
       if (existKey > 0) {
-        return res.status(409).json({
-          status: false,
-          message: 'This ShortKey already exists.'
-        })
+        return res.error('This ShortKey already exists.', 409)
       }
     }
 
     // Check URL already exists.
     const existHref = await service.hasOriginUrl(req.body.href)
     if (existHref > 0) {
-      return res.status(409).json({
-        status: false,
-        message: 'This URL already exists.'
-      })
+      return res.error('This URL already exists.', 409)
     }
 
     // getters variable.
@@ -153,10 +142,7 @@ module.exports = {
       // insert tags.
       service.insertTags(req.params.id, req.body.tags)
       
-      res.json({
-        status: true,
-        message: 'Update success.'
-      })
+      res.json({ message: 'Update success.' })
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -175,11 +161,42 @@ module.exports = {
       await tagging.destroy({ where: { urlId: id } })
       await urls.destroy({ where: { id } })
       await clicks.destroy({ where: { id } })
-      
-      res.json({
-        status: true,
-        message: 'Remove success.'
+      res.json({ message: 'Remove success.' })
+    } catch (error) {
+      res.error(error.message, error.status)
+    }
+  },
+
+
+  // ********************************************
+  // *************** OTHER ROUTER ***************
+  // ********************************************
+  
+  /**
+   * Statistic clicks logs.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  statistic: async (req, res) => {
+    try {
+      const results = await clicks.findAll({
+        include: [{
+          model: urls,
+          attributes: ['id', 'key', 'href', 'title']
+        }],
+        attributes: [
+          [Sequelize.fn('COUNT', 'clicks.url_id'), 'totalClicks']
+        ],
+        group: ['clicks.url_id'],
+        order: [
+          [Sequelize.literal('totalClicks'), 'DESC']
+        ],
+        limit: 64,
+        benchmark: true
       })
+
+      res.json(results)
     } catch (error) {
       res.error(error.message, error.status)
     }

@@ -10,11 +10,7 @@ passport.use(new Strategy({
 }, async (payload, done) => {
   try {
     // find the user specified in token.
-    const user = await users.findOne({
-      where: {
-        id: payload.sub,
-        enabled: true
-      },
+    const user = await users.findByPk(payload.uid, {
       attributes: {
         exclude: ['password', 'createdBy', 'updatedBy']
       }
@@ -24,7 +20,14 @@ passport.use(new Strategy({
     if (!user) {
       return done(null, false)
     }
-    
+
+    // Suspended.
+    if (!user.activated) {
+      return done({
+        message: 'Your account has been suspended.'
+      }, false)
+    }
+
     // Otherwise, return the user.
     return done(null, user)
   } catch (error) {

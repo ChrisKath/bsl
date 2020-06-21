@@ -1,5 +1,5 @@
-const { tags, tagging } = require('../configs/databases')
-const service = require('../services/tag.service')
+const { icons } = require('../configs/databases')
+const { removeFile } = require('../storage')
 
 module.exports = {
   /**
@@ -10,7 +10,7 @@ module.exports = {
    */
   index: async (req, res) => {
     try {
-      const query = await tags.findAll()
+      const query = await icons.findAll()
       res.json(query)
     } catch (error) {
       res.error(error.message, error.status)
@@ -24,16 +24,13 @@ module.exports = {
    * @param {Response} res
    */
   create: async (req, res) => {
-    try {
-      // Check is exists.
-      const hasExists = await service.hasTagName(req.body.name)
-      if (hasExists) {
-        return res.error('This [Tag name] already exists.', 409)
-      }
+    const image = req.file.filename
 
+    try {
       // store a newly.
-      const store = await tags.create({
-        name: req.body.name
+      const store = await icons.create({
+        name: req.body.name,
+        image
       })
 
       res.json({
@@ -53,8 +50,8 @@ module.exports = {
    */
   show: async (req, res) => {
     try {
-      const tag = await tags.findByPk(req.params.id)
-      res.json(tag)
+      const icon = await icons.findByPk(req.params.id)
+      res.json(icon)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -67,19 +64,26 @@ module.exports = {
    * @param {Response} res
    */
   update: async (req, res) => {
-    try {
-      // Check has exists.
-      const hasExists = await service.hasTagName(req.body.name)
-      if (hasExists) {
-        return res.error('This [Tag name] already exists.', 409)
-      }
+    const image = req.file.filename
 
+    try {
       // Update storage.
-      await tags.update({ name: req.body.name }, {
+      await icons.update({
+        name: req.body.name,
+        image
+      }, {
         where: { id: req.params.id }
       })
+
+      // Remove old file.
+      if (req.body.image) {
+        removeFile('icons', req.body.image)
+      }
       
-      res.json({ message: 'Update success.' })
+      res.json({
+        data: { image },
+        message: 'Update success.'
+      })
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -92,11 +96,10 @@ module.exports = {
    * @param {Response} res
    */
   destroy: async (req, res) => {
-    const id = req.params.id
-
     try {
-      await tagging.destroy({ where: { tagId: id } })
-      await tags.destroy({ where: { id } })
+      await icons.destroy({ where: { id: req.params.id } })
+      removeFile('icons', req.body.image)
+
       res.json({ message: 'Remove success.' })
     } catch (error) {
       res.error(error.message, error.status)

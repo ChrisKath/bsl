@@ -17,7 +17,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 const db = {
   clicks    : require('../models/click')(sequelize, Sequelize.DataTypes),
   facebook  : require('../models/facebook')(sequelize, Sequelize.DataTypes),
-  media     : require('../models/media')(sequelize, Sequelize.DataTypes),
+  icons     : require('../models/icon')(sequelize, Sequelize.DataTypes),
   tags      : require('../models/tag')(sequelize, Sequelize.DataTypes),
   tagging   : require('../models/tagging')(sequelize, Sequelize.DataTypes),
   urls      : require('../models/url')(sequelize, Sequelize.DataTypes),

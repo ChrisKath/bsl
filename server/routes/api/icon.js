@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controllers = require('../../controllers/tag.controller')
+const controllers = require('../../controllers/icon.controller')
 
 router.get('/', controllers.index)
 router.post('/create', controllers.create)

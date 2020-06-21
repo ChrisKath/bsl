@@ -11,12 +11,12 @@ module.exports = {
   createToken: (user) => {
     const token = jwt.sign({
       iss: appName,
-      sub: user.id
+      uid: user.id,
+      sub: user.employeeCode
     }, secretKey, { expiresIn: tokenExpiry })
     
     return {
-      status: Boolean(token),
-      token: token,
+      token,
       type: 'Bearer',
       expires: moment().add(Number(tokenExpiry[0]), tokenExpiry[1]).toISOString()
     }

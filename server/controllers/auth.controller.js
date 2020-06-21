@@ -1,10 +1,11 @@
 const { Op, users } = require('../configs/databases')
 const { createToken } = require('../helpers/token.helper')
+const service = require('../services/auth.service')
 const bcrypt = require('bcrypt')
 
 module.exports = {
   /**
-   * User login.
+   * Login with username and password.
    * 
    * @param {Request} req
    * @param {Response} res
@@ -15,31 +16,40 @@ module.exports = {
     
     try {
       const user = await users.findOne({
+        attributes: ['id', 'employeeCode', 'employeeName', 'username', 'password', 'activated'],
         where: {
-          [Op.or]: [{ email: username }, { username }]
+          [Op.or]: [
+            { employeeCode: username },
+            { username: username.toLowerCase() }
+          ]
         }
       })
 
-      // if user not exist than return status 400
+      // if undefined user
       if (!user) {
-        return res.status(403).json({
-          status: false,
-          message: 'Email or Username is invalid.'
-        })
+        return res.error('Employee Code or Username is invalid.', 403)
       }
 
-      // if user exist than compare password
-      // password comes from the user
-      // user.password comes from the database
-      const compareAttempt = bcrypt.compareSync(password, user.password)
-      if (!compareAttempt) {
-        return res.status(403).json({
-          status: false,
-          message: 'This password is invalid.'
-        })
+      // Suspend user
+      if (!user.activated) {
+        return res.error('Your account has been suspended.', 403)
       }
 
-      res.json(createToken(user))
+      // response data
+      const results = createToken(user)
+      if (user.password) {
+        // if user exist than compare password
+        // password comes from the user
+        // user.password comes from the database
+        const compareAttempt = bcrypt.compareSync(password, user.password)
+        if (!compareAttempt) {
+          return res.error('This password is invalid.', 403)
+        }
+      } else {
+        results.firstLogin = true
+      }
+
+      res.json(results)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -53,22 +63,40 @@ module.exports = {
    * @param {Response} res
    */
   sso: async (req, res) => {
+    const data = service.ssoAccessData(req)
+
+    if (!data) {
+      return res.error('This device cannot access the SSO Function.', 409)
+    }
+
     try {
-      const sso = req.sso.user
-      const employeeId = parseInt(sso.name)
       const user = await users.findOne({
-        where: { employeeId }
+        attributes: ['id', 'employeeCode', 'employeeName', 'username', 'password'],
+        where: {
+          employeeCode: data.employeeCode
+        }
       })
 
+      // if user not found
       if (!user) {
-        res.status(403).json({
-          status: false,
-          message: 'Your account isn\'t activate on this program.<br>Please contact IT Operation team.'
-        })
-      } else {
-
-        res.json(req.sso)
+        return res.error('Your account isn\'t activate on this program.<br>Please contact IT Operation team.', 403)
       }
+
+      // Suspend user
+      if (!user.activated) {
+        return res.error('Your account has been suspended.', 403)
+      }
+
+      // update user-info if field is empty
+      await service.ssoAssignData(data. user)
+
+      // response data
+      let results = createToken(user)
+      if (!user.password) {
+        results.firstLogin = true
+      }
+
+      res.json(results)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -82,13 +110,13 @@ module.exports = {
    */
   me: async (req, res) => {
     try {
-      const result = await users.findByPk(req.user.id, {
+      const user = await users.findByPk(req.user.id, {
         attributes: {
           exclude: ['password']
         }
       })
       
-      res.json(result)
+      res.json(user)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -111,23 +139,21 @@ module.exports = {
    * @param {Response} res
    */
   profile: async (req, res) => {
-    const userId = req.user.id
     const avatar = req.file.filename
 
     try {
       // Update storage.
       await users.update({ avatar }, {
-        where: { id: userId }
+        where: { id: req.user.id }
       })
 
-      // get response data after updated.
-      const result = await users.findByPk(userId, {
-        attributes: { exclude: ['password'] }
-      })
+      // Remove old file.
+      if (req.body.avatar) {
+        removeFile('avatar', req.body.avatar)
+      }
       
       res.json({
-        status: true,
-        data: result,
+        data: { avatar },
         message: 'Update success.'
       })
     } catch (error) {

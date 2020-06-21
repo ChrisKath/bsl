@@ -9,11 +9,12 @@ module.exports = {
    */
   index: async (req, res) => {
     try {
-      const query = await users.findAll({
+      const results = await users.findAll({
         attributes: { exclude: ['password'] },
         benchmark: true
       })
-      res.json(query)
+
+      res.json(results)
     } catch (error) {
       res.error(error.message, error.status)
     }
@@ -28,23 +29,25 @@ module.exports = {
   create: async (req, res) => {
     try {
       // store a newly.
-      const store = await urls.create({
-        name      : req.body.name || req.body.username,
-        email     : req.body.email,
-        username  : req.body.username,
-        password  : req.body.password,
-        isAdmin   : req.body.isAdmin,
-        createdBy : req.user.id,
-        updatedBy : req.user.id
+      const store = await users.create({
+        employeeCode  : req.body.employeeCode,
+        employeeName  : req.body.employeeName,
+        username      : req.body.username,
+        password      : req.body.password,
+        activated     : req.body.activated,
+        isAdmin       : req.body.isAdmin,
+        createdBy     : req.user.id,
+        updatedBy     : req.user.id
       })
 
+      delete store.password
+
       res.json({
-        status: true,
         data: store,
         message: 'Create success.'
       })
     } catch (error) {
-      res.error(error.message, error.status)
+      res.error('Not allowed to use [EmployeeCode and Username] same as another account', error.status)
     }
   },
 
@@ -54,7 +57,19 @@ module.exports = {
    * @param {Request} req
    * @param {Response} res
    */
-  show: async (req, res) => {},
+  show: async (req, res) => {
+    try {
+      const user = await users.findByPk(req.params.id, {
+        attributes: {
+          exclude: ['password']
+        }
+      })
+
+      res.json(user)
+    } catch (error) {
+      res.error(error.message, error.status)
+    }
+  },
 
   /**
    * Update the specified resource in storage.
@@ -65,21 +80,21 @@ module.exports = {
   update: async (req, res) => {
     try {
       // Update storage.
-      await urls.update({
-        name      : req.body.name,
-        email     : req.body.email,
-        isAdmin   : req.body.isAdmin,
-        updatedBy : req.user.id
+      await users.update({
+        employeeCode: req.body.employeeCode,
+        employeeName: req.body.employeeName,
+        username    : req.body.username,
+        password    : req.body.password,
+        activated   : req.body.activated,
+        isAdmin     : req.body.isAdmin,
+        updatedBy   : req.user.id
       }, {
         where: { id: req.params.id }
       })
       
-      res.json({
-        status: true,
-        message: 'Update success.'
-      })
+      res.json({ message: 'Update success.' })
     } catch (error) {
-      res.error(error.message, error.status)
+      res.error('Not allowed to use [EmployeeCode and Username] same as another account', error.status)
     }
   },
 

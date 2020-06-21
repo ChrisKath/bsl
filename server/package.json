@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "license": "GNU",
   "description": "Back-End - Structure of RESTFul API with Express on NodeJS",
-  "keywords": [],
   "author": "Got't Patiphat",
   "main": "index.js",
   "scripts": {
@@ -29,6 +28,6 @@
     "nodemon": "^2.0.4"
   },
   "engines": {
-    "node": ">= 12.18.0"
+    "node": ">= 12.18.1"
   }
 }

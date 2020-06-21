@@ -9,17 +9,24 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
-    name: {
-      type: DataTypes.STRING,
-      field: 'name'
+    employeeCode: {
+      type: DataTypes.INTEGER(6),
+      field: 'employeeCode',
+      unique: true,
+      allowNull: false
     },
-    email: {
-      type: DataTypes.STRING,
-      field: 'email'
+    employeeName: {
+      type: DataTypes.STRING(64),
+      field: 'employeeName'
     },
     username: {
-      type: DataTypes.STRING,
-      field: 'username'
+      type: DataTypes.STRING(16),
+      field: 'username',
+      unique: true,
+      allowNull: false,
+      set (value) {
+        this.setDataValue('username', value.toLowerCase())
+      }
     },
     password: {
       type: DataTypes.STRING,
@@ -29,13 +36,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     avatar: {
-      type: DataTypes.STRING(128),
+      type: DataTypes.STRING(210),
       field: 'avatar',
       allowNull: true
     },
-    enabled: {
+    activated: {
       type: DataTypes.BOOLEAN,
-      field: 'enabled',
+      field: 'activated',
       defaultValue: true
     },
     isAdmin: {
@@ -65,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'users',
     timestamps: true,
     indexes: [
-      { fields: ['email', 'username'], unique: true },
+      { fields: ['employeeCode', 'username'], unique: true },
       { fields: ['created_by', 'updated_by'] }
     ]
   })
