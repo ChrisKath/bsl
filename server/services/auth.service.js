@@ -37,22 +37,22 @@ const methods = {
    * @param {object} user
    */
   ssoAssignData: async (req, user) => {
-    const { employeeName, username } = ('employeeCode' in req) ? req : methods.ssoAccessData(req)
+    const data = ('employeeCode' in req) ? req : methods.ssoAccessData(req)
     const store = {}
 
+    if (!data) return false
+
     if (!user.employeeName) {
-      store.employeeName = employeeName
+      store.employeeName = data.employeeName
     }
 
     if (!user.username) {
-      store.username = username
+      store.username = data.nickName
     }
 
     if (Object.keys(store).length) {
       await users.update(store, { where: { id: user.id } })
     }
-
-    return true
   }
 }
 

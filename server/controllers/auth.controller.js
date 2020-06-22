@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator')
 const { Op, users } = require('../configs/databases')
 const { createToken } = require('../helpers/token.helper')
 const service = require('../services/auth.service')
@@ -11,9 +12,9 @@ module.exports = {
    * @param {Response} res
    */
   login: async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-    
+    const username = (req.body.username || null)
+    const password = (req.body.password || null)
+
     try {
       const user = await users.findOne({
         attributes: ['id', 'employeeCode', 'employeeName', 'username', 'password', 'activated'],
@@ -46,6 +47,8 @@ module.exports = {
           return res.error('This password is invalid.', 403)
         }
       } else {
+        // update user-info if field is empty
+        await service.ssoAssignData(req, user)
         results.firstLogin = true
       }
 
@@ -71,7 +74,7 @@ module.exports = {
 
     try {
       const user = await users.findOne({
-        attributes: ['id', 'employeeCode', 'employeeName', 'username', 'password'],
+        attributes: ['id', 'employeeCode', 'employeeName', 'username', 'password', 'activated'],
         where: {
           employeeCode: data.employeeCode
         }
@@ -88,7 +91,7 @@ module.exports = {
       }
 
       // update user-info if field is empty
-      await service.ssoAssignData(data. user)
+      await service.ssoAssignData(data, user)
 
       // response data
       let results = createToken(user)
