@@ -1,5 +1,6 @@
 const { urls } = require('../configs/databases')
 const service = require('../services/main.service')
+const userAgent = require('../helpers/userAgent.helper')
 const path = require('path')
 const fs = require('fs')
 
@@ -11,7 +12,7 @@ module.exports = {
    * @param {Response} res
    */
   index: async (req, res) => {
-    const keyCode = service.getKeyCode(req.path)
+    const keyCode = service.getKeyCode(req.baseUrl)
 
     if (keyCode) {
       try {
@@ -39,6 +40,9 @@ module.exports = {
             return res.sendFile(path.join(__dirname, '../public/404.html'))
           }
         }
+
+        // const isAndroid = userAgent(req).os('Android') // `Android`, `iOS`
+        // const isFacebook = await service.isFacebook(query.href)
 
         // redirect to endpoint-target
         res.redirect(query.href)
@@ -69,5 +73,18 @@ module.exports = {
       res.set('Content-Type', 'image/jpeg')
       readStream.pipe(res)
     })
+  },
+
+  /**
+   * Demo test controller.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  d3m0: async (req, res) => {
+    // const isAndroid = userAgent(req).os('Android') // `Android`, `iOS`
+    // const isFacebook = await service.isFacebook('https://www.facebook.com/snippetsJS/photos/a.108956220490532/293276618725157/')
+
+    res.json()
   }
 }

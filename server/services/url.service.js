@@ -1,4 +1,4 @@
-const { urls, tagging } = require('../configs/databases')
+const { Op, urls, tagging } = require('../configs/databases')
 const { createKeyCode } = require('../helpers/token.helper')
 
 const methods = {
@@ -68,6 +68,37 @@ const methods = {
       // Insert newly tags.
       tagging.bulkCreate(rows)
     }
+  },
+
+  /**
+   * Display a listing of the resource by filters.
+   * 
+   * @param {Request} req
+   */
+  filters: (req) => {
+    const where = {
+      enabled: req.body.enabled,
+      createdAt: {
+        // WHERE `createdAt` BETWEEN [DATE-START, DATE-END]
+        [Op.between]: req.body.createdAt
+      }
+    }
+
+    if (req.body.expiry) {
+      // WHERE `expiry` <= NOW()
+      where.expiry = { [Op.lte]: new Date() }
+    } else {
+      where.expiry = {
+        // WHERE `expiry` >= NOW() OR `expiry` IS NULL
+        [Op.or]: { [Op.gte]: new Date(), [Op.is]: null }
+      }
+    }
+
+    if (req.body.createdBy) {
+      where.createdBy = req.body.createdBy
+    }
+
+    return where
   }
 }
 

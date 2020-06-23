@@ -18,8 +18,8 @@ require('./configs/errorHandler')(isProduction, app)
 // Start Server
 if (isProduction) {
   https.createServer({
-    key : fs.readFileSync('./helpers/key.pem', 'utf8'),
-    cert: fs.readFileSync('./helpers/cert.pem', 'utf8')
+    key : fs.readFileSync('./storage/key.pem', 'utf8'),
+    cert: fs.readFileSync('./storage/cert.pem', 'utf8')
   }, app).listen(port)
 } else {
   app.listen(port)

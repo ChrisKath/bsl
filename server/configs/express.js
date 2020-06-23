@@ -2,12 +2,14 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const path = require('path')
+const allowOrigins = require('../helpers/corsOrigin.helper')
 
 module.exports = (app) => {
   // CORS
   app.use(cors({
-    origin: true,
+    origin: allowOrigins,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    preflightContinue: true,
     credentials: true,
     maxAge: 3600
   }))

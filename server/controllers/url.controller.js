@@ -9,19 +9,31 @@ module.exports = {
    * @param {Response} res
    */
   index: async (req, res) => {
+    const filters = service.filters(req)
+    const tagsFilter = {}
+
+    if (req.body.tags.length) {
+      tagsFilter.id = {
+        [Sequelize.Op.in]: req.body.tags
+      }
+    }
+
     try {
       const results = await urls.findAll({
-        where: { enabled: true },
+        where: filters,
         attributes: {
           exclude: ['type', 'redirect']
         },
         include: [{
           model: tags,
+          where: tagsFilter,
           attributes: ['id', 'name'],
           group: 'id',
           through: { attributes: [] },
         }],
-        order: [['createdAt', 'DESC']],
+        order: [
+          [Sequelize.literal('createdAt'), 'DESC']
+        ],
         limit: 25,
         benchmark: true
       })
