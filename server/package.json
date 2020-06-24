@@ -4,10 +4,11 @@
   "license": "GNU",
   "description": "Back-End - Structure of RESTFul API with Express on NodeJS",
   "author": "Got't Patiphat",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "serve": "nodemon .",
-    "serve:prod": "NODE_ENV=production node ."
+    "build": "rimraf dist && tsc",
+    "start": "node .",
+    "serve:dev": "nodemon"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -26,7 +27,13 @@
     "useragent": "^2.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "@types/express": "^4.17.6",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.13",
+    "nodemon": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
   },
   "engines": {
     "node": ">= 12.18.1"

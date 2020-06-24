@@ -1,0 +1,7 @@
+declare module "cors"
+declare module "dotenv"
+declare module "express"
+declare module "express-validator"
+declare module "morgan"
+declare module "passport"
+declare module "passport-jwt"
