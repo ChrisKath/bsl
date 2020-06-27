@@ -1,7 +1,7 @@
-const { isProduction, port } = require('./configs/app')
-const app = require('express')()
+const { production, port } = require('./configs/app')
+const { readFileSync } = require('fs')
 const https = require('https')
-const fs = require('fs')
+const app = require('express')()
 
 // Express Configs
 require('./configs/express')(app)
@@ -13,14 +13,13 @@ require('./configs/middleware')
 app.use(require('./routes'))
 
 // Error handler
-require('./configs/errorHandler')(isProduction, app)
+require('./configs/errorHandler')(app, production)
 
 // Start Server
-if (isProduction) {
-  https.createServer({
-    key : fs.readFileSync('./storage/key.pem', 'utf8'),
-    cert: fs.readFileSync('./storage/cert.pem', 'utf8')
-  }, app).listen(port)
+if (production) {
+  let key = readFileSync('./storage/key.pem', 'utf8')
+  let cert = readFileSync('./storage/cert.pem', 'utf8')
+  https.createServer({ key, cert }, app).listen(port)
 } else {
   app.listen(port)
 }

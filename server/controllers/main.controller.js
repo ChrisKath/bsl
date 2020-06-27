@@ -85,6 +85,6 @@ module.exports = {
     // const isAndroid = userAgent(req).os('Android') // `Android`, `iOS`
     // const isFacebook = await service.isFacebook('https://www.facebook.com/snippetsJS/photos/a.108956220490532/293276618725157/')
 
-    res.json()
+    res.json(process.env)
   }
 }

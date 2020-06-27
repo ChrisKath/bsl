@@ -7,9 +7,10 @@ const methods = {
    * 
    * @returns {string}
    */
-  runKeyCode: () => {
+  runKeyCode: async () => {
     const keyCode = createKeyCode()
-    if (methods.hasKeyCode(keyCode) > 0) {
+    const hasKeyCode = await methods.hasKeyCode(keyCode)
+    if (hasKeyCode > 0) {
       methods.runKeyCode()
     } else {
       return keyCode
@@ -51,10 +52,10 @@ const methods = {
   /**
    * Insert tags belongsTo URL
    * 
-   * @param {number} id,
+   * @param {number} id
    * @param {array} tags
    */
-  insertTags: async (id, tags) => {
+  addTagging: async (id, tags) => {
     // Delete all rows match.
     await tagging.destroy({ where: { urlId: id } })
 
@@ -76,7 +77,7 @@ const methods = {
    * @param {Request} req
    */
   filters: (req) => {
-    const where = {
+    const filterOptions = {
       enabled: req.body.enabled,
       createdAt: {
         // WHERE `createdAt` BETWEEN [DATE-START, DATE-END]
@@ -86,19 +87,19 @@ const methods = {
 
     if (req.body.expiry) {
       // WHERE `expiry` <= NOW()
-      where.expiry = { [Op.lte]: new Date() }
+      filterOptions.expiry = { [Op.lte]: new Date() }
     } else {
-      where.expiry = {
+      filterOptions.expiry = {
         // WHERE `expiry` >= NOW() OR `expiry` IS NULL
         [Op.or]: { [Op.gte]: new Date(), [Op.is]: null }
       }
     }
 
     if (req.body.createdBy) {
-      where.createdBy = req.body.createdBy
+      filterOptions.createdBy = req.body.createdBy
     }
 
-    return where
+    return filterOptions
   }
 }
 

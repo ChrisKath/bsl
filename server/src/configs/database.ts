@@ -1,1 +1,0 @@
-import { dialect, hostname, database, username, password } from './app'

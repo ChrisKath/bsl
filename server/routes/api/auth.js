@@ -1,12 +1,12 @@
 const router = require('express').Router()
 const passport = require('passport')
-const sso = require('../../configs/sso')
+const { sso } = require('node-expose-sspi')
 const controllers = require('../../controllers/auth.controller')
 const { avatar } = require('../../storage')
 
 // Middleware variable.
 const Authenticate = passport.authenticate('jwt', { session: false })
-const SingleSignOn = sso.auth()
+const SingleSignOn = sso.auth({ useGroups: false })
 const AvatarFile = avatar.single('avatar')
 
 router.post('/login', SingleSignOn, controllers.login)

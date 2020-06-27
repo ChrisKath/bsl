@@ -1,8 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const path = require('path')
-const allowOrigins = require('../helpers/corsOrigin.helper')
+const { join } = require('path')
+const allowOrigins = require('../helpers/cors.helper')
 
 module.exports = (app) => {
   // CORS
@@ -25,7 +25,7 @@ module.exports = (app) => {
   require('./passport')
 
   // Static file
-  app.use('/', express.static(path.join(__dirname, '../public')))
+  app.use('/', express.static(join(__dirname, '../public')))
 
   // Custom Response Format
   app.use(require('./responseFormat'))

@@ -58,7 +58,7 @@ module.exports = {
     }
 
     // getters variable.
-    const keyCode = service.runKeyCode()
+    const keyCode = await service.runKeyCode()
     const url = new URL(req.body.href)
 
     try {
@@ -74,7 +74,7 @@ module.exports = {
       })
 
       // insert tags.
-      service.insertTags(store.id, req.body.tags)
+      service.addTagging(store.id, req.body.tags)
 
       res.json({
         data: store,
@@ -151,8 +151,8 @@ module.exports = {
         where: { id: req.params.id }
       })
 
-      // insert tags.
-      service.insertTags(req.params.id, req.body.tags)
+      // add tagging.
+      service.addTagging(req.params.id, req.body.tags)
       
       res.json({ message: 'Update success.' })
     } catch (error) {

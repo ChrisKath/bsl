@@ -1,4 +1,4 @@
-const { appName, secretKey, keyLength, tokenExpiry } = require('../configs/app')
+const { appName, secretKey, shortkeyLength, tokenExpiry } = require('../configs/app')
 const jwt = require('jsonwebtoken')
 const moment = require('moment')
 
@@ -28,6 +28,6 @@ module.exports = {
   createKeyCode: () => {
     return Math.random()
       .toString(36)
-      .substr(2, keyLength)
+      .substr(2, shortkeyLength)
   }
 }
