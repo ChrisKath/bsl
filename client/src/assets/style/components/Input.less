@@ -2,11 +2,11 @@
   position: relative;
 
   &-label {
-    color: @yellow-color;
+    color: @primary-color;
     line-height: 1;
     font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: capitalize;
 
     &[required] {
       &::after {
@@ -16,44 +16,22 @@
     }
   }
 
-  &-container {
-    position: relative;
-    margin: 5px 0 0;
-  }
-
-  &-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin: 10px 0;
-    font-size: 24px;
-    line-height: 25px;
-    width: 55px;
-    text-align: center;
-    border-right: solid 1px tint(@primary-color, 15%);
-  }
-
   &-default {
     position: relative;
     display: block;
 
-    padding: 6px 12px;
-    min-height: 45px;
+    margin: 5px 0 0;
+    padding: 6px 15px;
+    min-height: 40px;
 
-    color: @text-color;
+    color: @shsak-gray;
     background-color: transparent;
 
     border-radius: 4px;
-    border: solid 1px @gray-color;
-
-    &.has-icon {
-      padding-left: 62px;
-    }
-
-    &:focus {
-      background-color: tint(@primary-color, 5%);
-    }
+    background: @base-color;
+    box-shadow:
+      inset 3px 3px 10px #CDD2D9,
+      inset -3px -3px 10px #FBFFFF;
 
     &:disabled {
       opacity: 0.9;

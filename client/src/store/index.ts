@@ -13,7 +13,7 @@ const modules: any = requireContext.keys()
       requireContext(file)
     ]
   })
-  .reduce((modules: any, [name, module]: any): any => {
+  .reduce((modules: any, [name, module]: any[]): any => {
     if (isUndefined(module.namespaced)) module.namespaced = true
     return {
       ...modules,

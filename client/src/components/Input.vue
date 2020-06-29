@@ -4,34 +4,26 @@
     v-slot="{ errors }"
     :vid="vid"
     :name="label"
-    :rules="rules"
-    :customMessages="errorsMessages">
+    :rules="rules">
 
     <label
       class="ui--input-label"
       v-if="label"
       :for="vid"
       :required="rules.required">
-      {{ label }}:
+      {{ label }}
     </label>
 
-    <div class="ui--input-container">
-
-      <i :class="['ui--input-icon', ionIcon]" v-if="ionIcon"></i>
-
-      <input
-        :class="['ui--input-default', { 'has-icon': icon }]"
-        :id="vid"
-        :type="type"
-        :maxlength="maxlength"
-        :autofocus="autofocus"
-        :autocomplete="autocomplete"
-        :disabled="disabled"
-        :tabindex="tabIndex"
-        v-model="currentValue"
-      >
-
-    </div>
+    <input class="ui--input-default"
+      :id="vid"
+      :type="type"
+      :maxlength="maxlength"
+      :autofocus="autofocus"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      :tabindex="tabIndex"
+      v-model="currentValue"
+    >
 
     <span class="ui--input-errors" v-if="errors[0]">
       {{ errors[0] }}
@@ -43,7 +35,6 @@
 <script lang="ts">
 import { Vue, Prop, Watch, Component } from 'vue-property-decorator'
 import { ValidationProvider } from 'vee-validate/dist/vee-validate.full'
-import { capitalize } from '@/utils'
 
 @Component({
   components: {
@@ -53,7 +44,7 @@ import { capitalize } from '@/utils'
 export default class InputProvider extends Vue {
   [propName: string]: any
 
-  @Prop() private readonly value!: any
+  @Prop([String, Number]) private readonly value!: any
 
   @Prop({
     type: String,
@@ -73,22 +64,10 @@ export default class InputProvider extends Vue {
   }) private readonly type!: string
 
   @Prop({
-    type: String,
-    required: false,
-    default: ''
-  }) private readonly icon!: string
-
-  @Prop({
     type: Object,
     required: false,
     default: () => ({})
   }) private readonly rules!: object
-
-  @Prop({
-    type: Object,
-    required: false,
-    default: () => ({})
-  }) private readonly errorsMessages!: object
 
   @Prop({
     type: String,
@@ -104,7 +83,6 @@ export default class InputProvider extends Vue {
 
   @Prop(Boolean) private readonly disabled!: boolean
   @Prop(Boolean) private readonly autofocus!: boolean
-  @Prop(String) private readonly textTransform!: string
   @Prop([Number, String]) private readonly maxlength!: number | string
 
   // __WATCH
@@ -113,22 +91,7 @@ export default class InputProvider extends Vue {
     this.currentValue = newValue
   }
 
-  @Watch('currentValue')
-  private watchCurrentValue (newValue: string | number): void {
-    if (this.textTransform === 'capitalize') {
-      newValue = capitalize(newValue as string)
-    }
-
-    this.currentValue = newValue
-    this.$emit('input', newValue)
-  }
-
   // __DATA
   private currentValue: string | number = this.value
-
-  // __COMPUTED
-  private get ionIcon (): string {
-    return (this.icon ? `ion-${this.icon}` : '')
-  }
 }
 </script>

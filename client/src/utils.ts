@@ -109,7 +109,7 @@ export function clone (input: any): any {
  * @param {string} input
  */
 export function upperCase (input: string): string {
-  return String(input).toLocaleUpperCase()
+  return String(input).toUpperCase()
 }
 
 /**
@@ -118,7 +118,7 @@ export function upperCase (input: string): string {
  * @param {string} input
  */
 export function lowerCase (input: string | number): string {
-  return String(input).toLocaleLowerCase()
+  return String(input).toLowerCase()
 }
 
 /**
@@ -131,6 +131,43 @@ export function capitalize (input: string): string {
   return array.map((word: string): string => {
     return `${upperCase(word.charAt(0))}${word.slice(1)}`
   }).join(' ')
+}
+
+/**
+ * Striptag HTML.
+ * 
+ * @param {string} input
+ */
+export function stripTag (input: string): string {
+  const tag: any = new RegExp(/<[^>]+>/, 'g')
+  return input.replace(tag, '')
+}
+
+/**
+ * Entities HTML symbol code.
+ * 
+ * @param {string} input
+ */
+export function entities (input: any): any {
+  const str: string = String(input)
+
+  return {
+    encode: (): string => {
+      let buf = []
+      
+      for (let i = str.length-1; i >= 0; i--) {
+        buf.unshift(['&#', (str[i] as any).charCodeAt(), ';'].join(''))
+      }
+      
+      return buf.join('')
+    },
+
+    decode: (): string => {
+      return str.replace(/&#(\d+);/g, (match: any, dec: any): string => {
+        return String.fromCharCode(dec)
+      })
+    }
+  }
 }
 
 /**
@@ -185,43 +222,4 @@ export function alert (message: string, config: object | any = {}): any {
       }
     })
   })
-}
-
-/**
- * Striptag HTML.
- * 
- * @param {string} input
- */
-export function stripTag (input: string): string {
-  const tag: any = new RegExp(/<[^>]+>/, 'g')
-  return input.replace(tag, '')
-}
-
-/**
- * Entities HTML symbol code.
- * 
- * @param {string} input
- */
-export function entities (input: any): any {
-  const str: string = String(input)
-
-  const encode: any = () => {
-    let buf = []
-    
-    for (let i = str.length-1; i >= 0; i--) {
-      buf.unshift(['&#', (str[i] as any).charCodeAt(), ';'].join(''))
-    }
-    
-    return buf.join('')
-  }
-
-  const decode: any = () => {
-    return str.replace(/&#(\d+);/g, (match: any, dec: any): string => {
-      return String.fromCharCode(dec)
-    })
-  }
-
-  return {
-    encode, decode
-  }
 }

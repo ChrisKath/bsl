@@ -7,36 +7,39 @@
   margin: 0 auto;
   padding: 0 20px;
 
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   border-radius: 4px;
-  text-transform: uppercase;
 
   .text {
-    padding: 0 10px;
+    padding: 0 15px;
     vertical-align: middle;
   }
 
   .icon {
-    font-size: 120%;
     vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    color: var(--text-color);
 
     &.ltr { float: right }
     &.rtl { float: left }
   }
 
   &-default {
-    color: @deep-color;
+    color: @primary-color;
     background-color: @base-color;
+    box-shadow: 6px 6px 20px #C9CDD4, -6px -6px 20px #FFF,
   }
 
   &-primary {
-    color: @primary-color;
-    background-color: @warning-color;
+    color: @text-color;
+    background-color: @primary-color;
+    background-image: linear-gradient(145deg, #0B336F, #092B5E);
   }
 
   &-danger {
-    color: white;
+    color: @text-color;
     background-color: @error-color;
   }
 

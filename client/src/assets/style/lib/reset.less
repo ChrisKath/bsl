@@ -111,7 +111,6 @@ a {
   --success-color         : @success-color;
   --warning-color         : @warning-color;
   --error-color           : @error-color;
-  --gold-color            : @gold-color;
   --yellow-color          : @yellow-color;
   --link-color            : @link-color;
   --text-color            : @text-color;
@@ -130,6 +129,12 @@ a {
   --font-weight-normal    : @font-weight-normal;
   --font-weight-bold      : @font-weight-bold;
   --font-weight-bolder    : @font-weight-bolder;
-
   --cubic-bezier          : @cubic-bezier;
+}
+
+.ui--router {
+  &-view {
+    position: relative;
+    min-height: 100vh;
+  }
 }

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import config from '@/modules/config'
-import { storage } from '@/modules/storage'
+import config from '@/configs/app'
+import { storage } from '@/configs/storage'
 import { getCookie } from 'tiny-cookie'
 
 /**
@@ -18,7 +18,7 @@ const Initial: any = axios.create({
  * You may modify the headers object.
  */
 Initial.interceptors.request.use((config: any) => {
-  const token: any = getCookie(config.X_CSRF_TOKEN)
+  const token: any = getCookie(config.APP_AUTH)
 
   if (token) {
     config.headers[config.AUTH_TOKEN] = `Bearer ${token}`
