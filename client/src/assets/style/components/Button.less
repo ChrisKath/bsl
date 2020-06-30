@@ -20,7 +20,6 @@
     vertical-align: middle;
     width: 18px;
     height: 18px;
-    color: var(--text-color);
 
     &.ltr { float: right }
     &.rtl { float: left }
@@ -29,7 +28,7 @@
   &-default {
     color: @primary-color;
     background-color: @base-color;
-    box-shadow: 6px 6px 20px #C9CDD4, -6px -6px 20px #FFF,
+    box-shadow: 5px 5px 20px #C9CDD4, -5px -5px 20px #FFF;
   }
 
   &-primary {
@@ -48,9 +47,8 @@
   }
 
   &:disabled {
-    text-decoration: line-through;
-    opacity: 0.64;
+    opacity: 0.8;
     cursor: not-allowed;
-    filter: grayscale(25%);
+    filter: grayscale(8%);
   }
 }

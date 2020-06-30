@@ -79,6 +79,122 @@
       grid-auto-flow: row;
       grid-row-gap: 15px;
     }
+
+    &-main {
+      transition: all 0.4s ease;
+
+      &.hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+    }
+
+    &-scene {
+      position: absolute;
+      top: 136px;
+      left: 40px;
+      right: 40px;
+      bottom: 76px;
+      z-index: 10;
+
+      display: grid;
+      grid-template-rows: auto 90px 144px 40px;
+      align-content: center;
+
+      background-color: var(--base-color);
+
+      /*
+      * Enter and leave animations can use different
+      * durations and timing functions.
+      **/
+      &.fade-enter-active { transition: all 0.6s ease }
+      &.fade-enter {
+        opacity: 0;
+        transform: scale(1.05);
+      }
+
+      .type {
+        text-align: center;
+        padding: 0 0 25px;
+        font-size: 12px;
+        color: var(--gray-color);
+      }
+
+      .avatar {
+        display: block;
+        height: 90px;
+        padding: 15px;
+        margin: 0 auto;
+        border-radius: 100%;
+        color: var(--primary-color);
+        background-color: var(--base-color);
+        box-shadow:
+          6px 6px 20px #D1D7E0,
+          -6px -6px 20px #FFF,
+      }
+
+      .info {
+        text-align: center;
+        display: grid;
+        grid-row-gap: 8px;
+        padding: 20px 0 40px;
+
+        &:not(.has-data) {
+          & > * {
+            margin: 0 auto;
+            border-radius: 2px;
+            color: #D4D9E2 !important;
+            background-color: #D4D9E2 !important;
+            animation: text-loader 1s infinite linear;
+          }
+
+          .code {
+            width: 90px;
+            animation-delay: 0s;
+          }
+
+          .name {
+            width: 250px;
+            animation-delay: 0.2s;
+          }
+  
+          .title {
+            width: 180px;
+            animation-delay: 0.4s;
+          }
+        }
+
+        .name {
+          font-weight: 600;
+          text-transform: capitalize;
+        }
+
+        .title {
+          font-size: 15px;
+          color: var(--gray-color);
+        }
+
+        @keyframes text-loader {
+          0%, 100% { transform: translateY(0) }
+          60% { transform: translateY(-2px) }
+        }
+      }
+
+      .footer {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: 50px 1fr;
+
+        .btn-default {
+          padding: 0 15px;
+
+          .icon {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
   }
 
   &-pwd {}
