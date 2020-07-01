@@ -1,6 +1,7 @@
 export default {
   WEB_TITLE: 'Brand Short Link Project | Private Web App (Remastered)',
   APP_NAME: 'Brand Short Link',
+  APP_MODE: process.env.NODE_ENV,
 
   // APP KEYs-NAME
   APP_AUTH: 'APP.SmartContract',
