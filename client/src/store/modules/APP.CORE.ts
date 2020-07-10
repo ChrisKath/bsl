@@ -28,8 +28,8 @@ export const getters: any = {
 
 // Mutations
 export const mutations: any = {
-  SET_STATE (state: any, payload: any): void {
-    state[payload.field] = payload.data
+  SET_STATE (state: any, payload: { field: string, value: any }): void {
+    state[payload.field] = payload.value
   },
 
   SET_ALERT (state: any, payload: any): void {

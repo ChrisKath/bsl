@@ -8,20 +8,18 @@
           {{ store.title }}
         </div>
         
-        <div class="ui--alert-content">
-          {{ store.message }}
-        </div>
+        <div class="ui--alert-content" v-html="store.message"></div>
 
         <div class="ui--alert-footer">
           <button type="button" class="btn btn-default"
             v-if="isConfirm"
             @click="onClose(false)">
-            {{ $t('btn.cancel') }}
+            Cancel
           </button>
           
           <button type="button" class="btn btn-primary"
             @click="onClose(true)">
-            {{ $t('btn.ok') }}
+            OK
           </button>
         </div>
 

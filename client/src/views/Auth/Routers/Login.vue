@@ -25,7 +25,7 @@
           :rules="{ required: true }"
         />
 
-        <button type="button" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
           <svg class="icon" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>
@@ -51,7 +51,10 @@
       </div>
     </div>
 
-    <SsoFrame v-if="isSso"/>
+    <SsoFrame v-if="isSso"
+      @back="(typeLogin = 'none')"
+      @next="onSingleSignOnComplete"
+    />
 
     <div class="ui--auth-copyright">TAP Technology Company Limited. All Rights Reserved.</div>
   </ValidationObserver>
@@ -62,6 +65,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { ValidationObserver } from 'vee-validate'
 import SsoFrame from '../Components/Sso.vue'
 import configs from '@/configs/app'
+import { hasProp } from '@/utils'
 
 @Component({
   components: {
@@ -87,9 +91,32 @@ export default class LoginComponent extends Vue {
 
   private loginWitchSingleSignOn (): void {
     if (configs.APP_MODE === 'development') {
-      alert('This function cannot be used in development mode.')
+      this.$alert('This function cannot be used in development mode.', { showTitle: true })
     } else {
       this.typeLogin = 'sso'
+    }
+  }
+
+  private onSingleSignOnComplete (input: any): void {
+    if (hasProp(input, 'firstLogin')) {
+
+      this.$alert('Your first sign-in.<br>You need to set a password.', {
+        showTitle: true
+      }).then((): void => {
+
+        this.$router.push({
+          name: 'auth.password',
+          query: {
+            hex: input.token,
+            expires: input.expires
+          }
+        })
+
+      })
+
+    } else {
+      this.$store.dispatch('APP.AUTH/createCookie', input)
+      this.$router.push({ name: 'index' })
     }
   }
 

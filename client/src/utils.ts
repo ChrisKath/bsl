@@ -192,7 +192,7 @@ export function hls (input: string, search: string): string {
 export function load (input: boolean = true): void {
   store.commit('APP.CORE/SET_STATE', {
     field: 'load',
-    data: input
+    value: input
   })
 }
 
@@ -202,14 +202,14 @@ export function load (input: boolean = true): void {
  * @param {string} message
  * @param {object} config
  */
-export function alert (message: string, config: object | any = {}): any {
+export function alert (message: string, config: object | any = {}): Promise<any> {
   if (message === 'close') {
     message = ''
     config.type = 'dialog'
     config.showBtnCancel = false
   }
 
-  return new Promise((resolve: any): any => {
+  return new Promise((resolve: any): void => {
     store.commit('APP.CORE/SET_ALERT', {
       status: Boolean(message),
       title: config.showTitle

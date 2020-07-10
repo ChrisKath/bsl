@@ -1,20 +1,20 @@
 export default {
-  WEB_TITLE: 'Brand Short Link Project | Private Web App (Remastered)',
-  APP_NAME: 'Brand Short Link',
   APP_MODE: process.env.NODE_ENV,
+  APP_NAME: process.env.VUE_APP_NAME,
+  WEB_TITLE: process.env.VUE_APP_WEB_TITLE,
 
-  // APP KEYs-NAME
-  APP_AUTH: 'APP.SmartContract',
+  // XMLHttpRequest (XHR)
+  API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
+  API_SECRET_KEY: process.env.VUE_APP_API_SECRET_KEY,
+
+  // STORAGE KEY-NAME
+  APP_AUTH: 'APP.SmartToken',
   APP_USER: 'APP.UserInfo',
   APP_LANG: 'APP.Language',
-  AUTH_TOKEN: 'Authorization',
-  XSRF_TOKEN: 'XSRF-TOKEN',
-  X_CSRF_TOKEN: 'X-CSRF-TOKEN',
-  CONTENT_LANG: 'Content-Language',
-  APP_API: (process.env.NODE_ENV !== 'production')
-    ? 'http://localhost:3000/api/v2'
-    : `${location.origin}/api/v2`,
 
-  // APP SECRET-KEY
-  SECRET_KEY: 'S5PV-TXTF-GFKU-1PIZ'
+  // REQUEST HEADERS
+  AUTH_TOKEN: 'Authorization',
+  CONTENT_LANG: 'Content-Language',
+  XSRF_TOKEN: 'XSRF-TOKEN',
+  X_CSRF_TOKEN: 'X-CSRF-TOKEN'
 }

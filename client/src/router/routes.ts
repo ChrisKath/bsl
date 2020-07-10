@@ -27,7 +27,7 @@ const routes: Array<RouteConfig> = [
           requiresAuth: false,
           title: 'Security Rules'
         },
-        component: () => import(/* webpackChunkName: "auth.login" */ '@/views/Auth/Childrens/Login.vue')
+        component: () => import(/* webpackChunkName: "auth.login" */ '@/views/Auth/Routers/Login.vue')
       },
       {
         path: 'password',
@@ -36,7 +36,7 @@ const routes: Array<RouteConfig> = [
           requiresAuth: false,
           title: 'Setting your new password'
         },
-        component: () => import(/* webpackChunkName: "auth.password" */ '@/views/Auth/Childrens/Password.vue')
+        component: () => import(/* webpackChunkName: "auth.password" */ '@/views/Auth/Routers/Password.vue')
       }
     ]
   },

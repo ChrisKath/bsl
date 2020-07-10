@@ -89,13 +89,13 @@
       }
     }
 
-    &-scene {
+    &-sso {
       position: absolute;
+      z-index: 10;
       top: 136px;
       left: 40px;
       right: 40px;
       bottom: 76px;
-      z-index: 10;
 
       display: grid;
       grid-template-rows: auto 90px 144px 40px;
@@ -164,6 +164,10 @@
           }
         }
 
+        .code {
+          text-transform: uppercase;
+        }
+
         .name {
           font-weight: 600;
           text-transform: capitalize;
@@ -194,10 +198,40 @@
           }
         }
       }
+
+      iframe {
+        position: absolute;
+        z-index: -1;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
     }
   }
 
-  &-pwd {}
+  &-pwd {
+    &-main {
+      display: grid;
+      grid-auto-flow: row;
+      grid-row-gap: 20px;
+    }
+
+    &-button {
+      display: grid;
+      grid-column-gap: 10px;
+      grid-template-columns: 50px 1fr;
+
+      .btn-default {
+        padding: 0 15px;
+
+        .icon {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
 
   &-copyright {
     margin: 20px 0 0;

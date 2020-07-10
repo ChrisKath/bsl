@@ -1,13 +1,12 @@
 import axios from 'axios'
 import config from '@/configs/app'
-import { storage } from '@/configs/storage'
 import { getCookie } from 'tiny-cookie'
 
 /**
- * Create new Initial.
+ * Create new Axios.
  */
-const Initial: any = axios.create({
-  baseURL: config.APP_API
+const Axios: any = axios.create({
+  baseURL: config.API_BASE_URL
 })
 
 /**
@@ -17,7 +16,7 @@ const Initial: any = axios.create({
  * FormData or Stream
  * You may modify the headers object.
  */
-Initial.interceptors.request.use((config: any) => {
+Axios.interceptors.request.use((config: any): any => {
   const token: any = getCookie(config.APP_AUTH)
 
   if (token) {
@@ -31,9 +30,9 @@ Initial.interceptors.request.use((config: any) => {
  * allows changes to the response data to be made before
  * it is passed to then/catch
  */
-// Initial.interceptors.response.use(
+// Axios.interceptors.response.use(
 //   (response: any) => response,
 //   (errors: any) => errors
 // )
 
-export default Initial
+export default Axios

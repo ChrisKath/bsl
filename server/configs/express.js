@@ -7,7 +7,7 @@ const allowOrigins = require('../helpers/cors.helper')
 module.exports = (app) => {
   // CORS
   app.use(cors({
-    origin: allowOrigins,
+    origin: '*',
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     preflightContinue: true,
     credentials: true,

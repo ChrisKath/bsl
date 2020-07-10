@@ -2,34 +2,34 @@ import { isNumber, upperCase } from '@/utils'
 
 /**
  * @param {string} prop
- * @param {string|number} value
+ * @param {any} value
  */
-Object.defineProperty(Array.prototype, 'get', {
+Object.defineProperty(Array.prototype, 'findOne', {
   value: function (prop: string, value: any): any {
     return [].concat(this)
-      .find((a: any) => a[prop] === value)
+      .find((r: any) => r[prop] === value)
   }
 })
 
 /**
  * @param {string} prop
- * @param {string|number} value
+ * @param {any} value
  */
-Object.defineProperty(Array.prototype, 'query', {
+Object.defineProperty(Array.prototype, 'findAll', {
   value: function (prop: string, value: any): any {
     return [].concat(this)
-      .filter((a: any) => a[prop] === value)
+      .filter((r: any) => r[prop] === value)
   }
 })
 
 /**
  * @param {string} prop
- * @param {string|number} value
+ * @param {any} value
  */
 Object.defineProperty(Array.prototype, 'remove', {
   value: function (prop: string, value: any): any {
     return [].concat(this)
-      .filter((a: any) => a[prop] !== value)
+      .filter((r: any) => r[prop] !== value)
   }
 })
 
@@ -58,11 +58,9 @@ Object.defineProperty(Array.prototype, 'orderBy', {
         const propA: any = (isNumber(a[prop]) ? a[prop] : upperCase(a[prop]))
         const propB: any = (isNumber(b[prop]) ? b[prop] : upperCase(b[prop]))
 
-        if (type === 'desc') {
-          return propB < propA ? -1 : propB > propA ? 1 : propB >= propA ? 0 : NaN
-        } else {
-          return propA < propB ? -1 : propA > propB ? 1 : propA >= propB ? 0 : NaN
-        }
+        return (type === 'desc')
+          ? (propB < propA) ? -1 : (propB > propA) ? 1 : (propB >= propA) ? 0 : NaN
+          : (propA < propB) ? -1 : (propA > propB) ? 1 : (propA >= propB) ? 0 : NaN
       })
   }
 })
