@@ -64,7 +64,14 @@ export default class PasswordComponent extends Vue {
     const FormObserver: any = this.$refs['observer']
     const isValid: boolean = await FormObserver.validate()
 
-    if (isValid) {}
+    if (isValid) {
+      // this.next()
+    }
+  }
+
+  private next (): void {
+    this.$store.dispatch('APP.AUTH/createCookie', this.$route.query)
+    this.$router.push({ name: 'index' })
   }
 
   private back (): void {

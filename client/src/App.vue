@@ -3,9 +3,16 @@
 
     <Loader v-if="load" />
 
-    <Alert />
+    <router-view
+      :class="[
+        'ui--router-view',
+        {
+          'wrapper': auth
+        }
+      ]"
+    />
 
-    <router-view class="ui--router-view" />
+    <Alert />
 
   </div>
 </template>
@@ -25,6 +32,10 @@ export default class Application extends Vue {
   [propName: string]: any
 
   // __COMPUTED
+  private get auth (): boolean {
+    return this.$store.getters['APP.AUTH/hasAuth'] && this.$route.meta.requiresAuth
+  }
+
   private get load (): boolean {
     return this.$store.getters['APP.CORE/load']
   }

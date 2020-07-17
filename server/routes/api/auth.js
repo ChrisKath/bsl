@@ -9,7 +9,7 @@ const Authenticate = passport.authenticate('jwt', { session: false })
 const SingleSignOn = sso.auth({ useGroups: false })
 const AvatarFile = avatar.single('avatar')
 
-router.post('/login', SingleSignOn, controllers.login)
+router.post('/login', controllers.login)
 router.get('/sso', SingleSignOn, controllers.sso)
 router.get('/me', Authenticate, controllers.me)
 router.get('/refreshToken', Authenticate, controllers.refresh)

@@ -1,7 +1,7 @@
 /**
  * Local Storege Manager.
  */
-const storage: any = {
+export const storage: any = {
   get: (key: string): any => {
     if (localStorage.getItem(key)) {
       try {
@@ -19,20 +19,13 @@ const storage: any = {
 
   remove: (key: string): void => {
     localStorage.removeItem(key)
-  },
-
-  json: (key: string): any => {
-    const getItem: any = localStorage.getItem(key)
-    return (getItem && ('string' === typeof getItem))
-      ? JSON.parse(getItem)
-      : null
   }
 }
 
 /**
  * Session Storege Manager.
  */
-const session: any = {
+export const session: any = {
   get: (key: string): any => {
     if (sessionStorage.getItem(key)) {
       try {
@@ -50,17 +43,5 @@ const session: any = {
 
   remove: (key: string): void => {
     sessionStorage.removeItem(key)
-  },
-
-  json: (key: string): any => {
-    const getItem: any = localStorage.getItem(key)
-    return (getItem && ('string' === typeof getItem))
-      ? JSON.parse(getItem)
-      : null
   }
-}
-
-export {
-  storage,
-  session
 }

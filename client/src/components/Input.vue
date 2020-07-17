@@ -21,7 +21,6 @@
       :autofocus="autofocus"
       :autocomplete="autocomplete"
       :disabled="disabled"
-      :tabindex="tabIndex"
       v-model="currentValue"
     >
 
@@ -75,12 +74,6 @@ export default class InputProvider extends Vue {
     default: 'off'
   }) private readonly autocomplete!: string
 
-  @Prop({
-    type: Number,
-    required: false,
-    default: 0
-  }) private readonly tabIndex!: number
-
   @Prop(Boolean) private readonly disabled!: boolean
   @Prop(Boolean) private readonly autofocus!: boolean
   @Prop([Number, String]) private readonly maxlength!: number | string
@@ -89,6 +82,11 @@ export default class InputProvider extends Vue {
   @Watch('value')
   private watchValue (newValue: string | number): void {
     this.currentValue = newValue
+  }
+
+  @Watch('currentValue')
+  private watchCurrentValue (newValue: string | number): void {
+    this.$emit('input', newValue)
   }
 
   // __DATA

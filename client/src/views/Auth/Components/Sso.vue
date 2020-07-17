@@ -55,14 +55,14 @@ export default class SingleSignOnProvider extends Vue {
   private loaded (): void {
     const iframe: any = this.$el.querySelector('iframe')
 
-    setTimeout(async (): Promise<void> => {
+    setTimeout((): void => {
       const iframeDocument: any = (iframe.contentDocument || iframe.contentWindow.document)
       this.content = JSON.parse(iframeDocument.body.innerText || null)
 
       if (this.content) {
         if (hasProp(this.content, 'error')) {
-          await this.$alert(this.content.error.message, { showTitle: true })
-          this.$emit('back')
+          this.$alert(this.content.error.message)
+            .then(() => this.$emit('back'))
         }
       } else {
         this.loaded()

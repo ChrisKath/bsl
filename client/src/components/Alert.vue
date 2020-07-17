@@ -3,26 +3,18 @@
 
     <transition name="slide" appear>
       <div class="ui--alert-container" v-if="store.status">
-
-        <div class="ui--alert-title" v-if="store.title">
-          {{ store.title }}
-        </div>
-        
+        <div class="ui--alert-title">{{ store.title }}</div>
         <div class="ui--alert-content" v-html="store.message"></div>
-
         <div class="ui--alert-footer">
-          <button type="button" class="btn btn-default"
-            v-if="isConfirm"
+          <button v-if="isConfirm"
+            type="button"
+            class="btn btn-default"
             @click="onClose(false)">
             Cancel
           </button>
-          
-          <button type="button" class="btn btn-primary"
-            @click="onClose(true)">
-            OK
-          </button>
-        </div>
 
+          <button type="button" class="btn btn-primary" @click="onClose(true)">OK</button>
+        </div>
       </div>
     </transition>
 
@@ -52,7 +44,7 @@ export default class AlertContainer extends Vue {
   }
 
   private get isConfirm (): boolean {
-    return (this.config.type === 'confirm' || this.config.showBtnCancel)
+    return this.config.type === 'confirm'
   }
 }
 </script>

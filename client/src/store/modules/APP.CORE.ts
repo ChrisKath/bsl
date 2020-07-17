@@ -1,4 +1,4 @@
-import { isObjectEmpty } from '@/utils'
+import { hasProp, isObjectEmpty } from '@/utils'
 
 // State
 export const state: any = {
@@ -37,7 +37,7 @@ export const mutations: any = {
     state.alert.title   = payload.title
     state.alert.message = payload.message
 
-    if ('config' in payload && !isObjectEmpty(payload.config)) {
+    if (hasProp(payload, 'config') && !isObjectEmpty(payload.config)) {
       for (const propName in payload.config) {
         state.alert.config[propName] = payload.config[propName]
       }

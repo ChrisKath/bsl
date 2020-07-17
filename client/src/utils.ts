@@ -206,19 +206,15 @@ export function alert (message: string, config: object | any = {}): Promise<any>
   if (message === 'close') {
     message = ''
     config.type = 'dialog'
-    config.showBtnCancel = false
   }
 
   return new Promise((resolve: any): void => {
     store.commit('APP.CORE/SET_ALERT', {
       status: Boolean(message),
-      title: config.showTitle
-        ? (config.title ? config.title : '📣 System Alert')
-        : false,
+      title: config.title || '📣 System Alert',
       message,
       config: {
-        ...config,
-        resolve
+        ...config, resolve
       }
     })
   })

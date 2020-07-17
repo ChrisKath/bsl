@@ -1,4 +1,5 @@
 import configs from '@/configs/app'
+import axios from '@/configs/axios'
 import { getCookie, setCookie } from 'tiny-cookie'
 const cookieToken: any = getCookie(configs.APP_AUTH)
 
@@ -38,5 +39,33 @@ export const actions: any = {
       field: 'authenticated',
       value: true
     })
+  },
+
+  /**
+   * Sign-in with Username and Password
+   *
+   * @param {object} input
+   */
+  async login ({}: any, input: any): Promise<any> {
+    try {
+      const response: any = await axios.post('/auth/login', input)
+      return response.data
+    } catch (errors) {
+      return errors.data
+    }
+  },
+
+  /**
+   * Create password for first sign-in
+   *
+   * @param {object} input 
+   */
+  async createPassword ({}: any, input: any): Promise<any> {
+    // try {
+    //   const response: any = await axios.post('/auth/login', input)
+    //   return response.data
+    // } catch (errors) {
+    //   return errors.data
+    // }
   }
 }

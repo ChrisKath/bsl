@@ -53,7 +53,7 @@
 
     <SsoFrame v-if="isSso"
       @back="(typeLogin = 'none')"
-      @next="onSingleSignOnComplete"
+      @next="signInComplete"
     />
 
     <div class="ui--auth-copyright">TAP Technology Company Limited. All Rights Reserved.</div>
@@ -86,33 +86,39 @@ export default class LoginComponent extends Vue {
     const FormObserver: any = this.$refs['observer']
     const isValid: boolean = await FormObserver.validate()
 
-    if (isValid) {}
+    if (isValid) {
+      const form: any = { username: this.username, password: this.password }
+      const responae: any = await this.$store.dispatch('APP.AUTH/login', form)
+
+      if (hasProp(responae, 'error')) {
+        this.$alert(responae.error.message)
+      } else {
+        this.signInComplete(responae)
+      }
+    }
   }
 
   private loginWitchSingleSignOn (): void {
     if (configs.APP_MODE === 'development') {
-      this.$alert('This function cannot be used in development mode.', { showTitle: true })
+      this.$alert('This function cannot be used in development mode.')
     } else {
       this.typeLogin = 'sso'
     }
   }
 
-  private onSingleSignOnComplete (input: any): void {
+  private signInComplete (input: any): void {
     if (hasProp(input, 'firstLogin')) {
 
-      this.$alert('Your first sign-in.<br>You need to set a password.', {
-        showTitle: true
-      }).then((): void => {
-
-        this.$router.push({
-          name: 'auth.password',
-          query: {
-            hex: input.token,
-            expires: input.expires
-          }
+      this.$alert('Your first sign-in.<br>You need to set a password.')
+        .then((): void => {
+          this.$router.push({
+            name: 'auth.password',
+            query: {
+              token: input.token,
+              expires: input.expires
+            }
+          })
         })
-
-      })
 
     } else {
       this.$store.dispatch('APP.AUTH/createCookie', input)

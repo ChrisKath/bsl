@@ -30,9 +30,9 @@ Axios.interceptors.request.use((config: any): any => {
  * allows changes to the response data to be made before
  * it is passed to then/catch
  */
-// Axios.interceptors.response.use(
-//   (response: any) => response,
-//   (errors: any) => errors
-// )
+Axios.interceptors.response.use(
+  (response: any) => response,
+  (errors: any) => errors.response || errors
+)
 
 export default Axios
