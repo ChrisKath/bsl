@@ -22,7 +22,7 @@ export const icons: any = multer({
  * @param {string} dest
  * @param {string} fileName
  */
-export function removeFile (dest: string, fileName: string): void {
+export const removeFile: Function = (dest: string, fileName: string): void => {
   const dir: string = join(__dirname, `${dest}/${fileName}`)
   if (existsSync(dir)) unlinkSync(dir)
 }

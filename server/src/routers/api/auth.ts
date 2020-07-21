@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { sso } from 'node-expose-sspi'
 import passport from 'passport'
-import controllers from '@/controllers/auth.controller'
-import { avatar } from '@/storage'
+import controllers from '../../controllers/auth.controller'
+import { avatar } from '../../storage'
 
 export default class AuthRoutes {
   public router: Router = Router()
@@ -16,13 +16,10 @@ export default class AuthRoutes {
     this.singleSignOn = sso.auth({ useGroups: false })
     this.avatarFile = avatar.single('avatar')
 
-    this.intializeRoutes()
+    this.registerRoutes()
   }
 
-  /**
-   * Intialize authentication routes
-   */
-  private intializeRoutes (): void {
+  private registerRoutes (): void {
     this.router.post('/login', controllers.login)
     this.router.get('/sso', this.singleSignOn, controllers.sso)
     this.router.get('/me', this.authenticate, controllers.me)

@@ -1,14 +1,14 @@
 import { Router } from 'express'
-import controllers from '@/controllers/url.controller'
+import controllers from '../../controllers/url.controller'
 
 export default class UrlRoutes {
   public router: Router = Router()
 
   constructor () {
-    this.intializeRoutes()
+    this.registerRoutes()
   }
 
-  private intializeRoutes (): void {
+  private registerRoutes (): void {
     this.router.get('/', controllers.index)
     this.router.post('/create', controllers.create)
     this.router.get('/:id(\d)', controllers.show)

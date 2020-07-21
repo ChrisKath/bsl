@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
+import Url from './url'
 
 @Entity('users')
 export default class User {
@@ -12,10 +13,9 @@ export default class User {
   @Column({
     type: 'int',
     length: 6,
-    unique: true,
-    unsigned: true,
     name: 'employeeCode'
   })
+  @Index({ unique: true })
   public employeeCode: number
 
   @Column({
@@ -28,9 +28,9 @@ export default class User {
   @Column({
     type: 'varchar',
     length: 16,
-    unique: true,
     name: 'username'
   })
+  @Index({ unique: true })
   public username: string
 
   @Column({
@@ -66,12 +66,14 @@ export default class User {
     type: 'smallint',
     name: 'created_by'
   })
+  @Index({ unique: false })
   public createdBy: number
 
   @Column({
     type: 'smallint',
     name: 'updated_by'
   })
+  @Index({ unique: false })
   public updatedBy: number
 
   @Column({
@@ -87,5 +89,9 @@ export default class User {
     name: 'updated_at'
   })
   public updatedAt: Date
+
+  // Relations
+  @OneToMany(type => Url, url => url.user)
+  public urls: Url[]
 
 }

@@ -1,14 +1,14 @@
 import { Router } from 'express'
-import controllers from '@/controllers/icon.controller'
+import controllers from '../../controllers/icon.controller'
 
 export default class IconRoutes {
   public router: Router = Router()
 
   constructor () {
-    this.intializeRoutes()
+    this.registerRoutes()
   }
 
-  private intializeRoutes (): void {
+  private registerRoutes (): void {
     this.router.get('/', controllers.index)
     this.router.post('/create', controllers.create)
     this.router.get('/:id(\d)', controllers.show)

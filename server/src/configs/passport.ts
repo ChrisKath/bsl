@@ -1,6 +1,6 @@
 import passport from 'passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
-import { secretKey } from '@/configs/app'
+import { secretKey } from '../configs/app'
 
 // Auth Required Middleware.
 // passport.use(new Strategy({

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createToken } from '@/helpers/token.helper'
+import { createToken } from '../helpers/token.helper'
 
 export default {
   /**

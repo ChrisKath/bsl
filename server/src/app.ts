@@ -2,28 +2,29 @@ import express, { Application } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import { join } from 'path'
-import { createConnection, Connection } from 'typeorm'
-import { corsOrigin } from '@/helpers/cors.helper'
-import { errorEndpoint, errorHandler } from '@/configs/errorHandler'
-import Routers from '@/routers'
-// import '@/configs/passport'
+import { createConnection } from 'typeorm'
+import connectionOptions from './database/ormconfig'
+import { corsOrigin } from './helpers/cors.helper'
+import { errorEndpoint, errorHandler } from './configs/errorHandler'
+import Routers from './routers'
+// import './configs/passport'
 
 export default class App {
-  public app: Application
-  public port: number
-  public production: boolean
+  private app: Application
+  private port: number
+  private production: boolean
 
   constructor (port: number, production: boolean) {
     this.app = express()
     this.port = port
     this.production = production
 
-    this.initializeMiddlewares()
-    this.initializeRouters()
-    this.initializeErrorHandling()
+    this.registerMiddlewares()
+    this.registerRouters()
+    this.registerErrorHandling()
   }
 
-  private initializeMiddlewares (): void {
+  private registerMiddlewares (): void {
     // CORS
     this.app.use(cors({
       origin: corsOrigin,
@@ -41,28 +42,29 @@ export default class App {
     this.app.use(morgan('dev'))
 
     // Static file
-    this.app.use('/', express.static(join(__dirname, '../public')))
+    this.app.use('/', express.static(join(__dirname, 'public')))
 
     // Passport
-    require('@/configs/passport')
+    require('./configs/passport')
   }
 
-  private initializeRouters (): void {
+  private registerRouters (): void {
     const r = new Routers()
     this.app.use(r.router)
   }
 
-  private initializeErrorHandling (): void {
+  private registerErrorHandling (): void {
     this.app.use(errorEndpoint)
     this.app.use(errorHandler)
   }
 
-  private createDatabaseConnection (): void {
-    createConnection()
-      .then((connection: Connection): void => {
-        console.log('Database connected')
-      })
-      .catch((error: any): void => console.error(error))
+  private async createDatabaseConnection (): Promise<void> {
+    try {
+      await createConnection()
+      console.info('[server] Database connected')
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /**
@@ -70,8 +72,8 @@ export default class App {
    */
   public listen (): void {
     this.app.listen(this.port, () => {
-      console.log(`Application listening on port ${this.port}`)
       this.createDatabaseConnection()
+      console.log(`[server] Application listening on port: ${this.port}`)
     })
   }
 }

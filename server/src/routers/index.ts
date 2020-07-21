@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import passport from 'passport'
-import { apiVersion } from '@/configs/app'
-import controllers from '@/controllers/main.controller'
+import { apiVersion } from '../configs/app'
+import controllers from '../controllers/main.controller'
 
 // api routes
 import AuthRoutes from './api/auth'
@@ -19,16 +19,16 @@ export default class ApplicationRouters {
     this.authenticate = passport.authenticate('jwt', { session: false })
 
     // APIs
-    this.intializeApiRoutes()
+    this.registerApiRoutes()
 
     // Any url endpoint
     this.router.get('*', controllers.index)
   }
 
   /**
-   * Intialize APIs routes
+   * Register APIs routes
    */
-  private intializeApiRoutes (): void {
+  private registerApiRoutes (): void {
     const basePath: string = `/api/v${apiVersion}`
 
     this.router.use(`${basePath}/auth`, new AuthRoutes().router)

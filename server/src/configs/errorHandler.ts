@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import HttpException from '@/helpers/HttpException'
-import { production } from '@/configs/app'
+import HttpException from '../helpers/HttpException'
+import { production } from '../configs/app'
 
 /**
  * catch 404 and forward to error handler

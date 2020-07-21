@@ -1,4 +1,4 @@
-import { appName, secretKey, shortkeyLength, tokenExpiry } from '@/configs/app'
+import { appName, secretKey, shortkeyLength, tokenExpiry } from '../configs/app'
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
 
@@ -8,6 +8,11 @@ import moment from 'moment'
  * @param {object} user
  */
 export function createToken (user: any): any {
+  const expiry: any = {
+    amount: Number(tokenExpiry.charAt(0)),
+    units: tokenExpiry.charAt(1)
+  }
+  
   const token: string = jwt.sign({
     iss: appName,
     uid: user.id,
@@ -17,7 +22,7 @@ export function createToken (user: any): any {
   return {
     token,
     type: 'Bearer',
-    expires: moment().add(Number(tokenExpiry[0]), tokenExpiry[1]).toISOString()
+    expires: moment().add(expiry.amount, expiry.units).toISOString()
   }
 }
 
