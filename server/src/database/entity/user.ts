@@ -36,6 +36,7 @@ export default class User {
   @Column({
     type: 'varchar',
     length: 255,
+    select: false,
     name: 'password'
   })
   public password: string
@@ -64,6 +65,7 @@ export default class User {
 
   @Column({
     type: 'smallint',
+    select: false,
     name: 'created_by'
   })
   @Index({ unique: false })
@@ -71,6 +73,7 @@ export default class User {
 
   @Column({
     type: 'smallint',
+    select: false,
     name: 'updated_by'
   })
   @Index({ unique: false })
