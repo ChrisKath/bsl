@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["auth"],{"3bd7":function(t,a,e){"use strict";e.r(a);var n=function(){var t=this,a=t.$createElement,e=t._self._c||a;return e("div",{staticClass:"ui--auth"},[e("router-view",{staticClass:"container"})],1)},s=[],c=e("9ab4"),u=e("60a3");e("46d8");let i=class extends u["c"]{};i=Object(c["a"])([u["a"]],i);var l=i,r=l,o=e("2877"),d=Object(o["a"])(r,n,s,!1,null,null,null);a["default"]=d.exports},"46d8":function(t,a,e){}}]);
-//# sourceMappingURL=auth.0291b04b.js.map
