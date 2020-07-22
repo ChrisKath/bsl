@@ -5,6 +5,7 @@ import { join } from 'path'
 import { createConnection } from 'typeorm'
 import { corsOrigin } from './helpers/cors.helper'
 import { errorEndpoint, errorHandler } from './configs/errorHandler'
+import responseFormt from './configs/responseFormt'
 import Routers from './routers'
 // import './configs/passport'
 
@@ -53,6 +54,7 @@ export default class App {
   }
 
   private registerErrorHandling (): void {
+    this.app.use(responseFormt)
     this.app.use(errorEndpoint)
     this.app.use(errorHandler)
   }
