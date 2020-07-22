@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'
+import { getConnection, getRepository } from 'typeorm'
 import { createToken } from '../helpers/token.helper'
+import { resErrors } from '../configs/errorHandler'
 import bcrypt from 'bcrypt'
 import User from '../database/entity/user'
+import { removeFile } from '../storage'
 
 export default {
   /**
@@ -19,25 +21,25 @@ export default {
       const user: User = await getRepository(User)
         .createQueryBuilder('user')
         .select([
-          'id',
-          'employeeCode',
-          'employeeName',
-          'username',
-          'password',
-          'activated'
+          'user.id',
+          'user.employeeCode',
+          'user.employeeName',
+          'user.username',
+          'user.password',
+          'user.activated'
         ])
-        .where('employeeCode = :username', { username })
-        .orWhere('username = :username', { username: username.toLowerCase() })
+        .where('user.employeeCode = :username', { username })
+        .orWhere('user.username = :username', { username: username.toLowerCase() })
         .getOne()
 
       // if undefined user
       if (!user) {
-        return res.error('Employee Code or Username is invalid.', 404)
+        return resErrors(res, 'Employee Code or Username is invalid.', 404)
       }
 
       // Suspend user
       if (!user.activated) {
-        return res.error('Your account has been suspended.', 403)
+        return resErrors(res, 'Your account has been suspended.', 403)
       }
 
       // response data
@@ -48,7 +50,7 @@ export default {
         // user.password comes from the database
         const compareAttempt = bcrypt.compareSync(password, user.password)
         if (!compareAttempt) {
-          return res.error('This password is invalid.', 404)
+          return resErrors(res, 'This password is invalid.', 404)
         }
       } else {
         results.firstLogin = true
@@ -56,7 +58,7 @@ export default {
 
       res.json(Object.assign(results, createToken(user)))
     } catch (error) {
-      res.error(error.message, error.status)
+      resErrors(res, error.message, 422)
     }
   },
 
@@ -78,7 +80,16 @@ export default {
    * @param {Response} res
    */
   me: async (req: Request, res: Response): Promise<any> => {
-    // TODO: code
+    try {
+      const user: User = await getRepository(User)
+        .createQueryBuilder('user')
+        .where('user.id = :id', { id: req.user.id })
+        .getOne()
+      
+      res.json(user)
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   },
 
   /**
@@ -88,7 +99,29 @@ export default {
    * @param {Response} res
    */
   profile: async (req: Request, res: Response): Promise<any> => {
-    // TODO: code
+    const avatar: string = req.file.filename
+
+    try {
+      // Update entity.
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ avatar })
+        .where('id = :id', { id: req.user.id })
+        .execute()
+
+      // Remove old file.
+      if (req.body.avatar) {
+        removeFile('avatar', req.body.avatar)
+      }
+      
+      res.json({
+        data: { avatar },
+        message: 'Update success.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   },
 
   /**

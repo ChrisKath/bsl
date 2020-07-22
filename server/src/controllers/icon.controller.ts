@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { getRepository } from 'typeorm'
+import Icon from '../database/entity/icon'
 
 export default {
   /**
@@ -8,7 +10,15 @@ export default {
    * @param {Response} res
    */
   index: async (req: Request, res: Response): Promise<any> => {
-    // TODO: code
+    try {
+      const icons: Icon[] = await getRepository(Icon)
+        .createQueryBuilder('icon')
+        .getMany()
+
+      res.send(icons)
+    } catch (error) {
+      res.json({ error })
+    }
   },
 
   /**

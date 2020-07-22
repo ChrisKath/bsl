@@ -34,7 +34,6 @@ export default class Url {
 
   @Column({
     type: 'int',
-    length: 2,
     default: 1,
     name: 'type'
   })
@@ -42,7 +41,6 @@ export default class Url {
 
   @Column({
     type: 'date',
-    length: 2,
     nullable: true,
     default: null,
     name: 'expiry'
@@ -58,7 +56,7 @@ export default class Url {
   public redirect: string
 
   @Column({
-    type: 'tinyint',
+    type: 'boolean',
     default: true,
     name: 'enabled'
   })

@@ -5,7 +5,6 @@ import { join } from 'path'
 import { createConnection } from 'typeorm'
 import { corsOrigin } from './helpers/cors.helper'
 import { errorEndpoint, errorHandler } from './configs/errorHandler'
-import responseFormt from './configs/responseFormt'
 import Routers from './routers'
 // import './configs/passport'
 
@@ -36,7 +35,7 @@ export default class App {
 
     // Parser Body
     this.app.use(express.json())
-    this.app.use(express.urlencoded({ extended: false }))
+    this.app.use(express.urlencoded({ extended: true }))
 
     // Logger
     this.app.use(morgan('dev'))
@@ -54,27 +53,25 @@ export default class App {
   }
 
   private registerErrorHandling (): void {
-    this.app.use(responseFormt)
     this.app.use(errorEndpoint)
     this.app.use(errorHandler)
-  }
-
-  private async createDatabaseConnection (): Promise<void> {
-    try {
-      await createConnection()
-      console.info('[server] Database connected')
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   /**
    * Listen for connections
    */
-  public listen (): void {
-    this.app.listen(this.port, () => {
-      this.createDatabaseConnection()
-      console.log(`[server] Application listening on port: ${this.port}`)
-    })
+  public async listen (): Promise<void> {
+    console.info('[server] Database connecting...')
+
+    try {
+      await createConnection()
+      console.info('[server] Database connection completed.')
+
+      this.app.listen(this.port, (): void => {
+        console.info(`[server] Application listening on port: ${this.port}`)
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
 import Url from './url'
 
-@Entity('users')
+@Entity({ name: 'users' })
 export default class User {
 
   @PrimaryGeneratedColumn({
@@ -12,7 +12,6 @@ export default class User {
 
   @Column({
     type: 'int',
-    length: 6,
     name: 'employeeCode'
   })
   @Index({ unique: true })
@@ -50,14 +49,14 @@ export default class User {
   public avatar: string
 
   @Column({
-    type: 'tinyint',
+    type: 'boolean',
     default: true,
     name: 'activated'
   })
   public activated: boolean
 
   @Column({
-    type: 'tinyint',
+    type: 'boolean',
     default: false,
     name: 'isAdmin'
   })

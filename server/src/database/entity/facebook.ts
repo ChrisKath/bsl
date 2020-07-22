@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
 
-@Entity('facebook')
+@Entity({ name: 'facebook' })
 export default class Facebook {
 
   @PrimaryGeneratedColumn({

@@ -1,7 +1,11 @@
-declare module "multer"
-declare module "useragent"
-
 declare namespace Express {
+  export interface Request {
+    user?: {
+      id?: number
+      employeeCode?: number
+    }
+  }
+
   export interface Response {
     /**
      * Error response format.
@@ -9,6 +13,6 @@ declare namespace Express {
      * @param {string} errorMessage
      * @param {Number} statusCode
      */
-    error (errorMessage: string, statusCode: number): void
+    error (errorMessage: string, statusCode?: number): void
   }
 }

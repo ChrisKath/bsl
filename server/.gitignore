@@ -1,2 +1,7 @@
-.env
 dist
+.env
+ormlogs.log
+
+# ignore storage
+**/storage/avatar
+**/storage/icons

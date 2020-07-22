@@ -12,13 +12,13 @@ export function createToken (user: any): any {
     amount: Number(tokenExpiry.charAt(0)),
     units: tokenExpiry.charAt(1)
   }
-  
+
   const token: string = jwt.sign({
     iss: appName,
     uid: user.id,
     sub: user.employeeCode
-  }, secretKey, { expiresIn: tokenExpiry })
-  
+  }, secretKey, { expiresIn: tokenExpiry })  
+
   return {
     token,
     type: 'Bearer',

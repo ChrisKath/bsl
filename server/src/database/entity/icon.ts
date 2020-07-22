@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity('icons')
+@Entity({ name: 'icons' })
 export default class Icon {
 
   @PrimaryGeneratedColumn({

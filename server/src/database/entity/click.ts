@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
 
-@Entity('clicks')
+@Entity({ name: 'clicks' })
 export default class Click {
 
   @PrimaryGeneratedColumn({
@@ -14,7 +14,7 @@ export default class Click {
     name: 'url_id'
   })
   @Index({ unique: false })
-  public urlId: string
+  public urlId: number
 
   @Column({
     type: 'text',

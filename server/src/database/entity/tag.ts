@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity('tags')
+@Entity({ name: 'tags' })
 export default class Tag {
 
   @PrimaryGeneratedColumn({

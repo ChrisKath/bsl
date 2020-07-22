@@ -13,6 +13,12 @@ passport.use(new Strategy({
     // Gatter the user specified in token
     const user = await getRepository(User)
       .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.employeeCode',
+        'user.username',
+        'user.activated'
+      ])
       .where('user.id = :id', { id: payload.uid })
       .getOne()
 
@@ -25,7 +31,7 @@ passport.use(new Strategy({
     if (!user.activated) {
       return done({
         message: 'Your account has been suspended.'
-      }, false)
+      }, false, 0)
     }
 
     // Otherwise, return the user

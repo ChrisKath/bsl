@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-export const appName: string = 'unset'
+export const appName: string = process.env.APP_NAME || 'unset'
 export const production: boolean = process.env.APP_MODE === 'production'
 export const port: number = process.env.APP_MODE === 'production' ? 443 : 3000
 export const apiVersion: string = process.env.API_VERSION || '1'
