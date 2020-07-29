@@ -6,7 +6,7 @@ import { createConnection } from 'typeorm'
 import { corsOrigin } from './helpers/cors.helper'
 import { errorEndpoint, errorHandler } from './configs/errorHandler'
 import Routers from './routers'
-// import './configs/passport'
+import './configs/passport'
 
 export default class App {
   private app: Application
@@ -26,7 +26,7 @@ export default class App {
   private registerMiddlewares (): void {
     // CORS
     this.app.use(cors({
-      origin: corsOrigin,
+      origin: (this.production ? corsOrigin : '*'),
       methods: ['GET', 'POST', 'PATCH', 'DELETE'],
       preflightContinue: true,
       credentials: true,
@@ -44,7 +44,7 @@ export default class App {
     this.app.use('/', express.static(join(__dirname, 'public')))
 
     // Passport
-    require('./configs/passport')
+    // require('./configs/passport')
   }
 
   private registerRouters (): void {

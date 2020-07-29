@@ -1,18 +1,19 @@
 import { Request, Response } from 'express'
+import { getRepository } from 'typeorm'
 import { createReadStream, ReadStream } from 'fs'
 import { join } from 'path'
-import { getRepository } from 'typeorm'
+import Controller from './controller'
 import service from '../services/main.service'
 import Url from '../database/entity/url'
 
-export default {
+class MainController extends Controller {
   /**
    * Display a listing of the resource.
    * 
    * @param {Request} req
    * @param {Response} res
    */
-  index: async (req: Request, res: Response): Promise<any> => {
+  public async index (req: Request, res: Response): Promise<any> {
     const keyCode: string | boolean = service.getKeyCode(req.baseUrl)
 
     if (keyCode) {
@@ -52,13 +53,13 @@ export default {
         // redirect to endpoint-target
         res.redirect(url.href)
       } catch (error) {
-        res.error(error.message, error.status)
+        this.errors(res, error.message, 422)
       }
     } else {
       // response to console panel.
       res.sendFile(join(__dirname, '../public/index.html'))
     }
-  },
+  }
 
   /**
    * Gatter storage file.
@@ -66,7 +67,7 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  file: (req: Request, res: Response): void => {
+  public file (req: Request, res: Response): void {
     const pathFile: string = join(__dirname, `../storage/${req.params.dest}/${req.params.name}`)
     const readStream: ReadStream = createReadStream(pathFile)
 
@@ -78,7 +79,7 @@ export default {
     readStream.on('error', (): void => {
       res.status(404).end()
     })
-  },
+  }
 
   /**
    * Demo test controller.
@@ -86,10 +87,12 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  d3m0: async (req: Request, res: Response): Promise<any> => {
+  public async d3m0 (req: Request, res: Response): Promise<any> {
     // const isAndroid = userAgent(req).os('Android') // `Android`, `iOS`
     // const isFacebook = await service.isFacebook('https://www.facebook.com/snippetsJS/photos/a.108956220490532/293276618725157/')
 
     res.json(process.env)
   }
 }
+
+export default new MainController()

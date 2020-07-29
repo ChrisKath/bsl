@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, JoinTable } from 'typeorm'
 import Url from './url'
 
 @Entity({ name: 'users' })
@@ -93,7 +93,7 @@ export default class User {
   public updatedAt: Date
 
   // Relations
-  @OneToMany(type => Url, url => url.user)
+  @OneToMany(type => Url, url => url.createdAt)
   public urls: Url[]
 
 }

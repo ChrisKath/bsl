@@ -1,25 +1,26 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
+import Controller from './controller'
 import Icon from '../database/entity/icon'
 
-export default {
+class IconController extends Controller {
   /**
    * Display a listing of the resource.
    * 
    * @param {Request} req
    * @param {Response} res
    */
-  index: async (req: Request, res: Response): Promise<any> => {
+  public async index (req: Request, res: Response): Promise<any> {
     try {
       const icons: Icon[] = await getRepository(Icon)
         .createQueryBuilder('icon')
         .getMany()
 
-      res.send(icons)
+      res.json(icons)
     } catch (error) {
-      res.json({ error })
+      this.errors(res, error.message, 422)
     }
-  },
+  }
 
   /**
    * Store a newly created resource in storage.
@@ -27,9 +28,9 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  create: async (req: Request, res: Response): Promise<any> => {
+  public async create (req: Request, res: Response): Promise<any> {
     // TODO: code
-  },
+  }
 
   /**
    * Display the specified resource.
@@ -37,9 +38,9 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  show: async (req: Request, res: Response): Promise<any> => {
+  public async show (req: Request, res: Response): Promise<any> {
     // TODO: code
-  },
+  }
 
   /**
    * Update the specified resource in storage.
@@ -47,9 +48,9 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  update: async (req: Request, res: Response): Promise<any> => {
+  public async update (req: Request, res: Response): Promise<any> {
     // TODO: code
-  },
+  }
 
   /**
    * Remove the specified resource from storage.
@@ -57,7 +58,9 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  destroy: async (req: Request, res: Response): Promise<any> => {
+  public async destroy (req: Request, res: Response): Promise<any> {
     // TODO: code
   }
 }
+
+export default new IconController()

@@ -1,19 +1,20 @@
 import { Request, Response } from 'express'
 import { getConnection, getRepository } from 'typeorm'
-import { createToken } from '../helpers/token.helper'
-import { resErrors } from '../configs/errorHandler'
 import bcrypt from 'bcrypt'
+import Controller from './controller'
+import { createToken } from '../helpers/token.helper'
+import service from '../services/auth.service'
 import User from '../database/entity/user'
 import { removeFile } from '../storage'
 
-export default {
+class AuthController extends Controller {
   /**
    * Login with username and password.
    * 
    * @param {Request} req
    * @param {Response} res
    */
-  login: async (req: Request, res: Response): Promise<any> => {
+  public async login (req: Request, res: Response): Promise<any> {
     const username = (req.body.username || null)
     const password = (req.body.password || null)
 
@@ -34,12 +35,12 @@ export default {
 
       // if undefined user
       if (!user) {
-        return resErrors(res, 'Employee Code or Username is invalid.', 404)
+        return this.errors(res, 'Employee Code or Username is invalid.', 404)
       }
 
       // Suspend user
       if (!user.activated) {
-        return resErrors(res, 'Your account has been suspended.', 403)
+        return this.errors(res, 'Your account has been suspended.', 403)
       }
 
       // response data
@@ -50,7 +51,7 @@ export default {
         // user.password comes from the database
         const compareAttempt = bcrypt.compareSync(password, user.password)
         if (!compareAttempt) {
-          return resErrors(res, 'This password is invalid.', 404)
+          return this.errors(res, 'This password is invalid.', 404)
         }
       } else {
         results.firstLogin = true
@@ -58,9 +59,9 @@ export default {
 
       res.json(Object.assign(results, createToken(user)))
     } catch (error) {
-      resErrors(res, error.message, 422)
+      this.errors(res, error.message, 422)
     }
-  },
+  }
 
   /**
    * Microsoft SSPI API (Security Support Provider Interface)
@@ -69,9 +70,51 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  sso: async (req: Request, res: Response): Promise<any> => {
-    // TODO: code
-  },
+  public async sso (req: Request, res: Response): Promise<any> {
+    const data: any = service.ssoAccessData(req)
+
+    if (!data) {
+      return this.errors(res, 'This device cannot access the SSO Function.', 409)
+    }
+
+    try {
+      const user: User = await getRepository(User)
+        .createQueryBuilder('user')
+        .select([
+          'user.id',
+          'user.employeeCode',
+          'user.employeeName',
+          'user.username',
+          'user.password',
+          'user.activated'
+        ])
+        .where('user.employeeCode = :value', { value: data.employeeCode })
+        .getOne()
+
+      // if user not found
+      if (!user) {
+        return this.errors(res, 'Your account isn\'t activate on this program.<br>Please contact IT Operation team.', 403)
+      }
+
+      // Suspend user
+      if (!user.activated) {
+        return this.errors(res, 'Your account has been suspended.', 403)
+      }
+
+      // update user-info if field is empty
+      await service.ssoAssignData(data, user)
+
+      // response data
+      let results: any = createToken(user)
+      if (!user.password) {
+        results.firstLogin = true
+      }
+
+      res.json({ ...results, ssoData: data })
+    } catch (error) {
+      this.errors(res, error.message, 422)
+    }
+  }
 
   /**
    * Get user details.
@@ -79,18 +122,18 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  me: async (req: Request, res: Response): Promise<any> => {
+  public async me (req: Request, res: Response): Promise<any> {
     try {
       const user: User = await getRepository(User)
         .createQueryBuilder('user')
-        .where('user.id = :id', { id: req.user.id })
+        .where('user.id = :value', { value: req.user.id })
         .getOne()
       
       res.json(user)
     } catch (error) {
-      resErrors(res, error.message, 422)
+      this.errors(res, error.message, 422)
     }
-  },
+  }
 
   /**
    * Update user profile.
@@ -98,7 +141,7 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  profile: async (req: Request, res: Response): Promise<any> => {
+  public async profile (req: Request, res: Response): Promise<any> {
     const avatar: string = req.file.filename
 
     try {
@@ -120,9 +163,9 @@ export default {
         message: 'Update success.'
       })
     } catch (error) {
-      resErrors(res, error.message, 422)
+      this.errors(res, error.message, 422)
     }
-  },
+  }
 
   /**
    * Refresh token expire.
@@ -130,7 +173,9 @@ export default {
    * @param {Request} req
    * @param {Response} res
    */
-  refresh: (req: Request, res: Response): void => {
+  public refresh (req: Request, res: Response): void {
     res.json(createToken(req.user))
-  },
+  }
 }
+
+export default new AuthController()

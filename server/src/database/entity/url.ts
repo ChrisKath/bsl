@@ -92,6 +92,6 @@ export default class Url {
 
   // Relations
   @ManyToOne(type => User, user => user.urls)
-  public user: User
+  public user: User | null
 
 }

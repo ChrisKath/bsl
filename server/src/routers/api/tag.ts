@@ -11,8 +11,8 @@ export default class TagRoutes {
   private registerRoutes (): void {
     this.router.get('/', controllers.index)
     this.router.post('/create', controllers.create)
-    this.router.get('/:id(\d)', controllers.show)
-    this.router.patch('/:id(\d)', controllers.update)
-    this.router.delete('/:id(\d)', controllers.destroy)
+    this.router.get('/:id([0-9])', controllers.show)
+    this.router.patch('/:id([0-9])', controllers.update)
+    this.router.delete('/:id([0-9])', controllers.destroy)
   }
 }
