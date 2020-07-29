@@ -1,7 +1,7 @@
 import { PrimaryGeneratedColumn, Entity, Column, Index } from 'typeorm'
 
 @Entity({ name: 'tagging' })
-export default class Tagging {
+export class TaggingEntity {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',

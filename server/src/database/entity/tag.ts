@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { ShareColumn } from '../utils'
 
 @Entity({ name: 'tags' })
-export default class Tag {
+export class TagEntity extends ShareColumn {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -15,19 +16,5 @@ export default class Tag {
     name: 'name'
   })
   public name: string
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'created_at'
-  })
-  public createdAt: Date
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'updated_at'
-  })
-  public updatedAt: Date
 
 }

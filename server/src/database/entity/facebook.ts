@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
+import { ShareColumn } from '../utils'
 
 @Entity({ name: 'facebook' })
-export default class Facebook {
+export class FacebookEntity extends ShareColumn {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -28,19 +29,5 @@ export default class Facebook {
     name: 'data'
   })
   public data: string
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'created_at'
-  })
-  public createdAt: Date
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'updated_at'
-  })
-  public updatedAt: Date
 
 }

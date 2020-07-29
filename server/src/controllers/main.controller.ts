@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import { createReadStream, ReadStream } from 'fs'
 import { join } from 'path'
-import Controller from './controller'
+import { Url } from '../database'
 import service from '../services/main.service'
-import Url from '../database/entity/url'
+import { resErrors } from '../configs/errorHandler'
 
-class MainController extends Controller {
+class MainController {
   /**
    * Display a listing of the resource.
    * 
@@ -32,7 +32,7 @@ class MainController extends Controller {
 
         // if {keyCode} not match
         if (!url) {
-          return res.sendFile(join(__dirname, '../public/404.html'))
+          return res.sendFile(join(__dirname, '../../public/404.html'))
         }
 
         // save click-logs
@@ -43,7 +43,7 @@ class MainController extends Controller {
           if (url.redirect) {
             return res.redirect(url.redirect)
           } else {
-            return res.sendFile(join(__dirname, '../public/404.html'))
+            return res.sendFile(join(__dirname, '../../public/404.html'))
           }
         }
 
@@ -53,11 +53,11 @@ class MainController extends Controller {
         // redirect to endpoint-target
         res.redirect(url.href)
       } catch (error) {
-        this.errors(res, error.message, 422)
+        resErrors(res, error.message, 422)
       }
     } else {
       // response to console panel.
-      res.sendFile(join(__dirname, '../public/index.html'))
+      res.sendFile(join(__dirname, '../../public/index.html'))
     }
   }
 

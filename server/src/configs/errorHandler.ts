@@ -33,3 +33,19 @@ export function errorHandler (error: HttpException, req: Request, res: Response,
     message,
   })
 }
+
+/**
+ * Defining response error format
+ * 
+ * @param {Request} req
+ * @param {string} errorMessage
+ * @param {number} statusCode
+ */
+export function resErrors (res: Response, errorMessage: string = '', statusCode: number = 500): void {	
+  res.status(statusCode).json({
+    error: {
+      status: statusCode,
+      message: errorMessage
+    }
+  })
+}

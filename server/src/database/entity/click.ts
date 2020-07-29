@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
 
 @Entity({ name: 'clicks' })
-export default class Click {
+export class ClickEntity {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -29,9 +29,9 @@ export default class Click {
   public description: string
 
   @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'clicked_at'
+    type: 'datetime',
+    name: 'clicked_at',
+    default: () => 'CURRENT_TIMESTAMP'
   })
   public clickedAt: Date
 

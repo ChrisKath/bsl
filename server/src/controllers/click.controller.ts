@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import Controller from './controller'
+import { resErrors } from '../configs/errorHandler'
 
-class ClickController extends Controller {
+class ClickController {
   /**
    * Display a listing of the resource.
    * 

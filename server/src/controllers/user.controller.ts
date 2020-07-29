@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
-import Controller from './controller'
-import User from '../database/entity/user'
+import { resErrors } from '../configs/errorHandler'
+import { User } from '../database'
 
-class UserController extends Controller {
+class UserController {
   /**
    * Display a listing of the resource.
    * 
@@ -18,7 +18,7 @@ class UserController extends Controller {
 
       res.json(user)
     } catch (error) {
-      this.errors(res, error.message, 422)
+      resErrors(res, error.message, 422)
     }
   }
 
@@ -49,7 +49,7 @@ class UserController extends Controller {
       res.send(user)
     } catch (error) {
       res.json(error)
-      // this.errors(res, error.message, 422)
+      // resErrors(res, error.message, 422)
     }
   }
 

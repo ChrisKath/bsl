@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
-import Controller from './controller'
-import Icon from '../database/entity/icon'
+import { Icon } from '../database'
+import { resErrors } from '../configs/errorHandler'
 
-class IconController extends Controller {
+class IconController {
   /**
    * Display a listing of the resource.
    * 
@@ -18,7 +18,7 @@ class IconController extends Controller {
 
       res.json(icons)
     } catch (error) {
-      this.errors(res, error.message, 422)
+      resErrors(res, error.message, 422)
     }
   }
 

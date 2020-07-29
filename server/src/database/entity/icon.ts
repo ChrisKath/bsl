@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { ShareColumn } from '../utils'
 
 @Entity({ name: 'icons' })
-export default class Icon {
+export class IconEntity extends ShareColumn {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -24,19 +25,5 @@ export default class Icon {
     name: 'image'
   })
   public image: string
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'created_at'
-  })
-  public createdAt: Date
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'updated_at'
-  })
-  public updatedAt: Date
 
 }

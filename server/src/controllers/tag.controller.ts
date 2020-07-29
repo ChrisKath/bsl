@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import Controller from './controller'
+import { resErrors } from '../configs/errorHandler'
 
-class TagController extends Controller {
+class TagController {
   /**
    * Display a listing of the resource.
    * 

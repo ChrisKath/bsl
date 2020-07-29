@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne } from 'typeorm'
-import User from './user'
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne, JoinColumn } from 'typeorm'
+import { ShareColumn } from '../utils'
+import { UserEntity } from './user'
 
-@Entity('urls')
-export default class Url {
+@Entity({ name: 'urls' })
+export class UrlEntity extends ShareColumn {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -76,22 +77,9 @@ export default class Url {
   @Index({ unique: false })
   public updatedBy: number
 
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'created_at'
-  })
-  public createdAt: Date
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'updated_at'
-  })
-  public updatedAt: Date
-
   // Relations
-  @ManyToOne(type => User, user => user.urls)
-  public user: User | null
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.urls)
+  @JoinColumn({ name: 'created_by' })
+  public user: UserEntity | null
 
 }

@@ -41,7 +41,7 @@ export default class App {
     this.app.use(morgan('dev'))
 
     // Static file
-    this.app.use('/', express.static(join(__dirname, 'public')))
+    this.app.use('/', express.static(join(__dirname, '../public')))
 
     // Passport
     // require('./configs/passport')

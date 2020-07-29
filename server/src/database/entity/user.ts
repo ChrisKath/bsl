@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, JoinTable } from 'typeorm'
-import Url from './url'
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
+import { ShareColumn } from '../utils'
+import { UrlEntity } from './url'
 
 @Entity({ name: 'users' })
-export default class User {
+export class UserEntity extends ShareColumn {
 
   @PrimaryGeneratedColumn({
     type: 'smallint',
@@ -78,22 +79,8 @@ export default class User {
   @Index({ unique: false })
   public updatedBy: number
 
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'created_at'
-  })
-  public createdAt: Date
-
-  @Column({
-    type: 'timestamp',
-    default: new Date(),
-    name: 'updated_at'
-  })
-  public updatedAt: Date
-
   // Relations
-  @OneToMany(type => Url, url => url.createdAt)
-  public urls: Url[]
+  @OneToMany(() => UrlEntity, (url: UrlEntity) => url.user)
+  public urls: UrlEntity[]
 
 }
