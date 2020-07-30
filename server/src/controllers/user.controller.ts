@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'
+import { getRepository, SelectQueryBuilder } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
-import { User } from '../database'
+import { User, Url } from '../database'
 
 class UserController {
   /**
@@ -48,8 +48,7 @@ class UserController {
 
       res.send(user)
     } catch (error) {
-      res.json(error)
-      // resErrors(res, error.message, 422)
+      resErrors(res, error.message, 422)
     }
   }
 

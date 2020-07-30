@@ -68,7 +68,7 @@ class MainController {
    * @param {Response} res
    */
   public file (req: Request, res: Response): void {
-    const pathFile: string = join(__dirname, `../storage/${req.params.dest}/${req.params.name}`)
+    const pathFile: string = join(__dirname, `../../storage/${req.params.dest}/${req.params.name}`)
     const readStream: ReadStream = createReadStream(pathFile)
 
     readStream.on('open', (): void => {

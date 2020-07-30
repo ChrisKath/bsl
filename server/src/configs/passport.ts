@@ -2,7 +2,7 @@ import passport from 'passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
 import { getRepository } from 'typeorm'
 import { secretKey } from '../configs/app'
-import User from '../database/entity/user'
+import { User } from '../database'
 
 // Auth required middleware
 passport.use(new Strategy({

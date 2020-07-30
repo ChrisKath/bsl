@@ -1,8 +1,7 @@
 import { Request } from 'express'
 import { getConnection, getRepository } from 'typeorm'
+import { Click, Facebook } from '../database'
 import moment from 'moment'
-import Click from '../database/entity/click'
-import Facebook from '../database/entity/facebook'
 
 class Service {
   /**

@@ -3,5 +3,4 @@ dist
 ormlogs.log
 
 # ignore storage
-**/storage/avatar
-**/storage/icons
+storage

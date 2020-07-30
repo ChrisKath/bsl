@@ -1,7 +1,6 @@
 import { getConnection, getRepository } from 'typeorm'
 import { createKeyCode } from '../helpers/token.helper'
-import Url from '../database/entity/url'
-import Tagging from '../database/entity/tagging'
+import { Url, Tagging } from '../database'
 
 class Service {
   /**

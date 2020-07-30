@@ -2,9 +2,9 @@ import express, { Application } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import { join } from 'path'
-import { createConnection } from 'typeorm'
-import { corsOrigin } from './helpers/cors.helper'
 import { errorEndpoint, errorHandler } from './configs/errorHandler'
+import { createDatabaseConnection } from './database'
+import { corsOrigin } from './helpers/cors.helper'
 import Routers from './routers'
 import './configs/passport'
 
@@ -42,9 +42,6 @@ export default class App {
 
     // Static file
     this.app.use('/', express.static(join(__dirname, '../public')))
-
-    // Passport
-    // require('./configs/passport')
   }
 
   private registerRouters (): void {
@@ -58,20 +55,13 @@ export default class App {
   }
 
   /**
-   * Listen for connections
+   * Server Listen
    */
   public async listen (): Promise<void> {
-    console.info('[server] Database connecting...')
+    await createDatabaseConnection()
 
-    try {
-      await createConnection()
-      console.info('[server] Database connection completed.')
-
-      this.app.listen(this.port, (): void => {
-        console.info(`[server] Application listening on port: ${this.port}`)
-      })
-    } catch (error) {
-      console.error(error)
-    }
+    this.app.listen(this.port, (): void => {
+      console.info(`[server] Application listening on port: ${this.port}`)
+    })
   }
 }

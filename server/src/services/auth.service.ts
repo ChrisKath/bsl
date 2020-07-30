@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import { getConnection } from 'typeorm'
-import User from '../database/entity/user'
+import { User } from '../database'
 
 class Service {
   /**

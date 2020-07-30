@@ -11,7 +11,7 @@ import multer from 'multer'
 export const diskStorage: Function = (dest: string): void => {
   return multer.diskStorage({
     destination: (req: any, file: any, callback: Function): void => {
-      callback(null, join(__dirname, dest))
+      callback(null, join(__dirname, `../../storage/${dest}`))
     },
     filename: (req: any, file: any, callback: Function): void => {
       callback(null, uuid4())
@@ -40,6 +40,6 @@ export const icons: any = multer({
  * @param {string} fileName
  */
 export const removeFile: Function = (dest: string, fileName: string): void => {
-  const dir: string = join(__dirname, `${dest}/${fileName}`)
+  const dir: string = join(__dirname, `../../storage/${dest}/${fileName}`)
   if (existsSync(dir)) unlinkSync(dir)
 }

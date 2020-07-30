@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import Tag from '../database/entity/tag'
+import { Tag } from '../database'
 
 class Service {
   /**
