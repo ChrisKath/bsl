@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRepository, SelectQueryBuilder } from 'typeorm'
+import { getRepository, getConnection } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
 import { User, Url } from '../database'
 
@@ -59,7 +59,25 @@ class UserController {
    * @param {Response} res
    */
   public async update (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      // Update storage.
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          ...req.body,
+          updatedBy: req.user.id
+        })
+        .where('id = :value', { value: req.params.id })
+        .execute()
+
+      res.json({
+        data: undefined,
+        message: 'Update success.'
+      })
+    } catch (error) {
+      resErrors(res, 'Not allowed to use [EmployeeCode and Username] same as another account')
+    }
   }
 
   /**
@@ -69,7 +87,22 @@ class UserController {
    * @param {Response} res
    */
   public async destroy (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      // Update storage, deactivated account.
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ activated: false })
+        .where('id = :value', { value: req.params.id })
+        .execute()
+
+      res.json({
+        data: undefined,
+        message: 'deactivated.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 }
 

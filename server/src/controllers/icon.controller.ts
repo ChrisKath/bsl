@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'
-import { Icon } from '../database'
+import { getRepository, getConnection } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
+import { Icon } from '../database'
+import { removeFile } from '../storage'
 
 class IconController {
   /**
@@ -29,7 +30,25 @@ class IconController {
    * @param {Response} res
    */
   public async create (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      // store a newly.
+      const store: any = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Icon)
+        .values({
+          name  : req.body.name,
+          image : req.file.filename
+        })
+        .execute()
+
+      res.json({
+        data: store,
+        message: 'Create success.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 
   /**
@@ -39,7 +58,16 @@ class IconController {
    * @param {Response} res
    */
   public async show (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      const icon: Icon = await getRepository(Icon)
+        .createQueryBuilder('icon')
+        .where('icon.id = :value', { value: req.params.id })
+        .getOne()
+
+      res.send(icon)
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 
   /**
@@ -49,7 +77,30 @@ class IconController {
    * @param {Response} res
    */
   public async update (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      // Update storage.
+      await getConnection()
+        .createQueryBuilder()
+        .update(Icon)
+        .set({
+          name  : req.body.name,
+          image : req.file.filename
+        })
+        .where('id = :value', { value: req.params.id })
+        .execute()
+
+      // Remove old file.
+      if (req.body.image) {
+        removeFile('icons', req.body.image)
+      }
+      
+      res.json({
+        data: req.file,
+        message: 'Update success.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 
   /**
@@ -59,7 +110,20 @@ class IconController {
    * @param {Response} res
    */
   public async destroy (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(Icon)
+        .where('id = :value', { value: req.params.id })
+        .execute()
+
+      removeFile('icons', req.body.image)
+
+      res.json({ message: 'Remove success.' })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 }
 
