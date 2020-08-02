@@ -25,13 +25,12 @@ export function errorEndpoint (req: Request, res: Response, next: NextFunction):
  */
 export function errorHandler (error: HttpException, req: Request, res: Response, next: NextFunction): void {
   if (!production) console.log(error.stack)
-
-  const status: number = error.status || 500
-  const message: string = error.message || 'Something went wrong'
-  res.status(status).send({
-    status,
-    message,
-  })
+  
+  res.status(error.status || 500)
+    .send({
+      status  : error.status || 500,
+      message : error.message || 'Something went wrong',
+    })
 }
 
 /**

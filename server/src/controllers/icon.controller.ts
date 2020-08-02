@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { getRepository, getConnection } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
 import { Icon } from '../database'
-import { removeFile } from '../storage'
+import { removeFile } from '../helpers/storage'
 
 class IconController {
   /**

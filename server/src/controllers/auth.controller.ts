@@ -3,9 +3,9 @@ import { getConnection, getRepository } from 'typeorm'
 import bcrypt from 'bcrypt'
 import { resErrors } from '../configs/errorHandler'
 import { User } from '../database'
-import { createToken } from '../helpers/token.helper'
+import { createToken } from '../helpers/token'
+import { removeFile } from '../helpers/storage'
 import service from '../services/auth.service'
-import { removeFile } from '../storage'
 
 class AuthController {
   /**

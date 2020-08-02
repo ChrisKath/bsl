@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { sso } from 'node-expose-sspi'
 import passport from 'passport'
 import controllers from '../../controllers/auth.controller'
-import { avatar } from '../../storage'
+import { avatar } from '../../helpers/storage'
 
 export default class AuthRoutes {
   public router: Router = Router()

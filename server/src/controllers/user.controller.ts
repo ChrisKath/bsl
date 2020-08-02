@@ -29,7 +29,26 @@ class UserController {
    * @param {Response} res
    */
   public async create (req: Request, res: Response): Promise<any> {
-    // TODO: code
+    try {
+      // store a newly.
+      const store: any = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
+          ...req.body,
+          createdBy: req.user.id,
+          updatedBy: req.user.id
+        })
+        .execute()
+        
+      res.json({
+        data: store,
+        message: 'Create success.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 
   /**

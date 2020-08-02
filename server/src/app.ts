@@ -4,7 +4,7 @@ import cors from 'cors'
 import { join } from 'path'
 import { errorEndpoint, errorHandler } from './configs/errorHandler'
 import { createDatabaseConnection } from './database'
-import { corsOrigin } from './helpers/cors.helper'
+import { corsOrigin } from './helpers/cors'
 import Routers from './routers'
 import './configs/passport'
 

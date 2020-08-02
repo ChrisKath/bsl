@@ -2,9 +2,9 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import { createReadStream, ReadStream } from 'fs'
 import { join } from 'path'
+import { resErrors } from '../configs/errorHandler'
 import { Url } from '../database'
 import service from '../services/main.service'
-import { resErrors } from '../configs/errorHandler'
 
 class MainController {
   /**

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
 import { ShareColumn } from '../utils'
 import { UrlEntity } from './url'
+import { hashSync } from 'bcrypt'
 
 @Entity({ name: 'users' })
 export class UserEntity extends ShareColumn {
@@ -28,7 +29,11 @@ export class UserEntity extends ShareColumn {
   @Column({
     type: 'varchar',
     length: 16,
-    name: 'username'
+    name: 'username',
+    transformer: {
+      from: (value: string): string => value,
+      to: (value: string): string => value.toLowerCase()
+    }
   })
   @Index({ unique: true })
   public username: string
@@ -37,7 +42,11 @@ export class UserEntity extends ShareColumn {
     type: 'varchar',
     length: 255,
     select: false,
-    name: 'password'
+    name: 'password',
+    transformer: {
+      from: (value: string): string => value,
+      to: (value: string): string => hashSync(value, 10)
+    }
   })
   public password: string
 

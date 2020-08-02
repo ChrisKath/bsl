@@ -22,7 +22,7 @@ const connectionOptions: ConnectionOptions = {
   password: process.env.DB_PASSWORD,
   synchronize: false,
   logging: ['error', 'warn', 'schema', 'query', 'log'], // https://typeorm.io/#/logging
-  logger: 'advanced-console',
+  logger: 'file',
   entities: [
     join(__dirname, '/entity/*{.ts,.js}')
   ],

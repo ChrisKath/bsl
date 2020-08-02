@@ -1,5 +1,5 @@
 import { getConnection, getRepository } from 'typeorm'
-import { createKeyCode } from '../helpers/token.helper'
+import { createKeyCode } from '../helpers/token'
 import { Url, Tagging } from '../database'
 
 class Service {

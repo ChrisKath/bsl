@@ -38,18 +38,18 @@ class Service {
    * @param {Request} req
    * @param {User} user
    */
-  public async ssoAssignData (req: Request, user: User): Promise<any> {
+  public async ssoAssignData (req: Request, user: User): Promise<boolean | void> {
     const data: any = ('employeeCode' in req) ? req : this.ssoAccessData(req)
     let store: any = {}
 
-    if (!data) return Promise.resolve(void 0)
+    if (!data) return void 0
 
     if (!user.employeeName) {
       store.employeeName = data.employeeName
     }
 
     if (!user.username) {
-      store.username = data.nickName.toLowerCase()
+      store.username = data.nickName
     }
 
     if (Object.keys(store).length) {
@@ -61,7 +61,7 @@ class Service {
         .where('id = :value', { value: user.id })
         .execute()
       
-      return Promise.resolve(true)
+      return true
     }
   }
 }

@@ -13,9 +13,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X
 content-type: application/json
 
 {
-  "employeeCode": "1039",
+  "employeeCode": "1040",
   "employeeName": "Patiphat Prathumthong",
-  "username": "Got",
+  "username": "member2",
   "password": "1010",
   "activated": true,
   "isAdmin": false
@@ -23,14 +23,14 @@ content-type: application/json
 
 ###
 
-PATCH http://localhost:3000/api/v2/user/3
+PATCH http://localhost:3000/api/v2/user/12
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9qZWN0X2JzbCIsInVpZCI6Mywic3ViIjoxMDM5LCJpYXQiOjE1OTYwMzM0NjAsImV4cCI6MTYyNzU5MTA2MH0.RgIojo6kTpUXmG1KZjpJg6TBxMBsqnVs0E7JyLV5WE0
 content-type: application/json
 
 {
-  "employeeCode": "1039",
+  "employeeCode": "1040",
   "employeeName": "Patiphat Prathumthong",
-  "username": "Got",
+  "username": "member",
   "password": "1010",
   "activated": false,
   "isAdmin": false
