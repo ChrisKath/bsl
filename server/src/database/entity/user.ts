@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { ShareColumn } from '../utils'
-import { UrlEntity } from './url'
 import { hashSync } from 'bcrypt'
+import { Url } from '..'
 
 @Entity({ name: 'users' })
 export class UserEntity extends ShareColumn {
@@ -88,8 +88,22 @@ export class UserEntity extends ShareColumn {
   @Index({ unique: false })
   public updatedBy: number
 
-  // Relations
-  @OneToMany(() => UrlEntity, (url: UrlEntity) => url.user)
-  public urls: UrlEntity[]
+  @OneToOne(() => UserEntity, (user: UserEntity) => user)
+  @JoinColumn({
+    name: 'created_by',
+    referencedColumnName: 'id'
+  })
+  public accountCreatedBy: UserEntity
+
+  @OneToOne(() => UserEntity, (user: UserEntity) => user)
+  @JoinColumn({
+    name: 'updated_by',
+    referencedColumnName: 'id'
+  })
+  public accountUpdatedBy: UserEntity
+
+  @OneToMany(() => Url, (url: Url) => url.urlCreatedBy)
+  @OneToMany(() => Url, (url: Url) => url.urlUpdatedBy)
+  public urls: Url[]
 
 }

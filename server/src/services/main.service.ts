@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { getConnection, getRepository } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { Click, Facebook } from '../database'
 import moment from 'moment'
 
@@ -36,8 +36,7 @@ class Service {
    * @param {Request} req
    */
   public async saveClickLogs (id: number, req: Request): Promise<void> {
-    await getConnection()
-      .createQueryBuilder()
+    await createQueryBuilder()
       .insert()
       .into(Click)
       .values({
@@ -101,8 +100,7 @@ class Service {
       results.path = `profile/${match}`
     }
     else if (regex.any.test(pathname)) {
-      const fb: Facebook = await getRepository(Facebook)
-        .createQueryBuilder('fb')
+      const fb: Facebook = await createQueryBuilder(Facebook, 'fb')
         .select(['fb.id'])
         .where('LOWER(fb.name) = :name', {
           name: String(pathname.match(regex.any)[1]).toLowerCase()

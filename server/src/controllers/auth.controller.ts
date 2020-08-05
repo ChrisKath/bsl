@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getConnection, getRepository } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import bcrypt from 'bcrypt'
 import { resErrors } from '../configs/errorHandler'
 import { User } from '../database'
@@ -19,8 +19,7 @@ class AuthController {
     const password = (req.body.password || null)
 
     try {
-      const user: User = await getRepository(User)
-        .createQueryBuilder('user')
+      const user: User = await createQueryBuilder(User, 'user')
         .select([
           'user.id',
           'user.employeeCode',
@@ -78,8 +77,7 @@ class AuthController {
     }
 
     try {
-      const user: User = await getRepository(User)
-        .createQueryBuilder('user')
+      const user: User = await createQueryBuilder(User, 'user')
         .select([
           'user.id',
           'user.employeeCode',
@@ -124,8 +122,7 @@ class AuthController {
    */
   public async me (req: Request, res: Response): Promise<any> {
     try {
-      const user: User = await getRepository(User)
-        .createQueryBuilder('user')
+      const user: User = await createQueryBuilder(User, 'user')
         .where('user.id = :value', { value: req.user.id })
         .getOne()
       
@@ -146,8 +143,7 @@ class AuthController {
 
     try {
       // Update entity.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(User)
         .set({ avatar })
         .where('id = :id', { id: req.user.id })

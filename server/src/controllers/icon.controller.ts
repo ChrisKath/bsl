@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRepository, getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
 import { Icon } from '../database'
 import { removeFile } from '../helpers/storage'
@@ -13,8 +13,8 @@ class IconController {
    */
   public async index (req: Request, res: Response): Promise<any> {
     try {
-      const icons: Icon[] = await getRepository(Icon)
-        .createQueryBuilder('icon')
+      const icons: Icon[] = await createQueryBuilder(Icon, 'icon')
+        .limit(100)
         .getMany()
 
       res.json(icons)
@@ -32,8 +32,7 @@ class IconController {
   public async create (req: Request, res: Response): Promise<any> {
     try {
       // store a newly.
-      const store: any = await getConnection()
-        .createQueryBuilder()
+      const store: any = await createQueryBuilder()
         .insert()
         .into(Icon)
         .values({
@@ -59,8 +58,7 @@ class IconController {
    */
   public async show (req: Request, res: Response): Promise<any> {
     try {
-      const icon: Icon = await getRepository(Icon)
-        .createQueryBuilder('icon')
+      const icon: Icon = await createQueryBuilder(Icon, 'icon')
         .where('icon.id = :value', { value: req.params.id })
         .getOne()
 
@@ -79,8 +77,7 @@ class IconController {
   public async update (req: Request, res: Response): Promise<any> {
     try {
       // Update storage.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(Icon)
         .set({
           name  : req.body.name,
@@ -111,8 +108,7 @@ class IconController {
    */
   public async destroy (req: Request, res: Response): Promise<any> {
     try {
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .delete()
         .from(Icon)
         .where('id = :value', { value: req.params.id })

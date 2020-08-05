@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne, JoinColumn } from 'typeorm'
+import { Url } from '..'
 
 @Entity({ name: 'clicks' })
 export class ClickEntity {
@@ -34,5 +35,9 @@ export class ClickEntity {
     default: () => 'CURRENT_TIMESTAMP'
   })
   public clickedAt: Date
+
+  @ManyToOne(() => Url, (url: Url) => url.id)
+  @JoinColumn({ name: 'url_id' })
+  public url: Url
 
 }

@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Entity, Column, Index } from 'typeorm'
+import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm'
+import { Url, Tag } from '..'
 
 @Entity({ name: 'tagging' })
 export class TaggingEntity {
@@ -13,14 +14,12 @@ export class TaggingEntity {
     type: 'smallint',
     name: 'url_id'
   })
-  @Index({ unique: false })
   public urlId: number
 
   @Column({
     type: 'smallint',
     name: 'tag_id'
   })
-  @Index({ unique: false })
   public tagId: number
 
 }

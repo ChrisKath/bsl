@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ManyToOne, ManyToMany, JoinColumn, JoinTable } from 'typeorm'
 import { ShareColumn } from '../utils'
-import { UserEntity } from './user'
+import { User, Tag, Click } from '..'
 
 @Entity({ name: 'urls' })
 export class UrlEntity extends ShareColumn {
@@ -65,6 +65,7 @@ export class UrlEntity extends ShareColumn {
 
   @Column({
     type: 'smallint',
+    select: false,
     name: 'created_by'
   })
   @Index({ unique: false })
@@ -72,14 +73,41 @@ export class UrlEntity extends ShareColumn {
 
   @Column({
     type: 'smallint',
+    select: false,
     name: 'updated_by'
   })
   @Index({ unique: false })
   public updatedBy: number
 
-  // Relations
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.urls)
-  @JoinColumn({ name: 'created_by' })
-  public user: UserEntity | null
+  @ManyToOne(() => User, (user: User) => user.urls)
+  @JoinColumn({
+    name: 'created_by',
+    referencedColumnName: 'id'
+  })
+  public urlCreatedBy: User
+
+  @ManyToOne(() => User, (user: User) => user.urls)
+  @JoinColumn({
+    name: 'updated_by',
+    referencedColumnName: 'id'
+  })
+  public urlUpdatedBy: User
+
+  @ManyToMany(() => Tag, (tag: Tag) => tag.urls)
+  @JoinTable({
+    name: 'tagging',
+    joinColumn: {
+      name: 'url_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'tag_id',
+      referencedColumnName: 'id'
+    }
+  })
+  public tags: Tag[]
+
+  @OneToMany(() => Click, (click: Click) => click.url)
+  public clicks: Click[]
 
 }

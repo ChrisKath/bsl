@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { getRepository, getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
-import { User, Url } from '../database'
+import { User } from '../database'
 
 class UserController {
   /**
@@ -12,8 +12,8 @@ class UserController {
    */
   public async index (req: Request, res: Response): Promise<any> {
     try {
-      const user: User[] = await getRepository(User)
-        .createQueryBuilder('user')
+      const user: User[] = await createQueryBuilder(User, 'user')
+        .limit(100)
         .getMany()
 
       res.json(user)
@@ -31,8 +31,7 @@ class UserController {
   public async create (req: Request, res: Response): Promise<any> {
     try {
       // store a newly.
-      const store: any = await getConnection()
-        .createQueryBuilder()
+      const store: any = await createQueryBuilder()
         .insert()
         .into(User)
         .values({
@@ -59,9 +58,9 @@ class UserController {
    */
   public async show (req: Request, res: Response): Promise<any> {
     try {
-      const user: User = await getRepository(User)
-        .createQueryBuilder('user')
-        // .leftJoinAndSelect('user.urls', 'url')
+      const user: User = await createQueryBuilder(User, 'user')
+        .leftJoinAndSelect('user.accountCreatedBy', 'createdBy')
+        .leftJoinAndSelect('user.accountUpdatedBy', 'updatedBy')
         .where('user.id = :value', { value: req.params.id })
         .getOne()
 
@@ -80,8 +79,7 @@ class UserController {
   public async update (req: Request, res: Response): Promise<any> {
     try {
       // Update storage.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(User)
         .set({
           ...req.body,
@@ -108,8 +106,7 @@ class UserController {
   public async destroy (req: Request, res: Response): Promise<any> {
     try {
       // Update storage, deactivated account.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(User)
         .set({ activated: false })
         .where('id = :value', { value: req.params.id })

@@ -1,4 +1,4 @@
-import { getConnection, getRepository } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { createKeyCode } from '../helpers/token'
 import { Url, Tagging } from '../database'
 
@@ -25,8 +25,7 @@ class Service {
    * @returns {boolean}
    */
   public async hasKeyCode (keyCode: string): Promise<boolean> {
-    const query: number = await getRepository(Url)
-      .createQueryBuilder('url')
+    const query: number = await createQueryBuilder(Url, 'url')
       .where('url.key = :value', { value: keyCode })
       .getCount()
 
@@ -40,8 +39,7 @@ class Service {
    * @returns {boolean}
    */
   public async hasOriginUrl (originUrl: string): Promise<boolean> {
-    const query: number = await getRepository(Url)
-      .createQueryBuilder('url')
+    const query: number = await createQueryBuilder(Url, 'url')
       .where('url.href = :value', { value: originUrl })
       .getCount()
 
@@ -56,8 +54,7 @@ class Service {
    */
   public async addTagging (id: number, tags: any[]): Promise<void> {
     // Delete all rows match.
-    await getConnection()
-      .createQueryBuilder()
+    await createQueryBuilder()
       .delete()
       .from(Tagging)
       .where('urlId = :value', { value: id })
@@ -71,8 +68,7 @@ class Service {
       }))
       
       // Insert newly tags.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .insert()
         .into(Tagging)
         .values(rows)

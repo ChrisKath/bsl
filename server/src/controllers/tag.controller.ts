@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRepository, getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { resErrors } from '../configs/errorHandler'
 import { Tag, Tagging } from '../database'
 import service from '../services/tag.service'
@@ -13,8 +13,8 @@ class TagController {
    */
   public async index (req: Request, res: Response): Promise<any> {
     try {
-      const tags: Tag[] = await getRepository(Tag)
-        .createQueryBuilder('tag')
+      const tags: Tag[] = await createQueryBuilder(Tag, 'tag')
+        .limit(100)
         .getMany()
 
       res.json(tags)
@@ -40,8 +40,7 @@ class TagController {
       }
 
       // store a newly.
-      const store: any = await getConnection()
-        .createQueryBuilder()
+      const store: any = await createQueryBuilder()
         .insert()
         .into(Tag)
         .values({ name: req.body.name })
@@ -64,8 +63,7 @@ class TagController {
    */
   public async show (req: Request, res: Response): Promise<any> {
     try {
-      const tag: Tag = await getRepository(Tag)
-        .createQueryBuilder('tag')
+      const tag: Tag = await createQueryBuilder(Tag, 'tag')
         .where('tag.id = :value', { value: req.params.id })
         .getOne()
 
@@ -92,8 +90,7 @@ class TagController {
       }
 
       // Update storage.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(Tag)
         .set({ name: req.body.name })
         .where('id = :value', { value: req.params.id })
@@ -115,17 +112,16 @@ class TagController {
    * @param {Response} res
    */
   public async destroy (req: Request, res: Response): Promise<any> {
+    const id: number = Number(req.params.id)
+
     try {
-      let id: string | number = req.params.id
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .delete()
         .from(Tagging)
         .where('tagId = :value', { value: id })
         .execute()
 
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .delete()
         .from(Tag)
         .where('id = :value', { value: id })

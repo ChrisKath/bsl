@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { createReadStream, ReadStream } from 'fs'
 import { join } from 'path'
 import { resErrors } from '../configs/errorHandler'
@@ -18,8 +18,7 @@ class MainController {
 
     if (keyCode) {
       try {
-        const url: Url = await getRepository(Url)
-          .createQueryBuilder('url')
+        const url: Url = await createQueryBuilder(Url, 'url')
           .select([
             'url.id',
             'url.href',

@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { User } from '../database'
 
 class Service {
@@ -54,8 +54,7 @@ class Service {
 
     if (Object.keys(store).length) {
       // Update entity.
-      await getConnection()
-        .createQueryBuilder()
+      await createQueryBuilder()
         .update(User)
         .set(store)
         .where('id = :value', { value: user.id })

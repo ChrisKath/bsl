@@ -1,6 +1,6 @@
 import passport from 'passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
-import { getRepository } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { secretKey } from '../configs/app'
 import { User } from '../database'
 
@@ -11,8 +11,7 @@ passport.use(new Strategy({
 }, async (payload, done): Promise<any> => {
   try {
     // Gatter the user specified in token
-    const user = await getRepository(User)
-      .createQueryBuilder('user')
+    const user = await createQueryBuilder(User, 'user')
       .select([
         'user.id',
         'user.employeeCode',
