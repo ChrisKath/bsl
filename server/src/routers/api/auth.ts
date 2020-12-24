@@ -25,5 +25,6 @@ export default class AuthRoutes {
     this.router.get('/me', this.authenticate, controllers.me)
     this.router.get('/refreshToken', this.authenticate, controllers.refresh)
     this.router.post('/profile', [this.authenticate, this.avatarFile], controllers.profile)
+    this.router.post('/setPassword', this.authenticate, controllers.setPassword)
   }
 }

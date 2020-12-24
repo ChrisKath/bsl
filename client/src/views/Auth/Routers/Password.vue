@@ -46,6 +46,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { ValidationObserver } from 'vee-validate'
+import { hasProp } from '@/utils'
 
 @Component({
   components: {
@@ -65,12 +66,18 @@ export default class PasswordComponent extends Vue {
     const isValid: boolean = await FormObserver.validate()
 
     if (isValid) {
-      // this.next()
+      const form: any = { password: this.password }
+      const responae: any = await this.$store.dispatch('APP.AUTH/createPassword', form)
+
+      if (hasProp(responae, 'error')) {
+        this.$alert(responae.error.message)
+      } else {
+        this.next()
+      }
     }
   }
 
   private next (): void {
-    this.$store.dispatch('APP.AUTH/createCookie', this.$route.query)
     this.$router.push({ name: 'index' })
   }
 

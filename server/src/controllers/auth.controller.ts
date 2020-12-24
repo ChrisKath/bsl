@@ -14,7 +14,7 @@ class AuthController {
    * @param {Request} req
    * @param {Response} res
    */
-  public async login (req: Request, res: Response): Promise<any> {
+  public async login (req: Request, res: Response): Promise<void> {
     const username = (req.body.username || null)
     const password = (req.body.password || null)
 
@@ -69,7 +69,7 @@ class AuthController {
    * @param {Request} req
    * @param {Response} res
    */
-  public async sso (req: Request, res: Response): Promise<any> {
+  public async sso (req: Request, res: Response): Promise<void> {
     const data: any = service.ssoAccessData(req)
 
     if (!data) {
@@ -120,7 +120,7 @@ class AuthController {
    * @param {Request} req
    * @param {Response} res
    */
-  public async me (req: Request, res: Response): Promise<any> {
+  public async me (req: Request, res: Response): Promise<void> {
     try {
       const user: User = await createQueryBuilder(User, 'user')
         .where('user.id = :value', { value: req.user.id })
@@ -133,19 +133,32 @@ class AuthController {
   }
 
   /**
+   * Refresh token expire.
+   * 
+   * @param {Request} req
+   * @param {Response} res
+   */
+  public refresh (req: Request, res: Response): void {
+    res.json(createToken(req.user))
+  }
+
+  /**
    * Update user profile.
    * 
    * @param {Request} req
    * @param {Response} res
    */
-  public async profile (req: Request, res: Response): Promise<any> {
+  public async profile (req: Request, res: Response): Promise<void> {
     const avatar: string = req.file.filename
 
     try {
       // Update entity.
       await createQueryBuilder()
         .update(User)
-        .set({ avatar })
+        .set({
+          avatar,
+          updatedBy: req.user.id
+        })
         .where('id = :id', { id: req.user.id })
         .execute()
 
@@ -164,13 +177,30 @@ class AuthController {
   }
 
   /**
-   * Refresh token expire.
+   * Setting new password.
    * 
    * @param {Request} req
    * @param {Response} res
    */
-  public refresh (req: Request, res: Response): void {
-    res.json(createToken(req.user))
+  public async setPassword (req: Request, res: Response): Promise<void> {
+    try {
+      // Update entity.
+      await createQueryBuilder()
+        .update(User)
+        .set({
+          password: req.body.password,
+          updatedBy: req.user.id
+        })
+        .where('id = :id', { id: req.user.id })
+        .execute()
+      
+      res.json({
+        data: undefined,
+        message: 'Update success.'
+      })
+    } catch (error) {
+      resErrors(res, error.message, 422)
+    }
   }
 }
 

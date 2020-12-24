@@ -61,11 +61,11 @@ export const actions: any = {
    * @param {object} input 
    */
   async createPassword ({}: any, input: any): Promise<any> {
-    // try {
-    //   const response: any = await axios.post('/auth/login', input)
-    //   return response.data
-    // } catch (errors) {
-    //   return errors.data
-    // }
+    try {
+      const response: any = await axios.post('/auth/setPassword', input)
+      return response.data
+    } catch (errors) {
+      return errors.data
+    }
   }
 }

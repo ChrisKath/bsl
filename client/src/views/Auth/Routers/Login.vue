@@ -107,21 +107,16 @@ export default class LoginComponent extends Vue {
   }
 
   private signInComplete (input: any): void {
+    this.$store.dispatch('APP.AUTH/createCookie', input)
+
     if (hasProp(input, 'firstLogin')) {
 
-      this.$alert('Your first sign-in.<br>You need to set a password.')
+      this.$alert('Your first sign-in.<br>You need to set a new password.')
         .then((): void => {
-          this.$router.push({
-            name: 'auth.password',
-            query: {
-              token: input.token,
-              expires: input.expires
-            }
-          })
+          this.$router.push({ name: 'auth.password' })
         })
 
     } else {
-      this.$store.dispatch('APP.AUTH/createCookie', input)
       this.$router.push({ name: 'index' })
     }
   }

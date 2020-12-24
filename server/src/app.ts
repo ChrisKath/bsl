@@ -45,7 +45,7 @@ export default class App {
   }
 
   private registerRouters (): void {
-    const r = new Routers()
+    const r: Routers = new Routers()
     this.app.use(r.router)
   }
 

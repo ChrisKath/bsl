@@ -16,14 +16,14 @@ const Axios: any = axios.create({
  * FormData or Stream
  * You may modify the headers object.
  */
-Axios.interceptors.request.use((config: any): any => {
+Axios.interceptors.request.use((buffer: any): any => {
   const token: any = getCookie(config.APP_AUTH)
 
   if (token) {
-    config.headers[config.AUTH_TOKEN] = `Bearer ${token}`
+    buffer.headers[config.AUTH_TOKEN] = `Bearer ${token}`
   }
   
-  return config
+  return buffer
 })
 
 /**

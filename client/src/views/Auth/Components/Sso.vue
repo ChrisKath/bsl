@@ -78,7 +78,7 @@ export default class SingleSignOnProvider extends Vue {
 
   // __COMPUTED
   private get user (): any {
-    const user: any = this.content.data
+    const user: any = this.content.ssoData
     return {
       employeeCode: user ? `${user.employeeCode} (${user.nickName})` : '-',
       employeeName: user ? user.employeeName : '-',
